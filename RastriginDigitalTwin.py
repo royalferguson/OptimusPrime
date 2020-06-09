@@ -11,20 +11,19 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 			bnds = np.full((dim,2), (-5.12, 5.12))
 			super().__init__(rastrigin, x0=utils.get_random_x0(dim,-5.12, 5.12), bounds = bnds)
 
-		def optimize(self, args):
-			self.optimizer.update_solver_params('basinhopping', {'niter' : 1000} )
-			return super().optimize(args)
+		def optimize(self, args, **kwargs):
+			return super().optimize(args, **kwargs)
 
 if __name__ == '__main__':
 	args = cfg.get_commandline_args()
 
-	print(args) 
+	print("args:    ", args) 
 
-	options = ['basinhopping',{'niter':4}]
+	kwargs = {'niters':4}
 
 	if args.trace:
-		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, options)
+		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
 	else:
-		cfg.main(RastriginDigitalTwin(), args, options)
+		cfg.main(RastriginDigitalTwin(), args, **kwargs)
 
 

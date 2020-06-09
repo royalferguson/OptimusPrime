@@ -1,12 +1,13 @@
 import OptimusPrime.configuration as cfg
-from OptimusPrime.solvers import BasinhoppingSolver
+from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver
 import numpy as np 
 import copy
 
 class Optimus():
 
 	solver_dict={
-	'basinhopping'  :  BasinhoppingSolver()
+	'basinhopping'  :  BasinhoppingSolver(),
+	'GlobalBestPSO'	:  ParticleSwarmSolver()
 	}
 
 	def __init__(self):
@@ -27,8 +28,8 @@ class Optimus():
 	def set_objective_function(self, func, flip=False):
 		self.objective_function = self.flip_objective_function(func) if flip else func
 
-	def update_solver_params(self, name, kwargs):
-		self.solver_params_dict[name].update(kwargs)
+	def update_solver_params(self, name, **kwargs):
+		self.solver_params_dict[name].update(**kwargs)
 
 	def return_solver_params(self,name):
 		return self.solver_params_dict[name]
@@ -40,5 +41,7 @@ class Optimus():
 		self.bounds = b
 
 	def solve(self):
+		print("================", self.solver_name)
+		print("===============", self.solver_params_dict[self.solver_name])
 		res = self.solver_dict[self.solver_name].solve(self.objective_function, x0=self.x0, **self.solver_params_dict[self.solver_name])
 		return res
