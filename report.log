@@ -118,3 +118,11 @@ TypeError: iteration over a 0-d array
 2020-06-10 00:26:19,192 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
 2020-06-10 00:26:19,594 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 6.107238890452166, best pos: [-0.04085722  0.00952817 -0.03073263 -1.01351253 -0.92924699 -0.99717638
  -0.01652493  0.04601819  0.96831648  0.01905299]
+2020-06-10 01:14:52,371 - pyswarms.backend.generators - ERROR - generate_velocity() takes an int for n_particles and dimensions and an array for clamp
+Traceback (most recent call last):
+  File "C:\Users\Omar\AppData\Local\Programs\Python\Python36\lib\site-packages\pyswarms-1.1.0-py3.6.egg\pyswarms\backend\generators.py", line 171, in generate_velocity
+    min_velocity, max_velocity = (0, 1) if clamp is None else clamp
+TypeError: 'int' object is not iterable
+2020-06-10 01:15:13,987 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-10 01:15:14,331 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 75.04173162791068, best pos: [-1.11037498  2.10999765 -0.85857039  3.14129775 -3.07829594  0.9219633
+ -0.15420128  2.13185829 -1.00556007 -2.34131266]

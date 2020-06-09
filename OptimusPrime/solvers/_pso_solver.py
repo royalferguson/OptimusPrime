@@ -37,7 +37,7 @@ class ParticleSwarmSolver(BaseSolver):
 	def __init__(self):
 		self.tol_hit = False
 
-	def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
+	def pso_global_optimize(self, fun, dimensions = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 
 		if bounds is not None:
 			bounds = np.transpose(bounds)
@@ -46,8 +46,6 @@ class ParticleSwarmSolver(BaseSolver):
 			dimensions = len(x0)
 		elif bounds is not None:
 			dimensions = len(bounds[0])
-		elif dimension is not None:
-			dimensions = dimension
 		else:
 			dimensions = 2
 
