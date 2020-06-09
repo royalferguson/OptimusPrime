@@ -1,5 +1,5 @@
 from OptimusPrime.solvers import BaseSolver
-import pyswarms as pyswarms
+import pyswarms as ps
 from scipy.optimize import OptimizeResult
 import numpy as np 
 import seaborn as sb 
@@ -26,7 +26,7 @@ def pso_objective_function(func, log_cb=None, tol_cb=None):
 			stop = tol_cb()
 		if stop is not True:
 			for particle_x in x:
-				score = func(particle_x, *args)
+				score = func(particle_x)
 				if log_cb:
 					log_cb(particle_x, score)
 				j.append(score)
@@ -37,34 +37,48 @@ class ParticleSwarmSolver(BaseSolver):
 	def __init__(self):
 		self.tol_hit = False
 
-	def pso_global_optimize(selffun, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
+	def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 
-		bounds = np.transpose(bounds)
-
+		if bounds is not None:
+			bounds = np.transpose(bounds)
+		
 		if x0 is not None:
+			dimensions = len(x0)
+		elif bounds is not None:
 			dimensions = len(bounds[0])
+		elif dimension is not None:
+			dimensions = dimension
 		else:
 			dimensions = 2
 
 		# PSO uses multiple particles - each must have a starting point
 		# if x0 does not contain one for each particle - then generate a random point for it.
-
-		x0 = np.asarray(x0)
-		if x0.ndim == 1 or x0.shape[1] != n_particles:
-			diff = n_particles - x0.ndim
-			r = np.random.uniform(bounds[0][0], bounds[1][0], (diff, dimensions))
-			x0 = np.vstack( (x0,r))
-
+		if x0 is not None:
+			x0 = np.asarray(x0)
+			if x0.ndim == 1 or x0.shape[1] != n_particles:
+				diff = n_particles - x0.ndim
+				if bounds is not None:
+					r = np.random.uniform(bounds[0][0], bounds[1][0], (diff, dimensions))
+				else:
+					r = np.random.uniform(-10000, 10000, (diff, dimensions))
+					bounds = np.transpose(np.full((dimensions,2), (-10000, 10000)))
+				x0 = np.vstack( (x0,r))
 		res= {}
-		optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0, **pso_kwargs)
-
+		print("bounds: ", bounds)
+		print("x0: ", x0)
+		print("dimensions: ", dimensions)
+		if x0 is None and bounds is None:
+			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
+		else:
+			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0, **pso_kwargs)
+		
 		objective_func = pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check)
 		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
-
-		return res
+		print(best)
+		return best
 
 	def solve(self, *args, **kwargs):
-		return self.pso_global_optimize(*args, **kwargs)
+		return self.pso_global_optimize(args[0], **kwargs)
 
 	def log_data(self, xk, f):
 		self.log_data_to_pickle(xk,f)
