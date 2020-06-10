@@ -37,11 +37,16 @@ class ParticleSwarmSolver(BaseSolver):
 	def __init__(self):
 		self.tol_hit = False
 
+<<<<<<< HEAD
 	# def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 	def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 		
 		# In PSO - you can specify x0, bounds, both, or neither.  If you specify x0
 		# and don't specify bounds - then defaults of -10000, 10000 are used
+=======
+	def pso_global_optimize(self, fun, dimensions = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
+
+>>>>>>> 53e10215ec687eee630b59b8581ebcac686c1593
 		if bounds is not None:
 			bounds = np.transpose(bounds)
 		
@@ -49,8 +54,6 @@ class ParticleSwarmSolver(BaseSolver):
 			dimensions = len(x0)
 		elif bounds is not None:
 			dimensions = len(bounds[0])
-		elif dimension is not None:
-			dimensions = dimension
 		else:
 			dimensions = 2
 
@@ -82,7 +85,7 @@ class ParticleSwarmSolver(BaseSolver):
 		return best
 
 	def solve(self, fun, x0, **kwargs):
-		return self.pso_global_optimize(fun, x0=x0, **kwargs)
+		return self.pso_global_optimize(fun, x0 = x0, **kwargs)
 
 	def log_data(self, xk, f):
 		self.log_data_to_pickle(xk,f)

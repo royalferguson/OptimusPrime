@@ -33,9 +33,24 @@ if __name__ == '__main__':
 	#try this then comment it
 	#kwargs = {'dimension':10}
 	# after you comment the above try this
-	#kwargs = {'bounds':bnds}
+	kwargs = {'bounds':bnds}
 	# for basinhopping
-	kwargs = {'iters':2}
+	#kwargs = {'niter':2}
+	# Full blown 
+	"""kwargs = {
+		'dimensions':10,
+		'bounds':bnds,
+		'maxiter':100,
+		'n_particles':200,
+		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.85},
+		'pso_kwargs': {'bh_strategy' : 'periodic',
+						'velocity_clamp' : (1,2),
+						'vh_strategy' : 'unmodified',
+						'center' : 2,
+						'ftol' : -1
+						}
+	}"""
+>>>>>>> 53e10215ec687eee630b59b8581ebcac686c1593
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
