@@ -32,11 +32,11 @@ if __name__ == '__main__':
 	#try this then comment it
 	#kwargs = {'dimension':10}
 	# after you comment the above try this
-	#kwargs = {'bounds':bnds}
+	kwargs = {'bounds':bnds}
 	# for basinhopping
 	#kwargs = {'niter':2}
 	# Full blown 
-	kwargs = {
+	"""kwargs = {
 		'dimensions':10,
 		'bounds':bnds,
 		'maxiter':100,
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 						'center' : 2,
 						'ftol' : -1
 						}
-	}
+	}"""
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
