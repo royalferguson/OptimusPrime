@@ -37,8 +37,11 @@ class ParticleSwarmSolver(BaseSolver):
 	def __init__(self):
 		self.tol_hit = False
 
+	# def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 	def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
-
+		
+		# In PSO - you can specify x0, bounds, both, or neither.  If you specify x0
+		# and don't specify bounds - then defaults of -10000, 10000 are used
 		if bounds is not None:
 			bounds = np.transpose(bounds)
 		
@@ -53,6 +56,7 @@ class ParticleSwarmSolver(BaseSolver):
 
 		# PSO uses multiple particles - each must have a starting point
 		# if x0 does not contain one for each particle - then generate a random point for it.
+		# Partial 
 		if x0 is not None:
 			x0 = np.asarray(x0)
 			if x0.ndim == 1 or x0.shape[1] != n_particles:
@@ -77,8 +81,8 @@ class ParticleSwarmSolver(BaseSolver):
 		print(best)
 		return best
 
-	def solve(self, *args, **kwargs):
-		return self.pso_global_optimize(args[0], **kwargs)
+	def solve(self, fun, x0, **kwargs):
+		return self.pso_global_optimize(fun, x0=x0, **kwargs)
 
 	def log_data(self, xk, f):
 		self.log_data_to_pickle(xk,f)

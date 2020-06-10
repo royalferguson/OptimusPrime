@@ -22,6 +22,7 @@ if __name__ == '__main__':
 
 	print("args:    ", args) 
 	bnds = np.full((10,2), (-5.12, 5.12))
+	
 	"""
 	#uncomment this when running with basinhopping
 	def callback(xk,f, accept):
@@ -34,7 +35,7 @@ if __name__ == '__main__':
 	# after you comment the above try this
 	#kwargs = {'bounds':bnds}
 	# for basinhopping
-	kwargs = {'niter':2}
+	kwargs = {'iters':2}
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
