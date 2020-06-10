@@ -11,7 +11,7 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 			# Use this when you wish to provide the initial position (x0)
 			super().__init__(rastrigin, x0 = utils.get_random_x0(10,-5.12, 5.12))
 
-			# Use this when you don't want to provide initial position (x0)
+			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
 			# super().__init__(rastrigin)
 
 		def optimize(self, args, **kwargs):
@@ -27,7 +27,8 @@ if __name__ == '__main__':
 			print("custom callback for basinhopping")
 			return
 
-		kwargs = {'niter':2,
+		kwargs = {
+		'niter':2,
 		'T': 0.2,
 		'stepsize':0.65,
 		'minimizer_kwargs': {
@@ -45,7 +46,7 @@ if __name__ == '__main__':
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
 		'dimensions':10,
-		'bounds': np.full((10,2), (-5.12, 5.12),
+		'bounds': np.full((10,2), (-5.12, 5.12)),
 		'maxiter':100,
 		'n_particles':200,
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.85},
