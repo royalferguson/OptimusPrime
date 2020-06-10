@@ -7,10 +7,10 @@ import argparse, sys
 class RastriginDigitalTwin(AlgoDigitalTwin):
 
 		def __init__ (self):
-			# uncomment this when you want to provide x0
-			super().__init__(rastrigin, x0 = utils.get_random_x0(10,-5.12, 5.12))
-			# comment this when you want to provide x0
-			# super().__init__(rastrigin)
+			super().__init__(rastrigin)
+
+		def Initialize_Starting_Position(self,x0):
+			self.x0 = x0
 
 		def optimize(self, args, **kwargs):
 			return super().optimize(args, **kwargs)
@@ -20,12 +20,14 @@ if __name__ == '__main__':
 
 	print("args:    ", args) 
 
-	
+
 	bnds = np.full((10,2), (-5.12, 5.12))
 	def callback_(x,f,accept):
 		print("custom callback for basinhopping")
 		return
 	# for basinhopping
+	x0 = utils.get_random_x0(10,-5.12, 5.12)
+
 	kwargs = {'niter':2,
 	'T': 0.2,
 	'stepsize':0.65,
@@ -42,7 +44,7 @@ if __name__ == '__main__':
 	}
 	# for pso
 	"""kwargs = {
-		'dimensions':10,
+		'dimension':10,
 		'bounds':bnds,
 		'maxiter':100,
 		'n_particles':200,
@@ -55,9 +57,13 @@ if __name__ == '__main__':
 						}
 	}"""
 
+	class_ = RastriginDigitalTwin()
+	#comment/uncomment next line when you want to add a starting position
+	class_.Initialize_Starting_Position(x0)
+
 	if args.trace:
-		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
+		utils.run_with_callgraph(cfg.main, class_, args, **kwargs)
 	else:
-		cfg.main(RastriginDigitalTwin(), args, **kwargs)
+		cfg.main(class_, args, **kwargs)
 
 
