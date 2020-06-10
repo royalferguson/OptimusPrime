@@ -38,7 +38,7 @@ class ParticleSwarmSolver(BaseSolver):
 		self.tol_hit = False
 		
 	# def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
-	def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
+	def pso_global_optimize(self, fun, dimensions = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 		
 		# In PSO - you can specify x0, bounds, both, or neither.  If you specify x0
 		# and don't specify bounds - then defaults of -10000, 10000 are used

@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'dimension':10,
+		'dimensions':10,
 		'bounds': np.full((10,2), (-5.12, 5.12)),
 		'maxiter':100,
 		'n_particles':200,

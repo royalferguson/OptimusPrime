@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2020-06-09 23:06:24,711 - pyswarms.single.global_best - INFO - Optimize for 4 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
 2020-06-09 23:06:37,017 - pyswarms.single.global_best - INFO - Optimize for 4 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
 2020-06-09 23:07:12,756 - pyswarms.single.global_best - INFO - Optimize for 4 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
@@ -145,3 +146,11 @@ TypeError: 'int' object is not iterable
 2020-06-10 21:37:52,038 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
 2020-06-10 21:37:52,419 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 85.74204632404107, best pos: [-2.14092373  1.02385604 -0.21925424  1.26439302 -0.21249389  2.84241919
   0.86845939  5.00403058  0.91540859  0.86460456]
+=======
+2020-06-10 16:44:37,408 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-10 16:44:38,070 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 79.06466495734884, best pos: [-1.00735347  1.23626899  3.0754559  -1.02929908  2.88453148  0.08004108
+  4.89920881  2.85505234  1.93612983 -0.99572833]
+>>>>>>> 6dce3965c4cd24b09f580ba2a5cd1e75632a9f98
+2020-06-10 21:47:25,357 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-10 21:47:25,699 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 67.93563910883921, best pos: [ 0.96999357  2.91593785  0.08164396 -1.10615535 -0.42851138  0.97252154
+ -0.76957915  2.07933387  3.95424714  0.97778104]
