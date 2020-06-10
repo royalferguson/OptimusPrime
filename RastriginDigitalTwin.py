@@ -50,7 +50,6 @@ if __name__ == '__main__':
 						'ftol' : -1
 						}
 	}"""
->>>>>>> 53e10215ec687eee630b59b8581ebcac686c1593
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
