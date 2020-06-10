@@ -133,3 +133,6 @@ TypeError: 'int' object is not iterable
 2020-06-10 19:26:32,967 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
 2020-06-10 19:26:33,368 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 17.421558487198652, best pos: [ 1.02933352  1.96835751 -1.09489675  0.02575306  0.04555146  0.88309996
   0.99063435  0.06469942  1.07930528 -0.97192776]
+2020-06-10 19:34:51,269 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.2, 'c2': 0.6, 'w': 0.95}
+2020-06-10 19:34:51,650 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 6.372981053487877, best pos: [ 0.10455    -0.0024538  -0.01470441 -1.00904381 -0.01654535  0.01619645
+  0.98337288  0.98644038 -0.97868861  0.00953746]
