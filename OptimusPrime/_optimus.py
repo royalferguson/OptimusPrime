@@ -41,7 +41,5 @@ class Optimus():
 		self.bounds = b
 
 	def solve(self):
-		print("================", self.solver_name)
-		print("===============", self.solver_params_dict[self.solver_name])
-		res = self.solver_dict[self.solver_name].solve(self.objective_function, x0=self.x0, **self.solver_params_dict[self.solver_name])
+		res = self.solver_dict[self.solver_name].solve(self.objective_function, x0=self.x0, kwargs=self.solver_params_dict[self.solver_name])
 		return res
