@@ -1,5 +1,5 @@
 import OptimusPrime.configuration as cfg
-from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver
+from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver, DifferentialEvolutionSolver
 import numpy as np 
 import copy
 

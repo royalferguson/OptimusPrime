@@ -57,6 +57,25 @@ if __name__ == '__main__':
 						'ftol' : -1
 						}
 		}
+	elif args.solver == 'differential_evolution':
+		def callback_(x,convergence=2):
+			print("custom callback for differential_evolution")
+			return
+		kwargs = {
+		'bounds':np.full((10,2), (-5.12, 5.12)),
+		'strategy': 'best2exp',
+		'maxiter':5,
+		'callback':callback_,
+		'popsize':10,
+		'tol':1e-10,
+		'mutation':1.5,
+		'recombination': 0.5,
+		'polish': True,
+		'atol': 0.1,
+		'seed': 20,
+		'updating':'immediate',
+		'workers':5
+		}
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, kwargs)

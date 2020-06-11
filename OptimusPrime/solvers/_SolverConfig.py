@@ -10,7 +10,7 @@ solver_dict = {
     #'Nelder-Mead' : MinimizeSolver('Nelder-Mead'),
     'l-bfgs-b' : MinimizeSolver('l-bfgs-b'),
     # 'GlobalBestPSO' : ParticleSwarmSolver(),
-    # 'differential_evolution' : DifferentialEvolutionSolver()
+    'differential_evolution' : DifferentialEvolutionSolver(),
     'basinhopping' : BasinhoppingSolver()
 }
 

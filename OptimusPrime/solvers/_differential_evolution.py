@@ -8,15 +8,15 @@ class DifferentialEvolutionSolver(BaseSolver):
 	def __init__(self):
 		pass
 
-	def solve(self, fun, x0=None, bounds=None, maxiter=1000, popsize=15, **kwargs):
+	def solve(self, fun, x0,  kwargs):
 		if x0:
-			m=len(x0) * popsize
+			m=len(x0) * kwargs['popsize']
 			if np.shape(x0) != (m, len(x0)):
 				#  If x0 does not have shape of (m, len(x0)) - revert to latinhypercube
 				#  Where m is the #population * the number of decision variables
 				x0='latinhypercube'
-
-		return differential_evolution(fun,bounds, init=x0, callback=self.callback, maxiter=maxiter, **kwargs)
+		kwargs['init']  = x0
+		return differential_evolution(fun, **kwargs)
 
 
 	def callback(self, xk, convergence=None):
