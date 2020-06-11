@@ -14,7 +14,7 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
 			# super().__init__(rastrigin)
 
-		def optimize(self, args, **kwargs):
+		def optimize(self, args, kwargs):
 			return super().optimize(args, kwargs)
 
 if __name__ == '__main__':
