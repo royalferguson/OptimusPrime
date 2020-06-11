@@ -28,8 +28,8 @@ class Optimus():
 	def set_objective_function(self, func, flip=False):
 		self.objective_function = self.flip_objective_function(func) if flip else func
 
-	def update_solver_params(self, name, **kwargs):
-		self.solver_params_dict[name].update(**kwargs)
+	def update_solver_params(self, name, kwargs):
+		self.solver_params_dict[name].update(kwargs)
 
 	def return_solver_params(self,name):
 		return self.solver_params_dict[name]
