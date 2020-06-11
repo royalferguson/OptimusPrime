@@ -15,6 +15,7 @@ class Optimus():
 		self.solver_params_dict = copy.deepcopy(cfg.default_solver_params_dict)
 		self.solver_name='basinhopping'
 		self.objective_function = None
+		self.minimum = False
 		#self.x0 = None
 		#self.bounds = None
 
@@ -29,7 +30,22 @@ class Optimus():
 	def set_objective_function(self, func, flip=False):
 		self.objective_function = self.flip_objective_function(func) if flip else func
 
+
+	def check_minimum(self,name,kwargs):
+		if name == 'basinhopping':
+			if 'x0' in kwargs:
+				self.minimum = True
+		elif name == 'differential_evolution':
+			if 'bounds' in kwargs:
+				self.minimum = True
+		return
+
 	def update_solver_params(self, name, kwargs):
+		self.check_minimum(name,kwargs)
+
+		if self.minimum == False:
+			print("Current parameter dictionary does not have the minimum required parameters")
+
 		self.solver_params_dict[name].update(kwargs)
 
 	def return_solver_params(self,name):
@@ -43,5 +59,10 @@ class Optimus():
 		self.bounds = b
 	"""	
 	def solve(self):
-		res = self.solver_dict[self.solver_name].solve(self.objective_function, kwargs=self.solver_params_dict[self.solver_name])
-		return res
+
+		if self.minimum == False:
+			print("Current parameter dictionary does not have the minimum required parameters, solve returning none")
+			return None
+		else:
+			res = self.solver_dict[self.solver_name].solve(self.objective_function, kwargs=self.solver_params_dict[self.solver_name])
+			return res
