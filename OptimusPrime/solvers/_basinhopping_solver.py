@@ -10,8 +10,8 @@ class BasinhoppingSolver(BaseSolver):
 		self.diff=[]
 		self.score=[]
 
-	def solve(self, fun, x0, kwargs):
-		return basinhopping(fun, x0, **kwargs)
+	def solve(self, fun, kwargs):
+		return basinhopping(fun, **kwargs)
 
 	def callback(self, xk, f, accept):
 		self.log_intermediate_data(xk, f, accept)

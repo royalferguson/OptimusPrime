@@ -15,7 +15,7 @@ class Optimus():
 		self.solver_params_dict = copy.deepcopy(cfg.default_solver_params_dict)
 		self.solver_name='basinhopping'
 		self.objective_function = None
-		self.x0 = None
+		#self.x0 = None
 		#self.bounds = None
 
 	def set_solver(self, name):
@@ -35,12 +35,13 @@ class Optimus():
 	def return_solver_params(self,name):
 		return self.solver_params_dict[name]
 
+	"""
 	def set_starting_point(self, x):
 		self.x0 = x
-
+	
 	def set_bounds(self, b):
 		self.bounds = b
-
+	"""	
 	def solve(self):
-		res = self.solver_dict[self.solver_name].solve(self.objective_function, x0=self.x0, kwargs=self.solver_params_dict[self.solver_name])
+		res = self.solver_dict[self.solver_name].solve(self.objective_function, kwargs=self.solver_params_dict[self.solver_name])
 		return res

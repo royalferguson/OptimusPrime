@@ -36,7 +36,6 @@ def get_commandline_args():
 
 def main(algo_wrapper, args, kwargs):
 	print('Optimize using: ' + args.solver)
-	print('x0: ', algo_wrapper.x0)
 	print("args: ", args)
 	print("kwargs", kwargs)
 

@@ -9,7 +9,7 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 		def __init__ (self):
 
 			# Use this when you wish to provide the initial position (x0)
-			super().__init__(rastrigin, x0 = utils.get_random_x0(10,-5.12, 5.12))
+			super().__init__(rastrigin)
 
 			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
 			# super().__init__(rastrigin)
@@ -28,6 +28,7 @@ if __name__ == '__main__':
 			return
 
 		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
 		'niter':2,
 		'T': 0.2,
 		'stepsize':0.65,
@@ -45,6 +46,7 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
 		'dimensions':10,
 		'bounds': np.full((10,2), (-5.12, 5.12)),
 		'maxiter':100,
@@ -62,6 +64,7 @@ if __name__ == '__main__':
 			print("custom callback for differential_evolution")
 			return
 		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
 		'bounds':np.full((10,2), (-5.12, 5.12)),
 		'strategy': 'best2exp',
 		'maxiter':5,
