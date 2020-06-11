@@ -38,6 +38,9 @@ class Optimus():
 		elif name == 'differential_evolution':
 			if 'bounds' in kwargs:
 				self.minimum = True
+		elif name == 'GlobalBestPSO':
+			if 'bounds' in kwargs or 'x0' in kwargs or 'dimensions' in kwargs:
+				self.minimum = True
 		return
 
 	def update_solver_params(self, name, kwargs):

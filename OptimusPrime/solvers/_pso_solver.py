@@ -49,7 +49,7 @@ class ParticleSwarmSolver(BaseSolver):
 			dimensions = len(x0)
 		elif bounds is not None:
 			dimensions = len(bounds[0])
-		else:
+		elif dimensions is None:
 			dimensions = 2
 
 		# PSO uses multiple particles - each must have a starting point

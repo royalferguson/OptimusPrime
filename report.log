@@ -16,3 +16,16 @@
 2020-06-11 23:05:19,389 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
 2020-06-11 23:05:19,733 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 84.57617076041234, best pos: [ 2.95138899 -2.12005475  0.89476401 -1.03555873 -1.31532005 -2.10323446
  -0.42124108 -2.85289351 -1.81680929  0.94554899]
+2020-06-12 01:01:50,951 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-12 01:01:51,296 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 74.26040982929685, best pos: [-0.86034016 -0.79003026  0.8787498  -3.11642077  1.33588531  1.23608047
+  0.86834084  0.90013915  2.05039809 -0.80972827]
+2020-06-12 01:02:17,123 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-12 01:02:17,446 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 2.4600028480974245, best pos: [0.10193269 0.04874871]
+2020-06-12 01:02:32,282 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-12 01:02:32,610 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 2.590249462130135, best pos: [1.00693545 1.04882135]
+2020-06-12 01:03:12,389 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-12 01:03:12,721 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 60.96298329142852, best pos: [0.02908431 0.00473073 1.57384085 0.09419646 0.0899835  1.15687959
+ 0.82133162 1.69635763 0.88163157 1.94713105]
+2020-06-12 01:03:25,311 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
+2020-06-12 01:03:25,658 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 143.51710023593208, best pos: [ 1.6867992   3.0203021  -2.03671316 -2.70146049 -3.30407643  4.85932757
+ -0.96558218 -1.9036585  -4.93128198 -2.92867045]
