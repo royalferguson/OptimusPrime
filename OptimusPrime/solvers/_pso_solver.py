@@ -54,7 +54,7 @@ class ParticleSwarmSolver(BaseSolver):
 
 		# PSO uses multiple particles - each must have a starting point
 		# if x0 does not contain one for each particle - then generate a random point for it.
-		# Partial 
+		# 
 		if x0 is not None:
 			x0 = np.asarray(x0)
 			if x0.ndim == 1 or x0.shape[1] != n_particles:

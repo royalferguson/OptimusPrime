@@ -15,7 +15,7 @@ class Optimus():
 		self.solver_name='basinhopping'
 		self.objective_function = None
 		self.x0 = None
-		self.bounds = None
+		#self.bounds = None
 
 	def set_solver(self, name):
 		self.solver_name = name

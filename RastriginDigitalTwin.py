@@ -15,7 +15,7 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 			# super().__init__(rastrigin)
 
 		def optimize(self, args, **kwargs):
-			return super().optimize(args, **kwargs)
+			return super().optimize(args, kwargs)
 
 if __name__ == '__main__':
 	args = cfg.get_commandline_args()
@@ -59,8 +59,8 @@ if __name__ == '__main__':
 		}
 
 	if args.trace:
-		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, **kwargs)
+		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, kwargs)
 	else:
-		cfg.main(RastriginDigitalTwin(), args, **kwargs)
+		cfg.main(RastriginDigitalTwin(), args, kwargs)
 
 
