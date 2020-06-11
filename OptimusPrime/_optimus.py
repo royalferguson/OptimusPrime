@@ -7,7 +7,8 @@ class Optimus():
 
 	solver_dict={
 	'basinhopping'  :  BasinhoppingSolver(),
-	'GlobalBestPSO'	:  ParticleSwarmSolver()
+	'GlobalBestPSO'	:  ParticleSwarmSolver(), 
+	'differential_evolution' : DifferentialEvolutionSolver()
 	}
 
 	def __init__(self):
