@@ -10,7 +10,7 @@ class BasinhoppingSolver(BaseSolver):
 		self.diff=[]
 		self.score=[]
 
-	def solve(self, fun, x0, **kwargs):
+	def solve(self, fun, x0, kwargs):
 		return basinhopping(fun, x0, **kwargs)
 
 	def callback(self, xk, f, accept):
