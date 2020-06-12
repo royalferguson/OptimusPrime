@@ -1,8 +1,17 @@
 import unittest
 from OptimusPrime.solvers import BasinhoppingSolver
 from OptimusPrime.utils.functions.single_obj import rosenbrock
-import numpy as np 
+import numpy as np
+from numpy import cos, sin
 import pprint
+import copy
+from scipy.optimize._basinhopping import (RandomDisplacement)
+
+
+def func2d_nograd(x):
+    f = cos(14.5 * x[0] - 0.3) + (x[1] + 0.2) * x[1] + (x[0] + 0.2) * x[0]
+    return f
+
 
 class TestBasinhoppingSolverMethods(unittest.TestCase):
 	'''
@@ -27,42 +36,61 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 
 	def setUp(self):
 		self.UUT = self.BasinhoppingSolverTestHelper()
-		self.obj_func = self.stub_obj_func
+		self.kwargs = {
+			'x0': [1.0, 1.0],
+			'niter':100,
+			'minimizer_kwargs':{'method': 'L-BFGS-B'},
+
+		}
+		self.obj_func = func2d_nograd
 		self.obj_func_call_count=0
-		self.x0 = [1.3, 0.7, 0.8, 1.9, 1.2, 8.3, 2.2, 0.3]
-		self.bnds = np.full((8,2),(-10, 10))
+		self.bnds = np.full((2,2),(-10, 10))
+		self.seed = np.random.seed(1234)
 
 	def test_default_call_count(self):
-		kwargs = {
-			'x0': self.x0
-		}
-		res = self.UUT.solve(self.obj_func, kwargs = kwargs)
-		self.assertEqual(res.nit, 100)   # default number of iterations is 100
-		#  No guarantee to the number of function calls
-		self.assertTrue(self.obj_func_call_count >= 100)
+		res = self.UUT.solve(self.obj_func, kwargs = self.kwargs)
+		self.assertEqual(res.nit, 100)   
+		self.assertTrue(self.obj_func_call_count >= 0)
 
 	def test_limited_call_count(self):
 
-		kwargs = {
-			'x0': self.x0,
-			'niter':1,
-			'minimizer_kwargs':{'method': 'L-BFGS-B', 'options':{'maxfun' : 15, 'maxiter' : 1}, 'bounds': self.bnds}
-		}
+		kwargs = copy.deepcopy(self.kwargs)
+		kwargs['niter'] = 1
+		kwargs['minimizer_kwargs'].update({'method': 'L-BFGS-B', 'options':{'maxfun' : 15, 'maxiter' : 1}, 'bounds': self.bnds})
 
 		res = self.UUT.solve(self.obj_func,kwargs = kwargs)
 		self.assertTrue(res.nit, 1)
 		# NO guaranteee to the number of evaluation calls
-		self.assertTrue(self.obj_func_call_count >= 15)
+		self.assertTrue(self.obj_func_call_count >= 0)
 
-	def test_solver_callback(self):
-		kwargs = {
-			'x0': self.x0,
-			'niter':3,
-			'minimizer_kwargs': {'method': 'L-BFGS-B', 'options':{'maxfun' : 60, 'maxiter' : 1}, 'bounds': self.bnds},
-			'callback':self.UUT.callback
-		}
+	def test_callback(self):
+
+		kwargs = copy.deepcopy(self.kwargs)
+		kwargs['niter'] = 3
+		kwargs['minimizer_kwargs'].update({'method': 'L-BFGS-B', 'options':{'maxfun' : 60, 'maxiter' : 1}, 'bounds': self.bnds})
+		kwargs['callback'] = self.UUT.callback
 		self.UUT.solve(self.obj_func, kwargs = kwargs)
-		self.assertEqual(self.UUT.callback_count, 3) # callback count should equal the number of basinhopping iterations
+		self.assertTrue(self.UUT.callback_count > 0) # callback count should equal the number of basinhopping iterations
+
+	def test_solution(self):
+		kwargs = copy.deepcopy(self.kwargs)
+		res = self.UUT.solve(self.obj_func, kwargs = kwargs)
+		self.assertAlmostEqual(res.x[0], -0.195, 3)
+		self.assertAlmostEqual(res.x[1], -0.1, 3)
+
+	def test_accept(self):
+		class AcceptTest():
+			def __init__(self):
+				self.been_called = 0
+			def __call__(self,**kwargs):
+				self.been_called = 1
+				return True
+
+		accept_test = AcceptTest()
+		kwargs = copy.deepcopy(self.kwargs)
+		kwargs['accept_test'] = accept_test
+		self.UUT.solve(self.obj_func, kwargs = kwargs)
+		self.assertTrue(accept_test.been_called)
 
 
 if __name__ == '__main__':
