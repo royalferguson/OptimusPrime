@@ -48,7 +48,7 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 		self.obj_func_call_count=0
 		self.limit = True
 		res = self.UUT.solve(self.obj_func,self.kwargs)
-		self.assertTrue(self.obj_func_call_count > 0)
+		self.assertTrue(self.obj_func_call_count == 100)
 
 
 	def test_solution(self):
