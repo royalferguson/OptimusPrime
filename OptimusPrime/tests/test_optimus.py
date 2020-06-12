@@ -30,7 +30,7 @@ class TestOptimusMethods(unittest.TestCase):
 	def test_configure_solver_params(self):
 		# Verify that changing the optimus parameter dictionary doesn't change the default dictionary
 		self.assertTrue(self.UUT.solver_params_dict.get('GlobalBestPSO') == cfg.default_solver_params_dict.get('GlobalBestPSO'))
-		self.UUT.update_solver_params('GlobalBestPSO', {'maxiter' : 20000, 'n_particles' : 100, 'options' : {'c1': 1.4, 'c2': 2.0, 'w' : 0.9}} )
+		self.UUT.update_solver_params('GlobalBestPSO', {'dimensions': 2 ,'maxiter' : 20000, 'n_particles' : 100, 'options' : {'c1': 1.4, 'c2': 2.0, 'w' : 0.9}} )
 		self.assertFalse(self.UUT.solver_params_dict.get('GlobalBestPSO') == cfg.default_solver_params_dict.get('GlobalBestPSO'))
 
 	def test_flipping_objective_function(self):

@@ -9,7 +9,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 		pass
 
 	def solve(self, fun, kwargs):
-		if kwargs['x0']:
+		if 'x0' in kwargs:
 			m=len( kwargs['x0']) * kwargs['popsize']
 			if np.shape( kwargs['x0']) != (m, len( kwargs['x0'])):
 				#  If x0 does not have shape of (m, len(x0)) - revert to latinhypercube
