@@ -6,8 +6,13 @@ import copy
 class Optimus():
 
 	solver_dict={
+	'Nelder-Mead' : MinimizeSolver('Nelder-Mead'),
+	'L-BFGS-B' : Minimizer(Solver('L-BFGS-B')),
+	'Powell' : Minimizer(Solver('Powell')),
+	'COBYLA' : Minimizer(Solver('COBYLA')),
 	'basinhopping'  :  BasinhoppingSolver(),
 	'GlobalBestPSO'	:  ParticleSwarmSolver(), 
+	'dual_annealing' : DualAnnealingSolver(),
 	'differential_evolution' : DifferentialEvolutionSolver()
 	}
 

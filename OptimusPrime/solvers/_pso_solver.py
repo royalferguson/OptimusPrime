@@ -82,6 +82,10 @@ class ParticleSwarmSolver(BaseSolver):
 	def solve(self, fun, kwargs):
 		return self.pso_global_optimize(fun, **kwargs)
 
+	# Q  Why not  solve(self, *args, kwargs)
+	#                  return(self.pso_global_optimize(*args, **kwargs))
+
+
 	def log_data(self, xk, f):
 		self.log_data_to_pickle(xk,f)
 

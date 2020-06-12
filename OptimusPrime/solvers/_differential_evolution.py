@@ -15,7 +15,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 				#  If x0 does not have shape of (m, len(x0)) - revert to latinhypercube
 				#  Where m is the #population * the number of decision variables
 				 kwargs['x0']='latinhypercube'
-		kwargs['init']  =  kwargs.pop('x0')
+			kwargs['init']  =  kwargs.pop('x0')
 		return differential_evolution(fun, **kwargs)
 
 
