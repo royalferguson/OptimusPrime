@@ -11,41 +11,58 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 	'''
 
 	def stub_obj_func(self,x):
+		if self.limit and self.obj_func_call_count == 100:
+			return 0
 		r = rosenbrock(x)
 		self.obj_func_call_count += 1
 		return r
 
-	class ParticleSwarmSolverTestHelper(BasinhoppingSolver):
+	class ParticleSwarmSolverTestHelper(ParticleSwarmSolver):
 		def __init__(self):
 			super().__init__()
 			self.callback_count=0
 
-		def callback(self,xk, f, accept)
+		def callback(self,xk, f, accept):
 			super().callback(xk, f, accept)
 			self.callback_count += 1
 
 	def setUp(self):
 		self.UUT = self.ParticleSwarmSolverTestHelper()
+		self.kwargs = {
+			'n_particles': 10,
+			'options':{'c1': 0.5, 'c2': 0.3, 'w':0.9},
+			'dimensions':2,
+			'bounds':np.full((2,2),(-10, 10)),
+			'x0': np.full((2,2), (0,0))
+		}
 		self.obj_func = self.stub_obj_func
 		self.obj_func_call_count=0
-		self.x0 = [1.3, 0.7, 0.8, 1.9, 1.2, 8.3, 2.2, 0.3]
-		self.bnds = np.full((8,2),(-10, 10))
+		self.limit = False
 
 	def test_default_call_count(self):
-		res = self.UUT.solve(self.obj_func, x0=self.x0, bounds=self.bnds)
-		self.assetEqual(res.nit, 100)   # default number of iterations is 100
-		#  No guarantee to the number of function calls
-		self.assertEqual(self.obj_func_call_count, 10000)
+		self.limit = False
+		res = self.UUT.solve(self.obj_func,self.kwargs)
+		self.assertTrue(self.obj_func_call_count > 0)
 
 	def test_limited_call_count(self):
-		res = self.UUT.solve(self.obj_func, x0=self.x0, bounds = self.bnds, maxiter=2, n_particles = 10 )
-		self.assertEqual(res.obj_func_call_count, 20)
+		self.obj_func_call_count=0
+		self.limit = True
+		res = self.UUT.solve(self.obj_func,self.kwargs)
+		self.assertTrue(self.obj_func_call_count > 0)
 
 
-	def test_solver_callback(self):
-		res = self.UUT.solve(self.obj_func, x0=self.x0, bounds = self.bnds, maxiter=2, n_particles = 10 )
-		self.assertEqual(res.obj_func_call_count, 20)
+	def test_solution(self):
+		self.obj_func_call_count=0
+		self.limit = False
+		res = self.UUT.solve(self.obj_func,self.kwargs)
+		self.assertAlmostEqual(res[0],0,3)
 
+	def test_solution_variables(self):
+		self.obj_func_call_count=0
+		self.limit = False
+		res = self.UUT.solve(self.obj_func,self.kwargs)
+		self.assertAlmostEqual(res[1][0],1,3)
+		self.assertAlmostEqual(res[1][1],1,3)
 
 if __name__ == '__main__':
 	unittest.main()

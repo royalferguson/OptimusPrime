@@ -66,9 +66,6 @@ class ParticleSwarmSolver(BaseSolver):
 					bounds = np.transpose(np.full((dimensions,2), (-10000, 10000)))
 				x0 = np.vstack( (x0,r))
 		res= {}
-		print("bounds: ", bounds)
-		print("x0: ", x0)
-		print("dimensions: ", dimensions)
 		if x0 is None and bounds is None:
 			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
 		else:
@@ -76,7 +73,6 @@ class ParticleSwarmSolver(BaseSolver):
 		
 		objective_func = pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check)
 		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
-		print(best)
 		return best
 
 	def solve(self, fun, kwargs):

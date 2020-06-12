@@ -1,7 +1,7 @@
 import unittest
 from OptimusPrime import Optimus
-from OptimusPrime.solver import BaseSolver
-import OptimusPrime.configuration as configuration
+from OptimusPrime.solvers import BaseSolver
+import OptimusPrime.configuration as cfg
 import numpy as np 
 
 
@@ -23,7 +23,7 @@ class TestOptimusMethods(unittest.TestCase):
 
 		# verify dictionary contains solver objects
 		for key, solver in self.UUT.solver_dict.items():
-			self.assertIs Instance(solver, BaseSolver)
+			self.assertIsInstance(solver, BaseSolver)
 			solve_op = getattr(solver, "solve", None)
 			self.assertTrue(callable(solve_op))
 
