@@ -80,6 +80,108 @@ if __name__ == '__main__':
 		'workers':5
 		}
 
+	elif args.solver == 'dual_annealing':
+		def callback_(x,f,context):
+			print("custom callback for dual_annealing")
+			return
+		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'bounds':np.full((10,2), (-5.12, 5.12)),
+		'initial_temp': 0.5,
+		'maxiter':5,
+		'callback':callback_,
+		'restart_temp_ratio':0.5,
+		'visit':2,
+		'accept':-6.0,
+		'maxfun': 1000,
+		'no_local_search': False,
+		'seed': 20,
+		}
+
+	elif args.solver == 'nelder-mead':
+		def callback_(x):
+			print("custom callback for nelder-mead")
+			return
+		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'method': 'nelder-mead',
+		'tol': 0.1,
+		'callback':callback_,
+		'options': {
+			'disp':0,
+			'maxiter':2,
+			'maxfev':1000,
+			'return_all':False,
+			'xatol':0.1, # Currently doesn't work
+			'fatol':0.1, # Currently doesn't work
+			'adaptive':True
+		}
+
+		}
+
+	elif args.solver == 'powell':
+		def callback_(x):
+			print("custom callback for powell")
+			return
+		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'method': 'powell',
+		'tol': 0.1,
+		'bounds': np.full((10,2), (-5.12, 5.12)),
+		'callback':callback_,
+		'options': {
+			'disp':0,
+			'maxiter':2,
+			'maxfev':1000,
+			'return_all':False,
+			'xtol':0.1, 
+			'ftol':0.1
+		}
+
+		}
+
+	elif args.solver == 'cobyla':
+		def callback_(x):
+			print("custom callback for cobyla")
+			return
+		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'method': 'cobyla',
+		'callback':callback_,
+		'options': {
+			'disp':0,
+			'maxiter':1000,
+			'rhoberg':2,
+			'catol':0.0001,
+			'tol':0.0001
+		}
+
+		}
+
+	elif args.solver == 'l-bfgs-b':
+		def callback_(x):
+			print("custom callback for l-bfgs-b")
+			return
+		kwargs = {
+		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'method': 'l-bfgs-b',
+		'jac':None,
+		'bounds': np.full((10,2), (-5.12, 5.12)),
+		'callback':callback_,
+		'options': {
+			'disp':0,
+			'maxcor':100,
+			'ftol':0.0001,
+			'gtol':0.0001,
+			'eps':0.1,
+			'maxfun':1000,
+			'maxiter':2,
+			'maxls':10,
+			'finite_diff_rel_step':None
+		}
+
+		}
+
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, kwargs)
 	else:

@@ -7,7 +7,7 @@ default_solver_params_dict = {
 	'nelder-mead' : {},
 	'l-bfgs-b' : {},
 	'powell' : {},
-	'COBYLA' : {},
+	'cobyla' : {},
 	'basinhopping' : {},
 	'differential_evolution' : {},
 	'dual_annealing' : {},

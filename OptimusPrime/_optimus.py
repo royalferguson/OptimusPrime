@@ -1,15 +1,15 @@
 import OptimusPrime.configuration as cfg
-from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver, DifferentialEvolutionSolver
+from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver, DifferentialEvolutionSolver, DualAnnealingSolver, MinimizeSolver
 import numpy as np 
 import copy
 
 class Optimus():
 
 	solver_dict={
-	'Nelder-Mead' : MinimizeSolver('Nelder-Mead'),
-	'L-BFGS-B' : Minimizer(Solver('L-BFGS-B')),
-	'Powell' : Minimizer(Solver('Powell')),
-	'COBYLA' : Minimizer(Solver('COBYLA')),
+	'nelder-mead' : MinimizeSolver(),
+	'l-bfgs-b' : MinimizeSolver(),
+	'powell' : MinimizeSolver(),
+	'cobyla' : MinimizeSolver(),
 	'basinhopping'  :  BasinhoppingSolver(),
 	'GlobalBestPSO'	:  ParticleSwarmSolver(), 
 	'dual_annealing' : DualAnnealingSolver(),
@@ -46,11 +46,16 @@ class Optimus():
 		elif name == 'GlobalBestPSO':
 			if 'bounds' in kwargs or 'x0' in kwargs or 'dimensions' in kwargs:
 				self.minimum = True
+		elif name == 'nelder-mead' or name == 'powell' or name == 'cobyla' or name == 'l-bfgs-b':
+			if'x0' in kwargs:
+				self.minimum = True
+		elif name == 'dual_annealing':
+			if 'bounds' in kwargs:
+				self.minimum = True 
 		return
 
 	def update_solver_params(self, name, kwargs):
 		self.check_minimum(name,kwargs)
-
 		if self.minimum == False:
 			print("Current parameter dictionary does not have the minimum required parameters")
 
