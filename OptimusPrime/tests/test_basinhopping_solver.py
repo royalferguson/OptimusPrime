@@ -39,8 +39,7 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 		self.kwargs = {
 			'x0': [1.0, 1.0],
 			'niter':100,
-			'minimizer_kwargs':{'method': 'L-BFGS-B'},
-
+			'minimizer_kwargs':{'method': 'L-BFGS-B'}
 		}
 		self.obj_func = func2d_nograd
 		self.obj_func_call_count=0

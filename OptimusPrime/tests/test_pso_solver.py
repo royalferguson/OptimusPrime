@@ -50,6 +50,10 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 		res = self.UUT.solve(self.obj_func,self.kwargs)
 		self.assertTrue(self.obj_func_call_count == 100)
 
+	def test_solver_callback(self):
+		self.UUT.solve(self.obj_func, self.kwargs)
+		self.assetEqual(self.UUT.callback_count=20)
+
 
 	def test_solution(self):
 		self.obj_func_call_count=0
