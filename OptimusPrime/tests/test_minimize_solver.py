@@ -30,9 +30,9 @@ class MinimizeSolverMethods(unittest.TestCase):
 		self.UUT = self.MinimizeSolverTestHelper()
 		self.kwargs = {
 			'method': 'l-bfgs-b',
-			'tol':0.1,
-			'bounds':np.full((2,2),(-10, 10)), # will only work with some of them
-			'x0': np.full(2,0)
+			'tol':1e-7,
+			'bounds':np.full((100,2),(-10, 10)), # will only work with some of them
+			'x0': np.full(100,0)
 		}
 		self.callback_count=0
 		self.obj_func = self.stub_obj_func
@@ -40,6 +40,7 @@ class MinimizeSolverMethods(unittest.TestCase):
 
 	def test_solver_callback(self):
 		kwargs = copy.deepcopy(self.kwargs)
+		kwargs['options'] = {'maxiter':1}
 		kwargs['callback'] = self.UUT.callback_
 		res = self.UUT.solve(self.obj_func,kwargs)
-		self.assertTrue(self.obj_func_call_count > 0)
+		self.assertTrue(self.UUT.callback_count > 0)
