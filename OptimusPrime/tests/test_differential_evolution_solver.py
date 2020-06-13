@@ -64,6 +64,17 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 			self.assertAlmostEqual(res.x[i],1,3)
 
 	
+	def test_x0_popsize(self):
+		try:
+			#This should fail and the except should be called.
+			kwargs = copy.deepcopy(self.kwargs)
+			kwargs['x0'] = np.full(8,0.12)
+			res = self.UUT.solve(self.obj_func, kwargs = kwargs)
+			assert False
+		except:
+			assert True
+
+	
 
 if __name__ == '__main__':
 	unittest.main()
