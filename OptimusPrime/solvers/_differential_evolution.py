@@ -8,7 +8,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 	def __init__(self):
 		pass
 
-	def solve(self, fun, kwargs):
+	def solve(self, fun, maxiter = 1000, **kwargs):
 		if 'x0' in kwargs:
 			m=len( kwargs['x0']) * kwargs['popsize']
 			if np.shape( kwargs['x0']) != (m, len( kwargs['x0'])):
@@ -16,6 +16,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 				#  Where m is the #population * the number of decision variables
 				 kwargs['x0']='latinhypercube'
 			kwargs['init']  =  kwargs.pop('x0')
+		kwargs['maxiter'] = maxiter
 		return differential_evolution(fun, **kwargs)
 
 

@@ -10,8 +10,10 @@ class BasinhoppingSolver(BaseSolver):
 		super().__init__()
 		self.intermitentData = pd.DataFrame()
 
-	def solve(self, fun, bounds=None, maxiter=1000, **kwargs):
-		kwargs.update({'callback' : self.log_data})
+	def solve(self, fun, niter=1000, **kwargs):
+		kwargs.update({'niter' : niter})
+		if 'callback' not in kwargs:
+			kwargs.update({'callback' : self.log_data})
 		return basinhopping(fun, **kwargs)
 
 	_='''

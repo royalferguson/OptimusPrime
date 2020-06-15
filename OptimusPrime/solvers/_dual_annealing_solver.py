@@ -12,7 +12,8 @@ class DualAnnealingSolver(BaseSolver):
 
 	def solve(self, fun, maxiter=1000, **kwargs):
 		kwargs.update({'maxiter' : maxiter})
-		kwargs.update({'callback' : self.log_data})
+		if 'callback' not in kwargs:
+			kwargs.update({'callback' : self.log_data})
 		return dual_annealing(fun, **kwargs)
 
 	_='''
