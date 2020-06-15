@@ -15,18 +15,24 @@ class BasinhoppingSolver(BaseSolver):
 		if 'tol' in kwargs:
 			self.tol = kwargs.pop('tol')
 		kwargs.update({'niter' : niter})
-		kwargs.update({'callback' : self.log_data})
+		kwargs.update({'callback' : self.callback})
 		return basinhopping(fun, **kwargs)
 
-	_='''
 	def callback(self, xk, f, accept):
-		self.log_intermediate_data(xk, f, accept)
-	'''
+		self.log_data(xk, f, accept)
+		if self.check_tolerance():
+			return True
+		return False
+
+	def check_tolerance(self):
+		if self.tol is not None:
+			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
+				print("The last two entries are:" , self.intermitentData.tail(2))
+				return True
+		return False
+		
 
 	def log_data(self, x, f, accept):
 		s = pd.Series([x,f], index=['dv','score'])
 		self.intermitentData=self.intermitentData.append(s, ignore_index=True)
-		if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
-			print("The last two entries are:" , self.intermitentData.tail(2))
-			return True
 

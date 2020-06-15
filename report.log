@@ -62,3 +62,11 @@
 2020-06-15 20:58:34,078 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 4.631801242347763e-25, best pos: [1. 1.]
 2020-06-15 20:58:34,080 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
 2020-06-15 20:58:34,481 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 6.21400641487442e-17, best pos: [0.99999999 0.99999998]
+2020-06-15 21:19:39,874 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
+2020-06-15 21:19:40,275 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 1.0034154914382489e-24, best pos: [1. 1.]
+2020-06-15 21:19:40,284 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
+2020-06-15 21:19:40,527 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.0, best pos: [0.42057901 0.22262562]
+2020-06-15 21:19:40,527 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
+2020-06-15 21:19:40,917 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 4.631801242347763e-25, best pos: [1. 1.]
+2020-06-15 21:19:40,919 - pyswarms.single.global_best - INFO - Optimize for 1000 iters with {'c1': 0.5, 'c2': 0.3, 'w': 0.9}
+2020-06-15 21:19:41,321 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 6.21400641487442e-17, best pos: [0.99999999 0.99999998]
