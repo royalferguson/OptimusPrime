@@ -10,6 +10,7 @@ class BasinhoppingSolver(BaseSolver):
 		super().__init__()
 		self.tol = 0
 		self.intermitentData = pd.DataFrame()
+		self.callback_count = 0
 
 	def solve(self, fun, niter=1000, **kwargs):
 		if 'tol' in kwargs:
@@ -24,6 +25,7 @@ class BasinhoppingSolver(BaseSolver):
 	'''
 
 	def log_data(self, x, f, accept):
+		self.callback_count += 1
 		s = pd.Series([x,f], index=['dv','score'])
 		self.intermitentData=self.intermitentData.append(s, ignore_index=True)
 		if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:

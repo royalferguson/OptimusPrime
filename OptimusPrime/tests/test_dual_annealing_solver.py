@@ -21,11 +21,9 @@ class TestDualAnnealingSolverMethods(unittest.TestCase):
 	class DualAnnealingSolverTestHelper(DualAnnealingSolver):
 		def __init__(self):
 			super().__init__()
-			self.callback_count=0
 
 		def callback(self,xk, f, accept):
 			super().log_data(xk, f, accept)
-			self.callback_count += 1
 
 
 	def setUp(self):
