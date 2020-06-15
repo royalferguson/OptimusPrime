@@ -2,23 +2,24 @@ from OptimusPrime.solvers import BaseSolver
 from scipy.optimize import dual_annealing
 import numpy as np 
 import seaborn as sb 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import pandas as pd
 
 class DualAnnealingSolver(BaseSolver):
 	def __init__(self):
-		self.intermitentData=[]
-		self.diff=[]
-		self.score=[]
+		super().__init__()
+		self.intermitentData = pd.DataFrame()
 
-	def solve(self, fun, kwargs):
+	def solve(self, fun, maxiter=1000, **kwargs):
+		kwargs.update({'maxiter' : maxiter})
+		kwargs.update({'callback' : self.log_data})
 		return dual_annealing(fun, **kwargs)
 
+	_='''
 	def callback(self, xk, f, accept):
-		self.log_intermediate_data(xk, f, accept)
+		self.log_data(xk, f, accept)
+	'''
 
-	def log_intermediate_data(self, xk, f, accept):
-		i = len(self.intermitentData)
-		if i > 0:
-			self.diff.append(np.absolute(np.array(self.intermitentData)[i-1] - np.array(xk)))
-		self.intermitentData.append(xk.tolist())
-		self.score.append(f)
+	def log_data(self, x, f, accept):
+		s = pd.Series([x,f], index=['dv','score'])
+		self.intermitentData=self.intermitentData.append(s, ignore_index=True)

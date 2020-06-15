@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 class MinimizeSolver(BaseSolver):
 	
-	def solve(self, fun, kwargs):
+	def solve(self, fun, maxiter=1000, **kwargs):
 		return minimize(fun, **kwargs)
 
 	def callback_(self, xk, f):

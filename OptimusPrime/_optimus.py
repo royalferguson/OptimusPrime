@@ -72,10 +72,10 @@ class Optimus():
 		self.bounds = b
 	"""	
 	def solve(self):
-
+		kwargs = self.solver_params_dict[self.solver_name]
 		if self.minimum == False:
 			print("Current parameter dictionary does not have the minimum required specification.  Optimus.solve() returning none")
 			return None
 		else:
-			res = self.solver_dict[self.solver_name].solve(self.objective_function, kwargs=self.solver_params_dict[self.solver_name])
+			res = self.solver_dict[self.solver_name].solve(self.objective_function, **kwargs)
 			return res

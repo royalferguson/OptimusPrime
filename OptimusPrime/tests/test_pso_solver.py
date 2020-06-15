@@ -20,11 +20,7 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 	class ParticleSwarmSolverTestHelper(ParticleSwarmSolver):
 		def __init__(self):
 			super().__init__()
-			self.callback_count=0
 
-		def callback(self,xk, f, accept):
-			super().callback(xk, f, accept)
-			self.callback_count += 1
 
 	def setUp(self):
 		self.UUT = self.ParticleSwarmSolverTestHelper()

@@ -95,7 +95,7 @@ if __name__ == '__main__':
 		'accept':-6.0,
 		'maxfun': 1000,
 		'no_local_search': False,
-		'seed': 20,
+		'seed': 20
 		}
 
 	elif args.solver == 'nelder-mead':
