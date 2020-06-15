@@ -8,12 +8,14 @@ import pandas as pd
 class BasinhoppingSolver(BaseSolver):
 	def __init__(self):
 		super().__init__()
+		self.tol = 0
 		self.intermitentData = pd.DataFrame()
 
 	def solve(self, fun, niter=1000, **kwargs):
+		if 'tol' in kwargs:
+			self.tol = kwargs.pop('tol')
 		kwargs.update({'niter' : niter})
-		if 'callback' not in kwargs:
-			kwargs.update({'callback' : self.log_data})
+		kwargs.update({'callback' : self.log_data})
 		return basinhopping(fun, **kwargs)
 
 	_='''
@@ -23,5 +25,8 @@ class BasinhoppingSolver(BaseSolver):
 
 	def log_data(self, x, f, accept):
 		s = pd.Series([x,f], index=['dv','score'])
-		print("===========================================", s)
 		self.intermitentData=self.intermitentData.append(s, ignore_index=True)
+		if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
+			print("The last two entries are:" , self.intermitentData.tail(2))
+			return True
+

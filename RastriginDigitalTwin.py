@@ -37,10 +37,10 @@ if __name__ == '__main__':
 		},
 		'interval':2,
 		'disp':1,
+		'tol': 10,
 		'niter_success':2,
 		'accept_test': None,
 		'take_step': None,
-		'callback': callback_,
 		'seed': 20
 		}
 
@@ -87,9 +87,9 @@ if __name__ == '__main__':
 		kwargs = {
 		'x0': utils.get_random_x0(10,-5.12, 5.12),
 		'bounds':np.full((10,2), (-5.12, 5.12)),
+		'tol': 10,
 		'initial_temp': 0.5,
 		'maxiter':5,
-		'callback':callback_,
 		'restart_temp_ratio':0.5,
 		'visit':2,
 		'accept':-6.0,
