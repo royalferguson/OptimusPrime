@@ -30,7 +30,7 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 			self.callback_count=0
 
 		def callback(self,xk, f, accept):
-			super().callback(xk, f, accept)
+			super().log_data(xk, f, accept)
 			self.callback_count += 1
 
 
@@ -47,7 +47,7 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 		self.seed = np.random.seed(1234)
 
 	def test_default_call_count(self):
-		res = self.UUT.solve(self.obj_func, kwargs = self.kwargs)
+		res = self.UUT.solve(self.obj_func, **self.kwargs)
 		self.assertEqual(res.nit, 100)   
 		self.assertTrue(self.obj_func_call_count >= 0)
 
@@ -57,7 +57,7 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 		kwargs['niter'] = 1
 		kwargs['minimizer_kwargs'].update({'method': 'L-BFGS-B', 'options':{'maxfun' : 15, 'maxiter' : 1}, 'bounds': self.bnds})
 
-		res = self.UUT.solve(self.obj_func,kwargs = kwargs)
+		res = self.UUT.solve(self.obj_func,**kwargs)
 		self.assertTrue(res.nit, 1)
 		# NO guaranteee to the number of evaluation calls
 		self.assertTrue(self.obj_func_call_count >= 0)
@@ -68,12 +68,12 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 		kwargs['niter'] = 3
 		kwargs['minimizer_kwargs'].update({'method': 'L-BFGS-B', 'options':{'maxfun' : 60, 'maxiter' : 1}, 'bounds': self.bnds})
 		kwargs['callback'] = self.UUT.callback
-		self.UUT.solve(self.obj_func, kwargs = kwargs)
+		self.UUT.solve(self.obj_func, **kwargs)
 		self.assertTrue(self.UUT.callback_count > 0) # callback count should equal the number of basinhopping iterations
 
 	def test_solution(self):
 		kwargs = copy.deepcopy(self.kwargs)
-		res = self.UUT.solve(self.obj_func, kwargs = kwargs)
+		res = self.UUT.solve(self.obj_func, **kwargs)
 		self.assertAlmostEqual(res.x[0], -0.195, 3)
 		self.assertAlmostEqual(res.x[1], -0.1, 3)
 
@@ -88,7 +88,7 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 		accept_test = AcceptTest()
 		kwargs = copy.deepcopy(self.kwargs)
 		kwargs['accept_test'] = accept_test
-		self.UUT.solve(self.obj_func, kwargs = kwargs)
+		self.UUT.solve(self.obj_func, **kwargs)
 		self.assertTrue(accept_test.been_called)
 
 

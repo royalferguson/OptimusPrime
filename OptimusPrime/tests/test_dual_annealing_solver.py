@@ -24,7 +24,7 @@ class TestDualAnnealingSolverMethods(unittest.TestCase):
 			self.callback_count=0
 
 		def callback(self,xk, f, accept):
-			super().callback(xk, f, accept)
+			super().log_data(xk, f, accept)
 			self.callback_count += 1
 
 
@@ -40,14 +40,14 @@ class TestDualAnnealingSolverMethods(unittest.TestCase):
 		self.seed = np.random.seed(1234)
 
 	def test_default_call_count(self):
-		res = self.UUT.solve(self.obj_func, kwargs = self.kwargs)
+		res = self.UUT.solve(self.obj_func, **self.kwargs)
 		self.assertEqual(res.nit, 1000)   
 		self.assertTrue(self.obj_func_call_count >= 0)
 
 	def test_limited_call_count(self):
 		kwargs = copy.deepcopy(self.kwargs)
 		kwargs['maxiter'] = 1
-		res = self.UUT.solve(self.obj_func,kwargs = kwargs)
+		res = self.UUT.solve(self.obj_func, **kwargs)
 		self.assertTrue(res.nit, 1)
 		# NO guaranteee to the number of evaluation calls
 		self.assertTrue(self.obj_func_call_count >= 0)
@@ -56,18 +56,18 @@ class TestDualAnnealingSolverMethods(unittest.TestCase):
 		kwargs = copy.deepcopy(self.kwargs)
 		kwargs['maxiter'] = 3
 		kwargs['callback'] = self.UUT.callback
-		self.UUT.solve(self.obj_func, kwargs = kwargs)
+		self.UUT.solve(self.obj_func, **kwargs)
 		self.assertTrue(self.UUT.callback_count >= 1) # callback count should be at least 1, it is called for every minima found
 
 	def test_solution(self):
-		res = self.UUT.solve(self.obj_func, kwargs = self.kwargs)
+		res = self.UUT.solve(self.obj_func, **self.kwargs)
 		for i in range(8):
 			self.assertAlmostEqual(res.x[i],1,3)
 
 	def test_limited_function_evaluations(self):
 		kwargs = copy.deepcopy(self.kwargs)
 		kwargs['maxfun'] = 100
-		res = self.UUT.solve(self.obj_func,kwargs = kwargs)
+		res = self.UUT.solve(self.obj_func,**kwargs)
 		self.assertTrue(res.nfev, 100)
 
 	

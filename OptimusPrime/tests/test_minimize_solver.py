@@ -22,8 +22,7 @@ class MinimizeSolverMethods(unittest.TestCase):
 
 
 		def callback_(self,xk):
-			f = rosenbrock(xk)
-			super().callback_(xk,f)
+			super().callback_(xk)
 			self.callback_count += 1
 
 	def setUp(self):
@@ -42,5 +41,5 @@ class MinimizeSolverMethods(unittest.TestCase):
 		kwargs = copy.deepcopy(self.kwargs)
 		kwargs['options'] = {'maxiter':1}
 		kwargs['callback'] = self.UUT.callback_
-		res = self.UUT.solve(self.obj_func,kwargs)
+		res = self.UUT.solve(self.obj_func,**kwargs)
 		self.assertTrue(self.UUT.callback_count > 0)

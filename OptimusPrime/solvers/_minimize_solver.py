@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 class MinimizeSolver(BaseSolver):
 	
 	def solve(self, fun, maxiter=1000, **kwargs):
-		kwargs.update({'maxiter' : maxiter})
+		kwargs.update({'options' : {'maxiter': maxiter}})
 		if 'callback' not in kwargs:
 			kwargs['callback'] = self.callback_
 		self.fun = fun
