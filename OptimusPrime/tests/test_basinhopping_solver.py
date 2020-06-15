@@ -6,7 +6,7 @@ from numpy import cos, sin
 import pprint
 import copy
 from scipy.optimize._basinhopping import (RandomDisplacement)
-
+import pandas as pd
 
 def func2d_nograd(x):
     f = cos(14.5 * x[0] - 0.3) + (x[1] + 0.2) * x[1] + (x[0] + 0.2) * x[0]
@@ -27,10 +27,18 @@ class TestBasinhoppingSolverMethods(unittest.TestCase):
 	class BasinhoppingSolverTestHelper(BasinhoppingSolver):
 		def __init__(self):
 			super().__init__()
-
+			self.callback_count = 0
+		
 		def callback(self,xk, f, accept):
 			super().log_data(xk, f, accept)
 
+		def log_data(self, x, f, accept):
+			self.callback_count += 1
+			s = pd.Series([x,f], index=['dv','score'])
+			self.intermitentData=self.intermitentData.append(s, ignore_index=True)
+			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
+				print("The last two entries are:" , self.intermitentData.tail(2))
+				return True
 
 
 	def setUp(self):
