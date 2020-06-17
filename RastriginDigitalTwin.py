@@ -46,21 +46,13 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-<<<<<<< HEAD
 		'x0': utils.get_random_x0(10,-5.12, 5.12),
 		'dimensions':10,
 		'bounds': np.full((10,2), (-5.12, 5.12)),
 		'maxiter':100,
 		'tol' : 10,
 		'n_particles':200,
-=======
-		'x0': utils.get_random_x0(2,-5.12, 5.12),
-		'dimensions':2,
-		'bounds': np.full((2,2), (-5.12, 5.12)),
-		'maxiter':100000,
-		'tol':0.1,
-		'n_particles':2,
->>>>>>> fb638d1ae2b72e4cef3fc8546aed6d92ec1ddc1f
+
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.85},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : (1,2),
