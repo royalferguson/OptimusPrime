@@ -89,23 +89,22 @@ class ParticleSwarmSolver(BaseSolver):
 		
 		objective_func = self.pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check, log_best=self.log_best)
 		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
-		if self.stopped_at != 0:
-			print("Stopped early at position: ", self.stopped_at)
-			print("The best solution and the second to best are")
-			print(self.minsofar, self.best_solutions[-1])
+		print("Stopped early at position: ", self.stopped_at)
+		print("The best solution and the second to best are")
+		print(self.minsofar, self.best_solutions[-1])
 
-			print("=============================")
-			print("The last 50 best in runs are")
-			for i in range(50):
-				print(self.best_solutions[-(i+1)][2])
+		print("=============================")
+		print("The last 50 best in runs are")
+		for i in range(max(min(50,len(self.best_solutions)),50)):
+			print(self.best_solutions[-(i+1)][2])
 
-			print("=============================")
-			print("The last 50 solutions are")
-			for i in range(0,50*self.n_particles,self.n_particles):
-				stg = ""
-				for z in range(self.n_particles):
-					stg  = stg + " " + str(self.intermitentData[-(i+1+z)][2])
-				print(stg)
+		print("=============================")
+		print("The last 50 solutions are")
+		for i in range(0,max(min(50*self.n_particles,((len(self.intermitentData)/2)*len(self.best_solutions))),50),2):
+			stg = ""
+			for z in range(self.n_particles):
+				stg  = stg + " " + str(self.intermitentData[-(i+1+z)][2])
+			print(stg)
 
 		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[2]))
 		best = min(self.intermitentData, key=lambda x: x[2])
