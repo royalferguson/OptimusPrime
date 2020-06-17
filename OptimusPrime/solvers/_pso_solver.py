@@ -24,10 +24,12 @@ class ParticleSwarmSolver(BaseSolver):
 		self.tol=0
 		self.intermitentData = []
 		self.n_particles=0
+		self.minsofar = []
+		self.best_solutions = []
 		self.stopped_at = 0
 		self.particle_hit=[]
 
-	def pso_objective_function(self, func, log_cb=None, tol_cb=None):
+	def pso_objective_function(self, func, log_cb=None, tol_cb=None, log_best = None):
 
 		# means of creating a vectorized matrix - which PSO expects
 		#
@@ -44,6 +46,8 @@ class ParticleSwarmSolver(BaseSolver):
 					if log_cb:
 						log_cb(particle_num, particle_x, score)
 					j.append(score)
+				if log_best:
+					log_best(j)
 				return np.hstack(j)
 			return np.zeros(len(x))
 		return func_wrapper
@@ -83,16 +87,44 @@ class ParticleSwarmSolver(BaseSolver):
 			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0, **pso_kwargs)
 
 		
-		objective_func = self.pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check)
+		objective_func = self.pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check, log_best=self.log_best)
 		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
 		if self.stopped_at != 0:
 			print("Stopped early at position: ", self.stopped_at)
-			print("last 2*n_particle solutions")
-			for i in range(self.n_particles):
-				print(self.intermitentData[-(i+1)], self.intermitentData[-(i+1)-n_particles])
+			print("The best solution and the second to best are")
+			print(self.minsofar, self.best_solutions[-1])
+
+			print("=============================")
+			print("The last 50 best in runs are")
+			for i in range(50):
+				print(self.best_solutions[-(i+1)][2])
+
+			print("=============================")
+			print("The last 50 solutions are")
+			for i in range(0,50*self.n_particles,self.n_particles):
+				stg = ""
+				for z in range(self.n_particles):
+					stg  = stg + " " + str(self.intermitentData[-(i+1+z)][2])
+				print(stg)
+
 		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[2]))
 		best = min(self.intermitentData, key=lambda x: x[2])
 		return best
+
+	def log_best(self,arr):
+		best = min(arr)
+		for i in range(self.n_particles):
+			if best == self.intermitentData[-(i+1)][2]:
+				best = self.intermitentData[-(i+1)]
+				break
+		self.best_solutions.append(best)
+		if self.minsofar == []:
+			self.minsofar = best
+		if self.minsofar[2] > best[2]:
+			if abs(self.minsofar[2]-best[2]) < self.tol:
+				self.tol_hit = True
+			self.minsofar = best
+		return 
 
 	def solve(self, fun, **kwargs):
 		if 'tol' in kwargs:
@@ -113,15 +145,12 @@ class ParticleSwarmSolver(BaseSolver):
 		pass
 
 	def tolerance_check(self):
-		if len(self.intermitentData) >= 2 * self.n_particles and self.tol is not None and self.tol_hit is False:
-			for x in range(1, self.n_particles + 1):
-				current_particle = self.intermitentData[-x][2]
-				last_particle = self.intermitentData[-x-self.n_particles][2]
-				if abs(current_particle-last_particle) > self.tol:
-					return False
-			self.stopped_at = len(self.intermitentData)/self.n_particles
-			self.tol_hit = True
-			return True
+		if len(self.best_solutions) >= 2  and self.tol is not None and self.tol_hit is False:
+			if self.best_solutions[-1][2] != self.minsofar[2] and abs(self.best_solutions[-1][2] - self.minsofar[2]) < self.tol:
+				self.stopped_at = len(self.intermitentData)/self.n_particles
+				self.tol_hit = True
+				return True
+			return False
 		else:
 			if self.tol_hit == True:
 				return True

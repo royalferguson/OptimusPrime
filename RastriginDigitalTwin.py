@@ -49,7 +49,7 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0(2,-5.12, 5.12),
 		'dimensions':2,
 		'bounds': np.full((2,2), (-5.12, 5.12)),
-		'maxiter':75000,
+		'maxiter':50000,
 		'tol' : 0.1,
 		'n_particles':2,
 
