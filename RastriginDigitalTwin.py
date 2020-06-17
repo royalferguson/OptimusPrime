@@ -50,6 +50,7 @@ if __name__ == '__main__':
 		'dimensions':10,
 		'bounds': np.full((10,2), (-5.12, 5.12)),
 		'maxiter':100,
+		'tol' : 10,
 		'n_particles':200,
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.85},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
