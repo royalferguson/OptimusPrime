@@ -90,6 +90,8 @@ class ParticleSwarmSolver(BaseSolver):
 			print("last 2*n_particle solutions")
 			for i in range(self.n_particles):
 				print(self.intermitentData[-(i+1)], self.intermitentData[-(i+1)-n_particles])
+		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[2]))
+		best = min(self.intermitentData, key=lambda x: x[2])
 		return best
 
 	def solve(self, fun, **kwargs):
