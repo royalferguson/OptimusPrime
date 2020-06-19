@@ -24,10 +24,10 @@ class ParticleSwarmSolver(BaseSolver):
 		self.tol=0
 		self.intermitentData = []
 		self.n_particles=0
-		self.minsofar = []
-		self.best_solutions = []
-		self.stopped_at = 0
-		self.particle_hit=[]
+		self.minsofar = []                # the best solution of all iterations "so far"
+		self.best_solutions = []          # best solution (lowest score) for each iteration
+		self.stopped_at = 0				  # iteration where tolerance threshold was met
+		#self.particle_hit=[]
 
 	def pso_objective_function(self, func, log_cb=None, tol_cb=None, log_best = None):
 
@@ -66,7 +66,9 @@ class ParticleSwarmSolver(BaseSolver):
 			dimensions = len(bounds[0])
 		elif dimensions is None:
 			dimensions = 2
+
 		self.n_particles = n_particles
+
 		# PSO uses multiple particles - each must have a starting point
 		# if x0 does not contain one for each particle - then generate a random point for it.
 		# 
@@ -89,41 +91,44 @@ class ParticleSwarmSolver(BaseSolver):
 		
 		objective_func = self.pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check, log_best=self.log_best)
 		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
+
+		print("BEST:  ", best)
+
+		_='''
+		res = OptimizeResult(fun=best[0], x=best[1],
+							cost_history = optimizer.cost_history,
+							pos_history = optimizer.pos_history,
+							nit = np.shape(optimizer.pos_history,[0]))
+
+		print("Number of iterations:  ", res.nit)
+		'''
+
 		print("Stopped early at position: ", self.stopped_at)
-		print("The best solution and the second to best are")
+		print("The best solution and the second_to_last best are")
 		print(self.minsofar, self.best_solutions[-1])
 
 		print("=============================")
 		print("The last 50 best in runs are")
-		for i in range(max(min(50,len(self.best_solutions)),50)):
+		#for i in range(max(min(50,len(self.best_solutions)),50)):
+		for i in range(min(50,len(self.best_solutions))):
 			print(self.best_solutions[-(i+1)][2])
 
+
+		_='''
 		print("=============================")
 		print("The last 50 solutions are")
 		for i in range(0,max(min(50*self.n_particles,((len(self.intermitentData)/2)*len(self.best_solutions))),50),2):
 			stg = ""
 			for z in range(self.n_particles):
-				stg  = stg + " " + str(self.intermitentData[-(i+1+z)][2])
+				stg  = stg + " " + str(self.intermitentData[-(i+1+z)][1])
 			print(stg)
 
-		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[2]))
-		best = min(self.intermitentData, key=lambda x: x[2])
+		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[1]))
+		'''
+
+		#best = min(self.intermitentData, key=lambda x: x[1])
 		return best
 
-	def log_best(self,arr):
-		best = min(arr)
-		for i in range(self.n_particles):
-			if best == self.intermitentData[-(i+1)][2]:
-				best = self.intermitentData[-(i+1)]
-				break
-		self.best_solutions.append(best)
-		if self.minsofar == []:
-			self.minsofar = best
-		if self.minsofar[2] > best[2]:
-			if abs(self.minsofar[2]-best[2]) < self.tol:
-				self.tol_hit = True
-			self.minsofar = best
-		return 
 
 	def solve(self, fun, **kwargs):
 		if 'tol' in kwargs:
@@ -143,8 +148,38 @@ class ParticleSwarmSolver(BaseSolver):
 	def log_data_to_pickle(self, particle_num, x, f):
 		pass
 
+	def log_best(self,arr):
+		# Log the best score in this iteration
+		best = min(arr)
+		print("Starting======================================")
+
+		print("n_particles: ", self.n_particles)
+		for i in range(self.n_particles):
+			
+			if best == self.intermitentData[-(i+1)][2]:
+				best = self.intermitentData[-(i+1)]
+				break
+
+		self.best_solutions.append(best)
+
+		if self.minsofar == []:
+			self.minsofar = best
+
+		if self.minsofar[2] > best[2]:
+			if abs(self.minsofar[2]-best[2]) < self.tol:
+				self.tol_hit = True
+			self.minsofar = best
+
+		return 
+
 	def tolerance_check(self):
+
 		if len(self.best_solutions) >= 2  and self.tol is not None and self.tol_hit is False:
+			print("Inside Tolerance Check - 2:  ")
+			print("Last-Best Soln:  ",self.best_solutions[-1][2] )
+			print("minsofar:  ", self.minsofar[2])
+
+			# if the minsofar happens to be the last solution...then don't check it.
 			if self.best_solutions[-1][2] != self.minsofar[2] and abs(self.best_solutions[-1][2] - self.minsofar[2]) < self.tol:
 				self.stopped_at = len(self.intermitentData)/self.n_particles
 				self.tol_hit = True
