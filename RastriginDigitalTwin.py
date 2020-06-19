@@ -58,7 +58,7 @@ if __name__ == '__main__':
 						'velocity_clamp' : (1,2),
 						'vh_strategy' : 'unmodified',
 						'center' : 2,
-						'ftol' : -1
+						'ftol' : 0.3
 						}
 		}
 	elif args.solver == 'differential_evolution':

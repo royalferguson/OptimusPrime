@@ -1,4 +1,5 @@
 from OptimusPrime.solvers import BaseSolver
+from ._globalbestpso import _GlobalBestPSO
 import pyswarms as ps
 from scipy.optimize import OptimizeResult
 import numpy as np 
@@ -7,7 +8,6 @@ import seaborn as sb
 import matplotlib.pyplot as plt 
 from pyswarms.utils.plotters import plot_cost_history, plot_contour, plot_surface
 from pyswarms.utils.plotters.formatters import Mesher, Designer
-
 
 _='''
 pyswarms:  Objective function signature is f(x, **kwargs) -> numpy.ndarray(n_particles)
@@ -84,16 +84,17 @@ class ParticleSwarmSolver(BaseSolver):
 				x0 = np.vstack( (x0,r))
 		res= {}
 		if x0 is None and bounds is None:
-			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
+			optimizer = _GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
 		else:
-			optimizer = ps.single.GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0, **pso_kwargs)
+			optimizer = _GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0,  **pso_kwargs)
 
 		
-		objective_func = self.pso_objective_function(fun, log_cb=self.log_data, tol_cb=self.tolerance_check, log_best=self.log_best)
-		best = optimizer.optimize(objective_func, maxiter, **fun_kwargs)
+		objective_func = self.pso_objective_function(fun, log_cb= self.log_data, tol_cb=None, log_best=None)
+		best = optimizer.optimize(objective_func, maxiter, verbose = True, **fun_kwargs)
 
 		print("BEST:  ", best)
 
+		
 		_='''
 		res = OptimizeResult(fun=best[0], x=best[1],
 							cost_history = optimizer.cost_history,
@@ -101,7 +102,7 @@ class ParticleSwarmSolver(BaseSolver):
 							nit = np.shape(optimizer.pos_history,[0]))
 
 		print("Number of iterations:  ", res.nit)
-		'''
+		
 
 		print("Stopped early at position: ", self.stopped_at)
 		print("The best solution and the second_to_last best are")
@@ -113,8 +114,6 @@ class ParticleSwarmSolver(BaseSolver):
 		for i in range(min(50,len(self.best_solutions))):
 			print(self.best_solutions[-(i+1)][2])
 
-
-		_='''
 		print("=============================")
 		print("The last 50 solutions are")
 		for i in range(0,max(min(50*self.n_particles,((len(self.intermitentData)/2)*len(self.best_solutions))),50),2):
