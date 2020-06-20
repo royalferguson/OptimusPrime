@@ -73,7 +73,7 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		interData = self.UUT.intermitentData
 		interData = interData.sort_values('score',ascending=False)
-		self.assertTrue(abs(interData.iloc[-1]['score']-interData.iloc[-2]['score']) <  (1+max(interData.iloc[-1]['score'],interData.iloc[-2]['score'])) * tol )
+		self.assertTrue(abs(interData.iloc[-1]['score']-interData.iloc[-2]['score']) <  tol )
 
 if __name__ == '__main__':
 	unittest.main()

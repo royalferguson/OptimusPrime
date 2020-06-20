@@ -48,7 +48,7 @@ class _GlobalBestPSO(GlobalBestPSO):
 				)
 			self._populate_history(hist)
 			# verify stop criteria based on the relative acceptable cost ftol
-			relative_measure = self.ftol * (1 + np.abs(best_cost_yet_found))
+			relative_measure = self.ftol 
 			if self.swarm.best_cost != best_cost_yet_found and (np.abs(self.swarm.best_cost - best_cost_yet_found) < relative_measure):
 				break
 			# perform velocity and position updates
