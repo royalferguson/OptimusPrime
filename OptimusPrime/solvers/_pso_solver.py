@@ -94,15 +94,13 @@ class ParticleSwarmSolver(BaseSolver):
 
 		print("BEST:  ", best)
 
-		
-		_='''
-		res = OptimizeResult(fun=best[0], x=best[1],
-							cost_history = optimizer.cost_history,
-							pos_history = optimizer.pos_history,
-							nit = np.shape(optimizer.pos_history,[0]))
+		res = OptimizeResult(fun=best[0], x=best[1], sucess = True,
+							nit = len(self.intermitentData)/self.n_particles, nfev = len(self.intermitentData))
 
 		print("Number of iterations:  ", res.nit)
-		
+
+		return res
+		_='''		
 
 		print("Stopped early at position: ", self.stopped_at)
 		print("The best solution and the second_to_last best are")
@@ -123,11 +121,10 @@ class ParticleSwarmSolver(BaseSolver):
 			print(stg)
 
 		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[1]))
-		'''
 
-		#best = min(self.intermitentData, key=lambda x: x[1])
+		best = min(self.intermitentData, key=lambda x: x[1])
 		return best
-
+		'''
 
 	def solve(self, fun, **kwargs):
 		if 'tol' in kwargs:

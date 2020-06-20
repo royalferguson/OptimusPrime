@@ -37,13 +37,13 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 
 	def test_default_call_count(self):
 		self.limit = False
-		res = self.UUT.solve(self.obj_func,self.kwargs)
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		self.assertTrue(self.obj_func_call_count > 0)
 
 	def test_limited_call_count(self):
 		self.obj_func_call_count=0
 		self.limit = True
-		res = self.UUT.solve(self.obj_func,self.kwargs)
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		self.assertTrue(self.obj_func_call_count == 100)
 
 	"""def test_solver_callback(self):
@@ -54,15 +54,25 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 	def test_solution(self):
 		self.obj_func_call_count=0
 		self.limit = False
-		res = self.UUT.solve(self.obj_func,self.kwargs)
-		self.assertAlmostEqual(res[0],0,3)
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
+		self.assertAlmostEqual(res.fun,0,3)
 
 	def test_solution_variables(self):
 		self.obj_func_call_count=0
 		self.limit = False
-		res = self.UUT.solve(self.obj_func,self.kwargs)
-		self.assertAlmostEqual(res[1][0],1,3)
-		self.assertAlmostEqual(res[1][1],1,3)
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
+		self.assertAlmostEqual(res.x[0],1,3)
+		self.assertAlmostEqual(res.x[1],1,3)
+
+	def test_tolerance_check(self):
+		tol = 0.1
+		self.kwargs['pso_kwargs'] = {
+			'ftol':tol
+		}
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
+		interData = self.UUT.intermitentData
+		interData.sort(key=lambda x: x[2], reverse=True)
+		self.assertTrue(abs(interData[-1][2]-interData[-2][2]) <  (1+max(interData[-1][2],interData[-2][2])) * tol )
 
 if __name__ == '__main__':
 	unittest.main()
