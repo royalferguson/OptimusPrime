@@ -22,7 +22,7 @@ class ParticleSwarmSolver(BaseSolver):
 	def __init__(self):
 		self.tol_hit = False
 		self.tol=0
-		self.intermitentData = []
+		self.intermitentData = pd.DataFrame()
 		self.n_particles=0
 		self.minsofar = []                # the best solution of all iterations "so far"
 		self.best_solutions = []          # best solution (lowest score) for each iteration
@@ -98,31 +98,6 @@ class ParticleSwarmSolver(BaseSolver):
 		print("Number of iterations:  ", res.nit)
 
 		return res
-		_='''		
-
-		print("Stopped early at position: ", self.stopped_at)
-		print("The best solution and the second_to_last best are")
-		print(self.minsofar, self.best_solutions[-1])
-
-		print("=============================")
-		print("The last 50 best in runs are")
-		#for i in range(max(min(50,len(self.best_solutions)),50)):
-		for i in range(min(50,len(self.best_solutions))):
-			print(self.best_solutions[-(i+1)][2])
-
-		print("=============================")
-		print("The last 50 solutions are")
-		for i in range(0,max(min(50*self.n_particles,((len(self.intermitentData)/2)*len(self.best_solutions))),50),2):
-			stg = ""
-			for z in range(self.n_particles):
-				stg  = stg + " " + str(self.intermitentData[-(i+1+z)][1])
-			print(stg)
-
-		print("lowest score here is: ",  min(self.intermitentData, key=lambda x: x[1]))
-
-		best = min(self.intermitentData, key=lambda x: x[1])
-		return best
-		'''
 
 	def solve(self, fun, **kwargs):
 		if 'tol' in kwargs:
@@ -136,7 +111,8 @@ class ParticleSwarmSolver(BaseSolver):
 
 
 	def log_data(self, particle_num, particle, f):
-		self.intermitentData.append([particle_num,particle,f])
+		s = pd.Series([particle,f], index=['dv','score'])
+		self.intermitentData = self.intermitentData.append(s, ignore_index=True)
 		self.log_data_to_pickle(particle_num, particle, f)
 
 	def log_data_to_pickle(self, particle_num, x, f):

@@ -28,6 +28,7 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 			'n_particles': 10,
 			'options':{'c1': 0.5, 'c2': 0.3, 'w':0.9},
 			'dimensions':2,
+			'maxiter':300,
 			'bounds':np.full((2,2),(-10, 10)),
 			'x0': np.full((2,2), (0,0))
 		}
@@ -71,8 +72,8 @@ class TestParticleSwarmSolverMethods(unittest.TestCase):
 		}
 		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		interData = self.UUT.intermitentData
-		interData.sort(key=lambda x: x[2], reverse=True)
-		self.assertTrue(abs(interData[-1][2]-interData[-2][2]) <  (1+max(interData[-1][2],interData[-2][2])) * tol )
+		interData = interData.sort_values('score',ascending=False)
+		self.assertTrue(abs(interData.iloc[-1]['score']-interData.iloc[-2]['score']) <  (1+max(interData.iloc[-1]['score'],interData.iloc[-2]['score'])) * tol )
 
 if __name__ == '__main__':
 	unittest.main()
