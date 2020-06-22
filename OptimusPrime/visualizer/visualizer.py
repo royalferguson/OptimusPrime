@@ -4,15 +4,15 @@ import logging.handlers
 import socketserver
 import struct
 import numpy as np
-import pandas pd
+import pandas as pd
 import matplotlib.pyplot as plt
 import threading, time
 import os
 import argparse
-from OptimusePrime.utils.io.pickle import read_from_pickle
-import jason
+from OptimusPrime.utils.io.pickleType import read_from_pickle
+import json
 
-class LogRecord StreamHandler(socketserver.StreamRequestHandler):
+class LogRecordStreamHandler(socketserver.StreamRequestHandler):
 	'''
 	Handler for streaming logging request
 	Continuously receives and decodes messages for the visualizer to be displayed.
@@ -81,7 +81,7 @@ class Visualizer():
 
 	def __init__(self):
 		# vitually private constructor
-		if Visualizer.__instance != None
+		if Visualizer.__instance != None:
 			raise Exception("This class is a singleton")
 		else:
 			Visualizer.__instance = self
@@ -150,7 +150,7 @@ def main():
 		v.finish_init(host=args.network)
 		v.start_receiving()
 
-if __name_ == '__main__':
+if __name__ == '__main__':
 	main()
 
 
