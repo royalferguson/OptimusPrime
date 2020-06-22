@@ -61,6 +61,16 @@ if __name__ == '__main__':
 
 	result = runner.run(suite)
 	log_result(result)
+	tgt=os.getcwd() + '/report.log'
+	if os.path.exists(tgt):
+		dst = os.getcwd() + '/log-reports'
+		try:
+			shutil.move(tgt, ospath.join(dst, 'report.log'))
+			pass
+		except:
+			print("shutil.move error:  Cannot move report.log")
+
+	print("UnitTestRunner Finished")
 	
 
 
