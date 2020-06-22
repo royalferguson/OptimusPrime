@@ -23,7 +23,7 @@ def data(self, msg, *args, **kwargs):
 
 logging.Logger.data = data
 
-class OptimusStreamHandler(Logging.StreamHandler):
+class OptimusStreamHandler(logging.StreamHandler):
 	# Custom Stream Handler for Optimus Project
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -44,7 +44,7 @@ if not os.path.exists('log-reports'):
 	os.makedirs('log-reports')
 
 fh=logging.FileHandler('log-reports/optius.log', mode = 'w')
-fh.addFilter(msgRngFilter(logging.DEBUG, logging.CRITICAL))
+fh.addFilter(MsgRngFilter(logging.DEBUG, logging.CRITICAL))
 fh.setLevel(logging.INFO)  # default level of messages info and up
 fh.setFormatter(formatter)
 
@@ -81,6 +81,7 @@ def fix_default_file_handler():
 	fh.setLevel(logging.INFO)
 	fh.setFormatter(fmtr)
 	logger.addHandler(fh)
+	logger.addHandler(sh)
 
 def StructureMessage(object):
 	def __init__(self, message, *args):
@@ -90,5 +91,5 @@ def StructureMessage(object):
 	def __str__(self):
 		return '%s >>> %s' % ( self.message, ' '.join(map(str, self.args)))
 
-fmt = StructuredMessage
+fmt = StructureMessage
 

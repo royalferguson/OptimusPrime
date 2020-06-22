@@ -1,5 +1,6 @@
 from pyswarms.single import GlobalBestPSO
 from pyswarms.backend.operators import compute_pbest, compute_objective_function
+from OptimusPrime.logger import fix_default_file_handler,remove_stream_handlers
 import multiprocessing as multiprocessing
 import logging
 

@@ -10,6 +10,7 @@ import threading, time
 import os
 import argparse
 from OptimusPrime.utils.io.pickleType import read_from_pickle
+from OptimusPrime.utils.display import set_global_frame,start_display_window
 import json
 
 class LogRecordStreamHandler(socketserver.StreamRequestHandler):
@@ -118,6 +119,7 @@ class Visualizer():
 			d = pd.DataFrame()
 			for item in read_from_pickle(self.file_path):
 				d = d.append(item, ignore_index = True)
+			self.intermitent_data = d
 			print(d.shape)
 		else:
 			print("file path not set")
@@ -146,10 +148,11 @@ def main():
 	if args.file:
 		v.finish_init(file=args.file[0])
 		v.read_file()
+		set_global_frame(v.intermitent_data)
 	elif args.network:
 		v.finish_init(host=args.network)
 		v.start_receiving()
-
+	start_display_window()
 if __name__ == '__main__':
 	main()
 

@@ -20,13 +20,14 @@ class VisualizerDisplay(tk.Tk):
 		tk.Tk.wm_title(self, "Visualizer Client")
 
 		container = tk.Frame(self)
-		container.pack(side='top', fill="both", exapand = True)
+		container.pack(side='top', fill="both", expand = True)
 		container.grid_rowconfigure(0, weight=1)
 		self.frames = {}
 
 		for F in (StartPage, PageOne, PageTwo, PageThree, PageFour, PageFive, PageSix, PageSeven, PageEight, PageNine):
 			frame = F(container, self)
-			self.frames[F] = frame.grid(row=0, column=0, sticky="nsew")
+			frame.grid(row=0, column=0, sticky="nsew")
+			self.frames[F] = frame
 
 		self.show_frame(StartPage)
 
@@ -35,10 +36,10 @@ class VisualizerDisplay(tk.Tk):
 		frame.tkraise()
 
 class StartPage(tk.Frame):
-	def __init__(self, parent, controller):
 	# Home page of the visual display - allows navigation to any other page
-		tk.Frame.__init_self(self, parent)
-		label = tk.Label(self, tex="Home Page")
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self, text="Home Page")
 		label.pack(pady=10, padx=10)
 		# Button setup for the home page
 
@@ -112,8 +113,8 @@ class PageOne(tk.Frame):
 		nsmooth = int(max([0.01*n_evals, 10]))
 
 		for ix in range(dfObj['length'][0]):
-			xvals = dfObj['dv'].str[ix].Values
-			xave = np.zeros(len(xvals))
+			xvals = dfObj['dv'].str[ix].values
+			xave =np.zeros(len(xvals))
 			xrms = np.zeros(len(xvals))
 			for ipt in range(nsmooth,len(xvals)):
 				use_points = xvals[ipt-nsmooth:ipt]
@@ -163,7 +164,7 @@ class PageTwo(tk.Frame):
 		two.pack(in_=middle, side='left')
 		three = ttk.Button(self, text="DV-AVE Values", width=25, command=lambda:  controller.show_frame(PageFour))
 		three.pack(in_=middle, side='left')
-		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(StartFive))
+		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFive))
 		home.pack(in_=bottom, side='left')
 		four = ttk.Button(self, text="DV Values - Heat", width=25, command=lambda:  controller.show_frame(PageSix))
 		four.pack(in_=middle, side='left')
@@ -192,7 +193,7 @@ class PageTwo(tk.Frame):
 		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 		plt.close()
 
-
+class PageThree(tk.Frame):
 	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
 		 for use in later graphs...
 		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
@@ -211,15 +212,15 @@ class PageTwo(tk.Frame):
 		bottom = tk.Frame(self)
 		bottom.pack(side='top')
 
-		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageThree))
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageFour))
 		next.pack(in_=top, side='left')
 		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
 		one.pack(in_=middle, side='left')
-		two = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		two = ttk.Button(self, text="Score(log)", width=25, command=lambda:  controller.show_frame(PageTwo))
 		two.pack(in_=middle, side='left')
 		three = ttk.Button(self, text="DV-AVE Values", width=25, command=lambda:  controller.show_frame(PageFour))
 		three.pack(in_=middle, side='left')
-		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(StartFive))
+		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(OageFive))
 		home.pack(in_=bottom, side='left')
 		four = ttk.Button(self, text="DV Values - Heat", width=25, command=lambda:  controller.show_frame(PageSix))
 		four.pack(in_=middle, side='left')
@@ -237,22 +238,420 @@ class PageTwo(tk.Frame):
 
 		# Graph for score vs iteration
 		fig, ax = plt.subplots(figsize=(15,4))
-		ax.set_title("Log(ScoreValues) vs Iteration")
+		ax.set_title("DV Values vs Evaluation")
 		ax.set_xlabel("Iteration Number")
-		ax.set_ylabel("Score")
-		OF_max = dfObj["score"].max()
-		dfObj['score'].plot(figsize=(8,6), ylim=(0, OF_max*1.02), rasterized=True)
+		ax.set_ylabel("DV Value")
 
 		canvas=FigureCanvasTkAgg(fig, self)
 		canvas.draw()
 		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 		plt.close()
 
-# And so on for 9 page classes
+class PageFour(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageFive))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFive))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSix))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV -AVE Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSeven))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="sqrt(DV-RMS) Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageEight))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageNine))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageThree))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+		for ix in range(dfObj['length'][0]):
+			dfObj['dv'+str(ix)+'ave'].plot(label="DV "+str(ix),alpha=0.3, figsize=(8,6), rasterized=True)
+
+		ax.legend(loc="upper right")	
+		ax.set_title("DV-AVE Values vs Iteration")
+		ax.set_xlabel("Iteration Number")
+		ax.set_ylabel("DV Value")
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+class PageFive(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageSix))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFour))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSix))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV -AVE Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSeven))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="sqrt(DV-RMS) Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageEight))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageNine))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageFour))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+
+		for ix in range(dfObj['length'][0]):
+			dfObj['dv'+str(ix)+'rms'].plot(label="DV "+str(ix),alpha=0.3, figsize=(8,6), rasterized=True)
+
+		ax.legend(loc="upper right")	
+		ax.set_title("DV-RMS Values vs Iteration")
+		ax.set_xlabel("Iteration Number")
+		ax.set_ylabel("DV Value")
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+class PageSix(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageSeven))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFour))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageFive))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV -AVE Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSeven))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="sqrt(DV-RMS) Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageEight))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageNine))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageFive))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+		x=[]
+		y=[]
+		color=[]
+
+		for ix in range(dfObj['length'][0]):
+			x.append(dfObj.index)
+			y.append(np.zeros(len(dfObj)) + ix + 0.1*(20)/(6))
+			color.append(dfObj['dv'].str[ix])
+
+		for axis in [ax.xaxis, ax.yaxis]:
+			axis.set_major_locator(ticker.MaxNLocator(integer=True))
+
+		im = ax.scatter(x, y, c=color, s=100, cmap=plt.cm.nipy_spectral, alpha=0.8, edgecolors='none', rasterized=True)
+
+		ax.set_ylim(-0.4, 20-0.4)
+		ax.set_title('DV Values at each Iteration')
+		ax.set_xlabel('Iteration Number')
+		ax.set_ylabel('DVs')
+		ax.grid(True)
+
+		fig.colorbar(im, ax=ax)
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+class PageSeven(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageEight))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-AVE Values", width=25, command=lambda:  controller.show_frame(PageFour))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageFive))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSix))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="sqrt(DV-RMS) Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageEight))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageNine))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageSix))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+		x=[]
+		y=[]
+		color=[]
+
+		for ix in range(dfObj['length'][0]):
+			x.append(dfObj.index)
+			y.append(np.zeros(len(dfObj)) *[ix] + 0.1*(20)/(6))
+			color.append(dfObj['dv'].str[ix])
+
+		for axis in [ax.xaxis, ax.yaxis]:
+			axis.set_major_locator(ticker.MaxNLocator(integer=True))
+
+		im = ax.scatter(x, y, c=color, s=100, cmap=plt.cm.nipy_spectral, alpha=0.8, edgecolors='none', rasterized=True)
+
+		ax.set_ylim(-0.4, 20-0.4)
+		ax.set_title('DV-AVE Values at each Iteration - Smoothed')
+		ax.set_xlabel('Iteration Number')
+		ax.set_ylabel('DVs')
+		ax.grid(True)
+
+		fig.colorbar(im, ax=ax)
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+class PageEight(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageNine))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-AVE Values", width=25, command=lambda:  controller.show_frame(PageFour))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFive))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSix))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="DV-AVE Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSeven))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="DV-RMS Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageNine))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageSeven))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+		x=[]
+		y=[]
+		color=[]
+
+		for ix in range(dfObj['length'][0]):
+			x.append(dfObj.index)
+			y.append(np.zeros(len(dfObj)) + ix  + 0.1*(20)/(6))
+			color.append(np.sqrt(dfObj['dv' + str(int(ix)) + "rms"]))
+
+		for axis in [ax.xaxis, ax.yaxis]:
+			axis.set_major_locator(ticker.MaxNLocator(integer=True))
+
+		im = ax.scatter(x, y, c=color, s=100, cmap=plt.cm.nipy_spectral, alpha=0.8, edgecolors='none', rasterized=True)
+
+		ax.set_ylim(-0.4, 20-0.4)
+		ax.set_title('sqrt(DV-RMS) colors at all Iterations - Smoothed')
+		ax.set_xlabel('Iteration Number')
+		ax.set_ylabel('DVs')
+		ax.grid(True)
+
+		fig.colorbar(im, ax=ax)
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+class PageNine(tk.Frame):
+	'''  Initializes the first page of the gui..graph embedded into it, also adds columns to the data frame
+		 for use in later graphs...
+		 All, pages or tabs have their own class and are set up the same way...but with different graphs embedded in them
+	'''
+	def __init__(self, parent, controller):
+		tk.Frame.__init__(self, parent)
+		label = tk.Label(self)
+		label.pack(pady=0, padx=0)
+
+		''' Button initializers, for the display navigation, can go to any other tab or back to the home page
+		all buttons are inside frames on the page for organization, all classes are set up the same way'''
+		top = tk.Frame(self)
+		middle = tk.Frame(self)
+		top.pack(side='top')
+		middle.pack(side='top')
+		bottom = tk.Frame(self)
+		bottom.pack(side='top')
+
+		next = ttk.Button(self, text="Next >>", width = 25, command=lambda: controller.show_frame(PageOne))
+		next.pack(in_=top, side='left')
+		one = ttk.Button(self, text="Score vs Iteration", width=25, command=lambda:  controller.show_frame(PageOne))
+		one.pack(in_=middle, side='left')
+		two = ttk.Button(self, text="Score(Log)", width=25, command=lambda:  controller.show_frame(PageTwo))
+		two.pack(in_=middle, side='left')
+		three = ttk.Button(self, text="DV Values", width=25, command=lambda:  controller.show_frame(PageThree))
+		three.pack(in_=middle, side='left')
+		home = ttk.Button(self, text="DV-AVE Values", width=25, command=lambda:  controller.show_frame(PageFour))
+		home.pack(in_=bottom, side='left')
+		four = ttk.Button(self, text="DV-RMS Values", width=25, command=lambda:  controller.show_frame(PageFive))
+		four.pack(in_=middle, side='left')
+		five = ttk.Button(self, text="DV Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSix))
+		five.pack(in_=middle, side='left')
+		six = ttk.Button(self, text="DV-AVE Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageSeven))
+		six.pack(in_=middle, side='left')
+		seven = ttk.Button(self, text="sqrt(DV-RMS) Values - Heat Map", width=25, command=lambda:  controller.show_frame(PageEight))
+		seven.pack(in_=middle, side='left')
+		previous = ttk.Button(self, text="<< Previous", width=25, command=lambda:  controller.show_frame(PageEight))
+		previous.pack(in_=bottom, side='left')
+		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
+		home.pack(in_=bottom, side='left')
+
+		# Graph for score vs iteration
+		fig, ax = plt.subplots(figsize=(15,4))
+		x=[]
+		y=[]
+		color=[]
+
+		for ix in range(dfObj['length'][0]):
+			x.append(dfObj.index)
+			y.append(np.zeros(len(dfObj)) + ix  + 0.1*(20)/(6))
+			color.append(dfObj['dv' + str(int(ix)) + "rms"])
+
+		for axis in [ax.xaxis, ax.yaxis]:
+			axis.set_major_locator(ticker.MaxNLocator(integer=True))
+
+		im = ax.scatter(x, y, c=color, s=100, cmap=plt.cm.nipy_spectral, alpha=0.8, edgecolors='none', rasterized=True)
+
+		ax.set_ylim(-0.4, 20-0.4)
+		ax.set_title('sqrt(DV-RMS) colors at all Iterations - Smoothed')
+		ax.set_xlabel('Iteration Number')
+		ax.set_ylabel('DVs')
+		ax.grid(True)
+
+		fig.colorbar(im, ax=ax)
+
+		canvas=FigureCanvasTkAgg(fig, self)
+		canvas.draw()
+		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
+		plt.close()
+
+
 
 def start_display_window():
 	# Functions that starts the Visualizaton, function gets called inside the Visualizer
 	app = VisualizerDisplay()
 	app.mainloop()
 
-	
+

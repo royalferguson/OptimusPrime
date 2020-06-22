@@ -2,7 +2,7 @@ import pandas as pd
 import pickle
 from OptimusPrime.utils.decorators import add_method
 
-@add_method(pd.series)
+@add_method(pd.Series)
 def add_to_pickle(item, path):
 	with open(path, 'ab') as file:
 		pickle.dump(item, file)

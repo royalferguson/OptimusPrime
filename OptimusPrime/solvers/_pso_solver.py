@@ -6,6 +6,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sb 
 import matplotlib.pyplot as plt 
+from OptimusPrime.utils.io import add_to_pickle
 from pyswarms.utils.plotters import plot_cost_history, plot_contour, plot_surface
 from pyswarms.utils.plotters.formatters import Mesher, Designer
 
@@ -112,8 +113,9 @@ class ParticleSwarmSolver(BaseSolver):
 
 	def log_data(self, particle_num, particle, f):
 		s = pd.Series([particle,f], index=['dv','score'])
+		s.add_to_pickle('optimization_data.pkl')
 		self.intermitentData = self.intermitentData.append(s, ignore_index=True)
-		self.log_data_to_pickle(particle_num, particle, f)
+		self.log_data_to_pickle(s)
 
-	def log_data_to_pickle(self, particle_num, x, f):
+	def log_data_to_pickle(self, s):
 		pass
