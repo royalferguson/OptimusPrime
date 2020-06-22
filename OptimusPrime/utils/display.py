@@ -191,5 +191,11 @@ class PageTwo(tk.Frame):
 		canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 		plot.close()
 
-# And so on for 
+# And so on for 9 page classes
 
+def start_display_window():
+	# Functions that starts the Visualizaton, function gets called inside the Visualizer
+	app = VisualizerDisplay()
+	app.mainloop()
+
+	
