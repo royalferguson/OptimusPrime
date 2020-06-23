@@ -1,6 +1,7 @@
 from OptimusPrime import AlgoDigitalTwin, utils
 from OptimusPrime.utils.functions.single_obj import rosenbrock
 import OptimusPrime.configuration as cfg
+from OptimusPrime.logger import *
 import numpy as np 
 import argparse, sys
 
@@ -22,6 +23,7 @@ if __name__ == '__main__':
 
 		def callback_(x,f,accept):
 			print("custom callback for basinhopping")
+			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
 			return
 
 		kwargs = {
@@ -61,6 +63,7 @@ if __name__ == '__main__':
 	elif args.solver == 'differential_evolution':
 		def callback_(x,convergence=2):
 			print("custom callback for differential_evolution")
+			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
 		'x0': utils.get_random_x0(10,-5.12, 5.12),
@@ -82,6 +85,7 @@ if __name__ == '__main__':
 	elif args.solver == 'dual_annealing':
 		def callback_(x,f,context):
 			print("custom callback for dual_annealing")
+			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
 		'x0': utils.get_random_x0(10,-5.12, 5.12),

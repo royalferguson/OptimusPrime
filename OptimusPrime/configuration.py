@@ -1,6 +1,7 @@
 import argparse
 import sys
 import logging
+from OptimusPrime.logger import *
 import copy
 
 default_solver_params_dict = {
@@ -30,21 +31,21 @@ def get_commandline_args():
 	if args.silent_mode:
 		logger = logging.getLogger()
 		logger.handlers = [ h for h in logger.handlers if not (type(h) == logging.StreamHandler)]
-		print(logger.handlers)
-		
+		print(logger.handlers)	
 	return args
 
 def main(algo_wrapper, args, kwargs):
 	print('Optimize using: ' + args.solver)
 	print("args: ", args)
 	print("kwargs", kwargs)
-
-	#Origin:    res = algo_wrapper.optimize(args)
+	#logger.info(fmt('info', 'Optimize using Solver: ', args.solver))
 
 	res = algo_wrapper.optimize(args, kwargs)
 
 	print("==================")
 	print(res)
-	# print('Global Minimum:  x = ', *res['x'])
-	# print('f(x0) = ', res['fun'])
+	print('Global Minimum:  x = ', *res['x'])
+	print('f(x0) = ', res['fun'])
+	#logger.info(fmt('info', 'Global Minimum occurs at: ', res['x']))
+	#logger.info(fmt('info', 'f(x0) = ', res['fun'] ))
 
