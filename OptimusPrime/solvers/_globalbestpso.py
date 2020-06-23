@@ -1,5 +1,6 @@
 from pyswarms.single import GlobalBestPSO
 from pyswarms.backend.operators import compute_pbest, compute_objective_function
+from OptimusPrime.logger import fix_default_file_handler,remove_stream_handlers
 import multiprocessing as multiprocessing
 import logging
 import numpy as np
@@ -9,7 +10,7 @@ class _GlobalBestPSO(GlobalBestPSO):
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		
+		fix_default_file_handler()
 
 	def optimize(self, objective_func, iters, n_processes=None, verbose=False, silent=False, **kwargs):
 		if verbose:
