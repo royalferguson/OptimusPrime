@@ -27,7 +27,7 @@ if __name__ == '__main__':
 			return
 
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'x0': utils.get_random_x0(10,-5, 10),
 		'niter':1000,
 		'T': 0.2,
 		'stepsize':0.65,
@@ -45,9 +45,9 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0(2,-5.12, 5.12),
+		'x0': utils.get_random_x0(2,-5, 10),
 		'dimensions':2,
-		'bounds': np.full((2,2), (-5.12, 5.12)),
+		'bounds': np.full((2,2), (-5, 10)),
 		'maxiter':100,
 		'tol' : 0.1,
 		'n_particles':2,
@@ -66,8 +66,8 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
-		'bounds':np.full((10,2), (-5.12, 5.12)),
+		'x0': utils.get_random_x0(10,-5, 10),
+		'bounds':np.full((10,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
 		'maxiter':5,
 		'callback':callback_,
@@ -88,8 +88,8 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
-		'bounds':np.full((10,2), (-5.12, 5.12)),
+		'x0': utils.get_random_x0(10,-5, 10),
+		'bounds':np.full((10,2), (-5.0, 10.0)),
 		'tol': 10,
 		'initial_temp': 0.5,
 		'maxiter':5,
@@ -106,7 +106,7 @@ if __name__ == '__main__':
 			print("custom callback for nelder-mead")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'x0': utils.get_random_x0(10,-5, 10),
 		'method': 'nelder-mead',
 		'tol': 0.1,
 		'callback':callback_,
@@ -127,10 +127,10 @@ if __name__ == '__main__':
 			print("custom callback for powell")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'x0': utils.get_random_x0(10,-5, 10),
 		'method': 'powell',
 		'tol': 0.1,
-		'bounds': np.full((10,2), (-5.12, 5.12)),
+		'bounds': np.full((10,2), (-5.0, 10.0)),
 		'callback':callback_,
 		'options': {
 			'disp':0,
@@ -148,7 +148,7 @@ if __name__ == '__main__':
 			print("custom callback for cobyla")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'x0': utils.get_random_x0(10,-5, 10),
 		'method': 'cobyla',
 		'callback':callback_,
 		'options': {
@@ -166,10 +166,10 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5.12, 5.12),
+		'x0': utils.get_random_x0(10,-5, 10),
 		'method': 'l-bfgs-b',
 		'jac':None,
-		'bounds': np.full((10,2), (-5.12, 5.12)),
+		'bounds': np.full((10,2), (-5.0, 10.0)),
 		'callback':callback_,
 		'options': {
 			'disp':0,
