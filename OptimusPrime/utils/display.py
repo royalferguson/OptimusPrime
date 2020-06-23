@@ -111,7 +111,7 @@ class PageOne(tk.Frame):
 		OF_max = dfObj['score'].max()
 		n_evals=len(dfObj)
 		nsmooth = int(max([0.01*n_evals, 10]))
-
+		print(len(dfObj))
 		for ix in range(dfObj['length'][0]):
 			xvals = dfObj['dv'].str[ix].values
 			xave =np.zeros(len(xvals))

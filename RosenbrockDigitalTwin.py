@@ -4,6 +4,7 @@ import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
 import argparse, sys
+import os
 
 class RosenbrockDigitalTwin(AlgoDigitalTwin):
 
@@ -17,7 +18,8 @@ class RosenbrockDigitalTwin(AlgoDigitalTwin):
 
 if __name__ == '__main__':
 	args = cfg.get_commandline_args()
-
+	if os.path.exists('optimization_data.pkl'):
+		os.remove('optimization_data.pkl')
 	# for basinhopping
 	if args.solver == 'basinhopping':
 
@@ -36,8 +38,8 @@ if __name__ == '__main__':
 		},
 		'interval':2,
 		'disp':0,
-		'tol': 20,
-		'niter_success':2,
+		'tol': 1e-15,
+		'niter_success':10,
 		'accept_test': None,
 		'take_step': None,
 		'seed': 20
