@@ -1,18 +1,15 @@
 from OptimusPrime import AlgoDigitalTwin, utils
-from OptimusPrime.utils.functions.single_obj import rastrigin
+from OptimusPrime.utils.functions.single_obj import rosenbrock
 import OptimusPrime.configuration as cfg
 import numpy as np 
 import argparse, sys
 
-class RastriginDigitalTwin(AlgoDigitalTwin):
+class RosenbrockDigitalTwin(AlgoDigitalTwin):
 
 		def __init__ (self):
 
-			# Use this when you wish to provide the initial position (x0)
-			super().__init__(rastrigin)
+			super().__init__(rosenbrock)
 
-			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
-			# super().__init__(rastrigin)
 
 		def optimize(self, args, kwargs):
 			return super().optimize(args, kwargs)
@@ -37,7 +34,7 @@ if __name__ == '__main__':
 		},
 		'interval':2,
 		'disp':0,
-		'tol': None,
+		'tol': 20,
 		'niter_success':2,
 		'accept_test': None,
 		'take_step': None,
@@ -185,8 +182,8 @@ if __name__ == '__main__':
 		}
 
 	if args.trace:
-		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, kwargs)
+		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
-		cfg.main(RastriginDigitalTwin(), args, kwargs)
+		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
 
 
