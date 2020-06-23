@@ -29,7 +29,7 @@ if __name__ == '__main__':
 			return
 
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
+		'x0': utils.get_random_x0(10,-500, 1000),
 		'niter':1000,
 		'T': 0.2,
 		'stepsize':0.65,

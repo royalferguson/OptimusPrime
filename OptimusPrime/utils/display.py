@@ -18,6 +18,26 @@ class VisualizerDisplay(tk.Tk):
 	def __init__(self, *args, **kwargs):
 		tk.Tk.__init__(self, *args, **kwargs)
 		tk.Tk.wm_title(self, "Visualizer Client")
+		global dfObj
+		dfObj['score'] = 1e-6 + dfObj['score']
+		dfObj['length'] = dfObj['dv'].str.len()
+		OF_min = dfObj['score'].min()
+		OF_max = dfObj['score'].max()
+		n_evals=len(dfObj)
+		nsmooth = int(max([0.01*n_evals, 10]))
+		for ix in range(dfObj['length'][0]):
+			xvals = dfObj['dv'].str[ix].values
+			xave =np.zeros(len(xvals))
+			xrms = np.zeros(len(xvals))
+			for ipt in range(nsmooth,len(xvals)):
+				use_points = xvals[ipt-nsmooth:ipt]
+				xave[ipt] = use_points.mean()
+				xrms[ipt] = use_points.std()
+			for ipt in range(nsmooth):
+				xave[ipt] = 0.0
+				xrms[ipt] = 0.0
+			dfObj['dv' + str(ix)+'ave'] = xave
+			dfObj['dv'+str(ix)+"rms"] = xrms
 
 		container = tk.Frame(self)
 		container.pack(side='top', fill="both", expand = True)
@@ -104,27 +124,8 @@ class PageOne(tk.Frame):
 		previous.pack(in_=bottom, side='left')
 		home = ttk.Button(self, text="Home Page", width=25, command=lambda:  controller.show_frame(StartPage))
 		home.pack(in_=bottom, side='left')
-
-		dfObj['score'] = 1e-6 + dfObj['score']
-		dfObj['length'] = dfObj['dv'].str.len()
 		OF_min = dfObj['score'].min()
 		OF_max = dfObj['score'].max()
-		n_evals=len(dfObj)
-		nsmooth = int(max([0.01*n_evals, 10]))
-		print(len(dfObj))
-		for ix in range(dfObj['length'][0]):
-			xvals = dfObj['dv'].str[ix].values
-			xave =np.zeros(len(xvals))
-			xrms = np.zeros(len(xvals))
-			for ipt in range(nsmooth,len(xvals)):
-				use_points = xvals[ipt-nsmooth:ipt]
-				xave[ipt] = use_points.mean()
-				xrms[ipt] = use_points.std()
-			for ipt in range(nsmooth):
-				xave[ipt] = 0.0
-				xrms[ipt] = 0.0
-			dfObj['dv' + str(ix)+'ave'] = xave
-			dfObj['dv'+str(ix)+"rms"] = xrms
 		# Graph for score vs iteration
 		fig, ax = plt.subplots(figsize=(15,4))
 		ax.set_title("Score Values vs Iteration")
