@@ -1,2 +1,0 @@
-2020-06-23 20:05:24,876 - pyswarms.single.global_best - INFO - Optimize for 100 iters with {'c1': 0.5, 'c2': 0.7, 'w': 0.85}
-2020-06-23 20:05:25,351 - pyswarms.single.global_best - INFO - Optimization Finished | Best Cost: 0.2336864599509977, Best Position: [1.12763269 1.31818127]
