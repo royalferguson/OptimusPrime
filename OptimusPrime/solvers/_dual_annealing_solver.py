@@ -34,5 +34,6 @@ class DualAnnealingSolver(BaseSolver):
 
 	def log_data(self, x, f, accept):
 		s = pd.Series([x,f], index=['dv','score'])
+		s.add_to_pickle('optimization_data.pkl')
 		self.intermitentData=self.intermitentData.append(s, ignore_index=True)
 		

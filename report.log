@@ -421,3 +421,13 @@
 2020-06-22 18:05:35,079 - pyswarms.single.global_best - INFO - Optimization Finished | Best Cost: 3.5135162631182766, Best Position: [ 0.90926245 -0.97134914]
 2020-06-22 18:06:35,413 - numexpr.utils - INFO - NumExpr defaulting to 4 threads.
 2020-06-23 12:44:54,007 - numexpr.utils - INFO - NumExpr defaulting to 4 threads.
+2020-06-23 19:26:53,506 - pyswarms.backend.generators - ERROR - Bounds and/or init_pos should be of size (10,)
+Traceback (most recent call last):
+  File "C:\Users\Omar\AppData\Local\Programs\Python\Python36\lib\site-packages\pyswarms-1.1.0-py3.6.egg\pyswarms\backend\generators.py", line 65, in generate_swarm
+    np.all(bounds[0] <= init_pos) and np.all(init_pos <= bounds[1])
+ValueError: operands could not be broadcast together with shapes (2,) (2,10) 
+2020-06-23 19:27:17,557 - pyswarms.backend.generators - ERROR - Bounds and/or init_pos should be of size (2,)
+Traceback (most recent call last):
+  File "C:\Users\Omar\AppData\Local\Programs\Python\Python36\lib\site-packages\pyswarms-1.1.0-py3.6.egg\pyswarms\backend\generators.py", line 67, in generate_swarm
+    raise ValueError("User-defined init_pos is out of bounds.")
+ValueError: User-defined init_pos is out of bounds.
