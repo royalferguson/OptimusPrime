@@ -15,6 +15,11 @@ default_solver_params_dict = {
 	'GlobalBestPSO' : {}
 }
 
+logger = logging.getLogger('optimus_logger')
+# Set logger output handler
+handler = logging.handlers.RotatingFileHandler('report.log', backupCount=1, mode='w')
+handler.setLevel(logging.DEBUG)
+logger.addHandler(handler)
 
 def get_default_params(solver_name):
 	return copy.deepcopy(default_solver_params_dict.get(solver_name))
@@ -38,14 +43,12 @@ def main(algo_wrapper, args, kwargs):
 	print('Optimize using: ' + args.solver)
 	print("args: ", args)
 	print("kwargs", kwargs)
-	#logger.info(fmt('info', 'Optimize using Solver: ', args.solver))
-
+	logger.info('info ' + 'Optimize using Solver: ' + str(args.solver) )
 	res = algo_wrapper.optimize(args, kwargs)
-
 	print("==================")
 	print(res)
 	print('Global Minimum:  x = ', *res['x'])
 	print('f(x0) = ', res['fun'])
-	#logger.info(fmt('info', 'Global Minimum occurs at: ', res['x']))
-	#logger.info(fmt('info', 'f(x0) = ', res['fun'] ))
+	logger.info( 'info ' + 'Global Minimum occurs at: ' + str(res['x']))
+	logger.info( 'info ' +' f(x0) = ' + str(res['fun']) )
 
