@@ -7,9 +7,12 @@ import numpy as np
 
 def get_random_x0(count, lower=0, upper=1):
 	variables=[]
-	for i in range (count):
-		variables.append(random.uniform(lower,upper))
-
+	if isinstance(count, tuple):
+		variables = np.random.uniform(lower, upper, (count[0], count[1]))
+	else:
+		for i in range (count):
+			variables.append(random.uniform(lower,upper))
+	variables = np.array(variables)
 	return variables
 
 if __name__=='__main__':

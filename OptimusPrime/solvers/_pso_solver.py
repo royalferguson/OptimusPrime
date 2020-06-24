@@ -81,7 +81,10 @@ class ParticleSwarmSolver(BaseSolver):
 					r = np.random.uniform(-10000, 10000, (diff, dimensions))
 					bounds = np.transpose(np.full((dimensions,2), (-10000, 10000)))
 				x0 = np.vstack( (x0,r))
+			else:
+				x0 = np.transpose(x0)
 		res= {}
+		print(x0.shape)
 		if x0 is None and bounds is None:
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
 		else:

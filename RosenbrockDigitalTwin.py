@@ -47,19 +47,19 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0(2,-5, 10),
-		'dimensions':2,
-		'bounds': np.full((2,2), (-5, 10)),
-		'maxiter':100,
-		'tol' : 0.1,
-		'n_particles':2,
+		'x0': utils.get_random_x0((10,10),-5, 5),
+		'dimensions':3,
+		'bounds': np.full((10,2), (-5, 5)),
+		'maxiter':4000,
+		'tol' : 0,
+		'n_particles':10,
 
-		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.85},
+		'options': {'c1':0.2,'c2': 0.6, 'w' : 0.95},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
-						'velocity_clamp' : (1,2),
+						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
-						'center' : 2,
-						'ftol' : 0.3
+						'center' : 1,
+						'ftol' : -np.inf
 						}
 		}
 	elif args.solver == 'differential_evolution':
