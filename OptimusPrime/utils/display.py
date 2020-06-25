@@ -27,7 +27,6 @@ class VisualizerDisplay(tk.Tk):
 		nsmooth = int(max([0.01*n_evals, 10]))
 		for ix in range(dfObj['length'][0]):
 			xvals = dfObj['dv'].str[ix].values
-			print(dfObj['dv'], xvals)
 			xave =np.zeros(len(xvals))
 			xrms = np.zeros(len(xvals))
 			for ipt in range(nsmooth,len(xvals)):
@@ -490,14 +489,13 @@ class PageSeven(tk.Frame):
 
 		for ix in range(dfObj['length'][0]):
 			x.append(dfObj.index)
-			y.append(np.zeros(len(dfObj)) *[ix] + 0.1*(20)/(6))
-			color.append(dfObj['dv'].str[ix])
+			y.append(np.zeros(len(dfObj)) + [ix] + 0.1*(20)/(6))
+			color.append(dfObj['dv' + str(ix) + 'ave'])
 
 		for axis in [ax.xaxis, ax.yaxis]:
 			axis.set_major_locator(ticker.MaxNLocator(integer=True))
 
 		im = ax.scatter(x, y, c=color, s=100, cmap=plt.cm.nipy_spectral, alpha=0.8, edgecolors='none', rasterized=True)
-
 		ax.set_ylim(-0.4, 20-0.4)
 		ax.set_title('DV-AVE Values at each Iteration - Smoothed')
 		ax.set_xlabel('Iteration Number')
