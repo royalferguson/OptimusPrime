@@ -27,6 +27,7 @@ class VisualizerDisplay(tk.Tk):
 		nsmooth = int(max([0.01*n_evals, 10]))
 		for ix in range(dfObj['length'][0]):
 			xvals = dfObj['dv'].str[ix].values
+			print(dfObj['dv'], xvals)
 			xave =np.zeros(len(xvals))
 			xrms = np.zeros(len(xvals))
 			for ipt in range(nsmooth,len(xvals)):
@@ -239,6 +240,10 @@ class PageThree(tk.Frame):
 
 		# Graph for score vs iteration
 		fig, ax = plt.subplots(figsize=(15,4))
+		for ix in range(dfObj['length'][0]):
+			dfObj['dv'].map(lambda x: x[ix]).plot(label="DV "+str(ix),alpha=0.3, figsize=(8,6), rasterized=True)
+
+		ax.legend(loc="upper right")	
 		ax.set_title("DV Values vs Evaluation")
 		ax.set_xlabel("Iteration Number")
 		ax.set_ylabel("DV Value")

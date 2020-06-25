@@ -13,7 +13,6 @@ from pyswarms.utils.plotters.formatters import Mesher, Designer
 _='''
 pyswarms:  Objective function signature is f(x, **kwargs) -> numpy.ndarray(n_particles)
 		   where x is a numpy.ndarray set of inputs shape(n_particles, dimensions).
-
 scipy:     Objective function signature is f(x, *args) -> float
 		   where x is 1-d array set of inputs of shape (n,) where n is the dimensions.
 '''

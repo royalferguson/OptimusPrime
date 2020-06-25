@@ -29,8 +29,8 @@ if __name__ == '__main__':
 			return
 
 		kwargs = {
-		'x0': utils.get_random_x0(10,-500, 1000),
-		'niter':1000,
+		'x0': utils.get_random_x0(50,-5, 10),
+		'niter':10000,
 		'T': 0.2,
 		'stepsize':0.65,
 		'minimizer_kwargs': {
@@ -47,11 +47,10 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((10,10),-5, 5),
+		'x0': np.full((3,10),0.0),
 		'dimensions':3,
-		'bounds': np.full((10,2), (-5, 5)),
-		'maxiter':4000,
-		'tol' : 0,
+		'bounds': np.full((3,2), (-5, 5)),
+		'maxiter':1000,
 		'n_particles':10,
 
 		'options': {'c1':0.2,'c2': 0.6, 'w' : 0.95},
@@ -59,7 +58,7 @@ if __name__ == '__main__':
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1,
-						'ftol' : -np.inf
+						'ftol' : 0.1
 						}
 		}
 	elif args.solver == 'differential_evolution':
@@ -68,10 +67,10 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
-		'bounds':np.full((10,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0(50,-5, 10),
+		'bounds':np.full((50,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
-		'maxiter':5,
+		'maxiter':1000,
 		'callback':callback_,
 		'popsize':10,
 		'tol':1e-10,
@@ -90,15 +89,15 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
-		'bounds':np.full((10,2), (-5.0, 10.0)),
-		'tol': 10,
+		'x0': utils.get_random_x0(50,-5, 10),
+		'bounds':np.full((50,2), (-5.0, 10.0)),
+		'tol': 1e-15,
 		'initial_temp': 0.5,
-		'maxiter':5,
+		'maxiter':1000,
 		'restart_temp_ratio':0.5,
 		'visit':2,
 		'accept':-6.0,
-		'maxfun': 1000,
+		'maxfun': 1000000,
 		'no_local_search': False,
 		'seed': 20
 		}
@@ -108,14 +107,14 @@ if __name__ == '__main__':
 			print("custom callback for nelder-mead")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
+		'x0': utils.get_random_x0(50,-5, 10),
 		'method': 'nelder-mead',
-		'tol': 0.1,
+		'tol': 1e-15,
 		'callback':callback_,
+		'maxiter':100000,
 		'options': {
 			'disp':0,
-			'maxiter':2,
-			'maxfev':1000,
+			'maxfev':None,
 			'return_all':False,
 			'xatol':0.1, # Currently doesn't work
 			'fatol':0.1, # Currently doesn't work
@@ -129,18 +128,18 @@ if __name__ == '__main__':
 			print("custom callback for powell")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
+		'x0': utils.get_random_x0(50,-5, 10),
 		'method': 'powell',
-		'tol': 0.1,
-		'bounds': np.full((10,2), (-5.0, 10.0)),
+		'tol': 1e-15,
+		'bounds': np.full((50,2), (-5.0, 10.0)),
 		'callback':callback_,
+		'maxiter':1000,
 		'options': {
 			'disp':0,
-			'maxiter':2,
-			'maxfev':1000,
+			'maxfev':10000,
 			'return_all':False,
-			'xtol':0.1, 
-			'ftol':0.1
+			'xtol':1e-15, 
+			'ftol':1e-15
 		}
 
 		}
@@ -150,15 +149,15 @@ if __name__ == '__main__':
 			print("custom callback for cobyla")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
+		'x0': utils.get_random_x0(50,-5, 10),
 		'method': 'cobyla',
+		'maxiter':1000000,
 		'callback':callback_,
 		'options': {
 			'disp':0,
-			'maxiter':1000,
-			'rhoberg':2,
-			'catol':0.0001,
-			'tol':0.0001
+			'rhoberg':1.0,
+			'catol':1e-15,
+			'tol':1e-15
 		}
 
 		}
@@ -168,19 +167,19 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(10,-5, 10),
+		'x0': utils.get_random_x0(50,-5, 10),
 		'method': 'l-bfgs-b',
 		'jac':None,
-		'bounds': np.full((10,2), (-5.0, 10.0)),
+		'bounds': np.full((50,2), (-5.0, 10.0)),
+		'maxiter':10000,
 		'callback':callback_,
 		'options': {
 			'disp':0,
 			'maxcor':100,
-			'ftol':0.0001,
-			'gtol':0.0001,
+			'ftol':1e-15,
+			'gtol':1e-15,
 			'eps':0.1,
-			'maxfun':1000,
-			'maxiter':2,
+			'maxfun':10000,
 			'maxls':10,
 			'finite_diff_rel_step':None
 		}
