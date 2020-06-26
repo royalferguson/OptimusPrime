@@ -16,11 +16,12 @@ class AlgoDigitalTwin():
 		self.optimizer.set_solver(args.solver)
 		self.optimizer.update_solver_params(args.solver, kwargs)
 
+		'''
 		print("In AlgoDigitalTwin: ")
 		for key, value in kwargs.items():
 			print("%s == %s" % (key,value) )
-
 		print("kwargs: ", kwargs)
-
+		'''
+		
 		return self.optimizer.solve()
 
