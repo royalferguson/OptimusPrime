@@ -3,6 +3,7 @@ from OptimusPrime.utils.functions.single_obj import rosenbrock
 import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
+import pandas as pd
 import argparse, sys
 import os
 
@@ -22,34 +23,179 @@ if __name__ == '__main__':
 		os.remove('optimization_data.pkl')
 	# for basinhopping
 	if args.solver == 'basinhopping':
-
+		intermitentData = pd.DataFrame(columns=['solver','#DV','T', 'stepsize','interval','niter_limit', 'niter_success', 'tol','fun','niter','nfev'])
+		Ts = [0.1,0.5,1.5]
+		stepsizes = [0.2,0.4,0.6]
+		intervals = [35,65,45]
+		niter_successes = [1,5,10]
+		niters = [100,3000,10000]
+		tols = [0.1,1e-5,1e-10]
 		def callback_(x,f,accept):
 			print("custom callback for basinhopping")
 			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
 			return
-
+		T = 1.0
+		niter = 1000
+		tol = 1e-15
+		niter_success = None
+		stepsize = 0.5
+		interval = 50
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
-		'niter':10000,
-		'T': 0.2,
-		'stepsize':0.65,
+		'x0': [7.49765356,  2.80304508,  8.43095363, -0.99048342,  2.10733416,
+        8.3196306 , -0.3348544 ,  5.59323437,  3.38826839,  7.90740441,
+        4.2364616 , -2.79102244, -4.80551047, -0.51906156,  2.07349191,
+       -1.9777224 ,  3.69346114, -0.14598644, -1.40516507,  2.24830503,
+        9.45673335, -3.14701178,  2.98622262,  4.57647219, -0.99854946,
+        8.34162379,  9.80291482,  2.44753073,  5.62414469,  5.89917864,
+        9.62844113,  7.38993873,  5.32779454,  8.66265065, -1.41528414,
+        6.38647093,  0.59250018,  9.80528147,  1.37172202,  7.20986853,
+        5.43097582, -0.73761008,  2.18340814,  6.08281799,  8.59424905,
+       -1.19962718, -4.30147441, -1.48424773,  0.50599313,  7.08440865],
+		'niter':niter,
+		'T': T,
+		'stepsize':stepsize,
 		'minimizer_kwargs': {
 			'method':'BFGS'
 		},
-		'interval':2,
+		'interval':interval,
 		'disp':0,
-		'tol': 1e-15,
-		'niter_success':10,
+		'tol': tol,
+		'niter_success':niter_success,
 		'accept_test': None,
 		'take_step': None,
 		'seed': 20
 		}
+		app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
+		intermitentData= intermitentData.append(
+				{
+				'solver':'basinhopping',
+				'#DV': 50,
+				'T':kwargs['T'],
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'tol': kwargs['tol'],
+				'fun': app.fun,
+				'niter_success': kwargs['niter_success'],
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
 
+		for i in niters:
+			kwargs.update({'niter':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'tol': kwargs['tol'],
+				'fun': app.fun,
+				'niter_success': kwargs['niter_success'],
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'niter':1000})
+
+		for i in Ts:
+			kwargs.update({'T':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'tol': kwargs['tol'],
+				'niter_success': kwargs['niter_success'],
+				'fun': app.fun,
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'T':1.0})
+
+		for i in stepsizes:
+			kwargs.update({'stepsize':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'tol': kwargs['tol'],
+				'niter_success': kwargs['niter_success'],
+				'fun': app.fun,
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'stepsize':0.5})
+
+		for i in intervals:
+			kwargs.update({'interval':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'niter_success': kwargs['niter_success'],
+				'tol': kwargs['tol'],
+				'fun': app.fun,
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'interval':50})
+		
+		for i in niter_successes:
+			kwargs.update({'niter_success':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'tol': kwargs['tol'],
+				'niter_success': kwargs['niter_success'],
+				'fun': app.fun,
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'niter_success':None})
+
+		for i in tols:
+			kwargs.update({'tol':i})
+			app = cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+			intermitentData= intermitentData.append(
+				{'T':kwargs['T'],
+				'solver':'basinhopping',
+				'#DV': 50,
+				'stepsize':kwargs['stepsize'],
+				'interval': kwargs['interval'],
+				'niter_limit': kwargs['niter'],
+				'niter_success': kwargs['niter_success'],
+				'tol': kwargs['tol'],
+				'fun': app.fun,
+				'niter': app.nit,
+				'nfev': app.nfev
+				}, ignore_index=True)
+		kwargs.update({'tol':1e-15})
+
+		intermitentData.to_csv('data.csv')
+		
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': np.full((3,10),0.0),
-		'dimensions':3,
-		'bounds': np.full((3,2), (-5, 5)),
+		'x0': np.full((20,10),0.0),
+		'dimensions':20,
+		'bounds': np.full((20,2), (-5, 10)),
 		'maxiter':1000,
 		'n_particles':10,
 
@@ -58,7 +204,8 @@ if __name__ == '__main__':
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1,
-						'ftol' : 0.1
+						#'ftol' : 0.1
+						'ftol' : -np.inf
 						}
 		}
 	elif args.solver == 'differential_evolution':
@@ -67,11 +214,11 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
-		'bounds':np.full((50,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
-		'maxiter':1000,
-		'callback':callback_,
+		'maxiter':10,
+		#'callback':callback_,
 		'popsize':10,
 		'tol':1e-10,
 		'mutation':1.5,
@@ -80,7 +227,8 @@ if __name__ == '__main__':
 		'atol': 0.1,
 		'seed': 20,
 		'updating':'immediate',
-		'workers':5
+		#'workers':5
+		'workers': 1
 		}
 
 	elif args.solver == 'dual_annealing':
@@ -97,7 +245,7 @@ if __name__ == '__main__':
 		'restart_temp_ratio':0.5,
 		'visit':2,
 		'accept':-6.0,
-		'maxfun': 1000000,
+		'maxfun': 10000,
 		'no_local_search': False,
 		'seed': 20
 		}
@@ -141,7 +289,6 @@ if __name__ == '__main__':
 			'xtol':1e-15, 
 			'ftol':1e-15
 		}
-
 		}
 
 	elif args.solver == 'cobyla':

@@ -51,4 +51,5 @@ def main(algo_wrapper, args, kwargs):
 	print('f(x0) = ', res['fun'])
 	logger.info( 'info ' + 'Global Minimum occurs at: ' + str(res['x']))
 	logger.info( 'info ' +' f(x0) = ' + str(res['fun']) )
+	return res
 
