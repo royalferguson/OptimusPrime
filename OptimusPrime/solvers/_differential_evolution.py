@@ -3,31 +3,42 @@ from scipy.optimize import differential_evolution
 import numpy as np 
 import pandas as pd
 import seaborn as sb 
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from OptimusPrime.logger import *
+
+def _objective_function(func, log_cb=None):
+	def func_wrapper(x, *args):
+		score = func(x, *args)
+		if log_cb:
+			log_cb(x, score)
+		return score
+	return func_wrapper
 
 class DifferentialEvolutionSolver(BaseSolver):
 	def __init__(self):
+		super().__init__()
 		self.intermitentData = pd.DataFrame()
-		pass
 
-	def solve(self, fun, maxiter = 1000, **kwargs):
+	def solve(self, fun, **kwargs):
 		self.fun = fun
 		if 'x0' in kwargs:
-			m=len( kwargs['x0']) * kwargs['popsize']
-			if np.shape( kwargs['x0']) != (m, len( kwargs['x0'])):
+			x0  =  kwargs.pop('x0')
+			popsize = kwargs.get('popsize', 15)  # get from kwargs or use scipy default
+
+			m=len(x0) * kwargs['popsize']
+			if np.shape(x0) != (m, len( x0)):
 				#  If x0 does not have shape of (m, len(x0)) - revert to latinhypercube
 				#  Where m is the #population * the number of decision variables
-				 kwargs['x0']='latinhypercube'
-			kwargs['init']  =  kwargs.pop('x0')
-		kwargs['maxiter'] = maxiter
-		kwargs['callback'] = self.callback
-		return differential_evolution(fun, **kwargs)
+				x0='latinhypercube'
+				#logger.warning(fmt('warning', 'initial population array does not have shape (m,len(x0))  defaulting to latinhypercube'))
+			kwargs.update({'init' : x0})
+		objective_func = _objective_function(fun, log_cb=self.log_data)
+		return differential_evolution(objective_func, **kwargs)
 
 
-	def callback(self, xk, convergence=None):
-		self.log_intermediate_data(xk)
+	def log_data(self, xk, f):
 		s = pd.Series([xk,self.fun(xk)], index=['dv','score'])
 		s.add_to_pickle('optimization_data.pkl')
+		self.intermitentData = self.intermitentData.append(s, ignore_index=True)
+		logger.data(s.to_json()) 
 
-	def log_intermediate_data(self, xk):
-		pass

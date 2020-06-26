@@ -186,8 +186,10 @@ class PageTwo(tk.Frame):
 		ax.set_title("Log(ScoreValues) vs Iteration")
 		ax.set_xlabel("Iteration Number")
 		ax.set_ylabel("Score")
-		OF_max = np.log(dfObj["score"].max())
-		np.log(dfObj['score']).plot(figsize=(8,6), ylim=(0, OF_max*1.5), rasterized=True)
+
+		OF_max = np.log10(dfObj["score"].max())
+		OF_min = np.log10(dfObj["score"].min())
+		np.log10(dfObj['score']).plot(figsize=(8,6), ylim=(OF_min*1.5, OF_max*1.5), rasterized=True)
 
 		canvas=FigureCanvasTkAgg(fig, self)
 		canvas.draw()

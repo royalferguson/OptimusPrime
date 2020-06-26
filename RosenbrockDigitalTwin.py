@@ -29,8 +29,8 @@ if __name__ == '__main__':
 			return
 
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
-		'niter':10000,
+		'x0': utils.get_random_x0(20,-5, 10),
+		'niter':1000,
 		'T': 0.2,
 		'stepsize':0.65,
 		'minimizer_kwargs': {
@@ -47,9 +47,9 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': np.full((3,10),0.0),
-		'dimensions':3,
-		'bounds': np.full((3,2), (-5, 5)),
+		'x0': np.full((20,10),0.0),
+		'dimensions':20,
+		'bounds': np.full((20,2), (-5, 10)),
 		'maxiter':1000,
 		'n_particles':10,
 
@@ -58,7 +58,8 @@ if __name__ == '__main__':
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1,
-						'ftol' : 0.1
+						#'ftol' : 0.1
+						'ftol' : -np.inf
 						}
 		}
 	elif args.solver == 'differential_evolution':
@@ -67,11 +68,11 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
-		'bounds':np.full((50,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
-		'maxiter':1000,
-		'callback':callback_,
+		'maxiter':10,
+		#'callback':callback_,
 		'popsize':10,
 		'tol':1e-10,
 		'mutation':1.5,
@@ -80,7 +81,8 @@ if __name__ == '__main__':
 		'atol': 0.1,
 		'seed': 20,
 		'updating':'immediate',
-		'workers':5
+		#'workers':5
+		'workers': 1
 		}
 
 	elif args.solver == 'dual_annealing':
@@ -97,7 +99,7 @@ if __name__ == '__main__':
 		'restart_temp_ratio':0.5,
 		'visit':2,
 		'accept':-6.0,
-		'maxfun': 1000000,
+		'maxfun': 10000,
 		'no_local_search': False,
 		'seed': 20
 		}
@@ -141,7 +143,6 @@ if __name__ == '__main__':
 			'xtol':1e-15, 
 			'ftol':1e-15
 		}
-
 		}
 
 	elif args.solver == 'cobyla':
