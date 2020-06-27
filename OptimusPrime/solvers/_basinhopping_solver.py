@@ -10,7 +10,8 @@ def _objective_function(func, log_cb=None):
 	def func_wrapper(x, *args):
 		score = func(x, *args)
 		if log_cb:
-			log_cb(x, score)
+			#log_cb(x, score)
+			pass
 		return score
 	return func_wrapper
 
