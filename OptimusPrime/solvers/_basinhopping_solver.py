@@ -25,7 +25,7 @@ class BasinhoppingSolver(BaseSolver):
 			self.tol = kwargs.pop('tol')
 		kwargs.update({'niter' : niter})
 		kwargs.update({'callback' : self.callback})
-		objective_func = _objective_function(fun, log_cb=self.pickle_data)
+		objective_func = _objective_function(fun, log_cb=None)
 		return basinhopping(objective_func, **kwargs)
 
 	def callback(self, xk, f, accept):
@@ -38,7 +38,7 @@ class BasinhoppingSolver(BaseSolver):
 		if self.tol is not None:
 			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
 				print("The last two entries are: ====================")
-				print(self.intermitentData.tail(2))
+				print(self.intermitentData.tail(4))
 				return True
 		return False
 
