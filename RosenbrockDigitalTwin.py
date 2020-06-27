@@ -23,13 +23,6 @@ if __name__ == '__main__':
 		os.remove('optimization_data.pkl')
 	# for basinhopping
 	if args.solver == 'basinhopping':
-		intermitentData = pd.DataFrame(columns=['solver','#DV','T', 'stepsize','interval','niter_limit', 'niter_success', 'tol','fun','niter','nfev'])
-		Ts = [0.1,0.5,1.5]
-		stepsizes = [0.2,0.4,0.6]
-		intervals = [35,65,45]
-		niter_successes = [1,5,10]
-		niters = [100,3000,10000]
-		tols = [0.1,1e-5,1e-10]
 		def callback_(x,f,accept):
 			print("custom callback for basinhopping")
 			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
@@ -41,19 +34,7 @@ if __name__ == '__main__':
 		stepsize = 0.5
 		interval = 50
 		kwargs = {
-		'x0': [-1.20555903e+00,  8.06886731e+00,  1.80761651e+00, -1.80190222e+00,
-        9.14880298e+00, -4.66194875e+00, -1.99590416e+00,  1.71159707e+00,
-        1.07142336e-01,  1.83666663e-01,  7.59412648e+00,  8.48575960e+00,
-       -3.53197590e+00,  8.80976715e+00,  5.64708694e+00, -1.20210846e+00,
-       -8.74750428e-01,  3.23924235e+00, -1.33689728e+00, -2.84890299e+00,
-        6.32299907e+00,  5.33677456e+00,  6.65634924e+00,  3.76505176e+00,
-       -2.30612880e+00,  4.59291716e+00, -4.57376326e+00, -3.42323031e+00,
-        6.46603361e+00,  9.95147261e+00, -1.17810147e+00,  3.83084675e+00,
-       -4.36706587e+00,  4.01634555e+00, -1.37749835e+00,  6.77345122e+00,
-        3.44564212e-01,  8.41233930e+00,  1.71008261e+00, -4.81677489e+00,
-       -2.36070242e+00, -2.96759374e+00,  2.93200910e+00,  7.91530059e-03,
-       -4.29614946e-01,  9.00004519e+00, -1.66743106e-01,  7.07285525e+00,
-       -3.33467345e+00,  2.24253078e+00],
+		'x0': utils.get_random_x0(50,-5, 10),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
@@ -67,151 +48,6 @@ if __name__ == '__main__':
 		'accept_test': None,
 		'take_step': None,
 		'seed': 20
-		}
-		app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-		intermitentData = intermitentData.append({
-			'T':kwargs['T'],
-			'interval':kwargs['interval'],
-			'niter_success':kwargs['niter_success'],
-			'tol':kwargs['tol'],
-			'stepsize':kwargs['stepsize'],
-			'niter_limit':kwargs['niter'],
-			'fun': app.fun,
-			'niter':app.nit,
-			'nfev': app.nfev
-		},ignore_index=True
-		)
-		for i in Ts:
-			kwargs.update({'T':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'T':T})
-
-		for i in intervals:
-			kwargs.update({'interval':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'interval':interval})
-
-		for i in stepsizes:
-			kwargs.update({'stepsize':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'stepsize':stepsize})
-
-		for i in niter_successes:
-			kwargs.update({'niter_success':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'niter_success':niter_success})
-
-		for i in niters:
-			kwargs.update({'niter':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'niter':niter})
-
-		for i in tols:
-			kwargs.update({'tol':i})
-			app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
-			intermitentData = intermitentData.append({
-				'solver':'basinhopping',
-				'#DV':50,
-				'T':kwargs['T'],
-				'interval':kwargs['interval'],
-				'niter_success':kwargs['niter_success'],
-				'tol':kwargs['tol'],
-				'stepsize':kwargs['stepsize'],
-				'niter_limit':kwargs['niter'],
-				'fun': app.fun,
-				'niter':app.nit,
-				'nfev': app.nfev
-			},ignore_index=True
-			)
-		kwargs.update({'tol':tol})
-		intermitentData.to_csv('data.csv')
-	
-	elif args.solver == 'GlobalBestPSO':
-		kwargs = {
-		'x0': np.full((20,10),0.0),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5, 10)),
-		'maxiter':1000,
-		'n_particles':10,
-
-		'options': {'c1':0.2,'c2': 0.6, 'w' : 0.95},
-		'pso_kwargs': {'bh_strategy' : 'periodic',
-						'velocity_clamp' : None,
-						'vh_strategy' : 'unmodified',
-						'center' : 1,
-						#'ftol' : 0.1
-						'ftol' : -np.inf
-						}
 		}
 	elif args.solver == 'differential_evolution':
 		def callback_(x,convergence=2):

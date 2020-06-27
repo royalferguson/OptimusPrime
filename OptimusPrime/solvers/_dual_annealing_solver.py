@@ -28,7 +28,7 @@ class DualAnnealingSolver(BaseSolver):
 		return dual_annealing(objective_func, **kwargs)
 
 	def callback(self, xk, f, accept):
-		#self.log_data(xk, f, accept)
+		self.log_data(xk, f, accept)
 		if self.check_tolerance():
 			return True
 		return False

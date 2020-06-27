@@ -5,7 +5,8 @@ import copy
 
 class Optimus():
 
-	solver_dict={
+	def __init__(self):
+		self.solver_dict={
 	'nelder-mead' : MinimizeSolver(),
 	'l-bfgs-b' : MinimizeSolver(),
 	'powell' : MinimizeSolver(),
@@ -15,8 +16,6 @@ class Optimus():
 	'dual_annealing' : DualAnnealingSolver(),
 	'differential_evolution' : DifferentialEvolutionSolver()
 	}
-
-	def __init__(self):
 		self.solver_params_dict = copy.deepcopy(cfg.default_solver_params_dict)
 		self.solver_name='basinhopping'
 		self.objective_function = None
