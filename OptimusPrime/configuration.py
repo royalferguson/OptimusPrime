@@ -45,10 +45,11 @@ def main(algo_wrapper, args, kwargs):
 	#print("kwargs", kwargs)
 	logger.info('info ' + 'Optimize using Solver: ' + str(args.solver) )
 	res = algo_wrapper.optimize(args, kwargs)
-	print("==================")
+	print(res.nit)
+	"""print("==================")
 	print(res)
 	print('Global Minimum:  x = ', *res['x'])
-	print('f(x0) = ', res['fun'])
+	print('f(x0) = ', res['fun'])"""
 	logger.info( 'info ' + 'Global Minimum occurs at: ' + str(res['x']))
 	logger.info( 'info ' +' f(x0) = ' + str(res['fun']) )
 	return res

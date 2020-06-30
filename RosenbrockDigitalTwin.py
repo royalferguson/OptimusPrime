@@ -29,7 +29,7 @@ if __name__ == '__main__':
 			return
 		T = 1.0
 		niter = 1000
-		tol = 1e-5
+		tol = 1e-12
 		niter_success = None
 		stepsize = 0.4
 		interval = 50
