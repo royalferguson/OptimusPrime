@@ -173,6 +173,24 @@ if __name__ == '__main__':
 		}
 
 		}
+	elif args.solver == 'GlobalBestPSO':
+		kwargs = {
+		'x0': utils.get_random_x0((20,100), -5, 10),
+		'dimensions':20,
+		'bounds': np.full((20,2), (-5, 10)),
+		'maxiter':3000,
+		'tol' : 0.1,
+		'n_particles':100,
+
+		'options': {'c1':0.2,'c2': 0.6, 'w' : 0.95},
+		'pso_kwargs': {'bh_strategy' : 'random',	# random or periodic
+						'velocity_clamp' : None,
+						'vh_strategy' : 'unmodified',
+						'center' : 2,
+						'ftol' : -np.inf
+						}
+		}
+
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
