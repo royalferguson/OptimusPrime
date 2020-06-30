@@ -23,12 +23,24 @@ class DifferentialEvolutionSolver(BaseSolver):
 		self.fun = fun
 		if 'x0' in kwargs:
 			x0  =  kwargs.pop('x0')
-			popsize = kwargs.get('popsize', 15)  # get from kwargs or use scipy default
 
-			m=len(x0) * kwargs['popsize']
-			if np.shape(x0) != (m, len( x0)):
+
+
+			m = kwargs.get('popsize', 15)  # get from kwargs or use scipy default
+			popsize= kwargs['popsize']
+			len_x0 = len(x0)
+
+			print("x0 len:  ", len_x0)
+			print("popsize: ", popsize)
+			print("m:  ", m)
+			print("np.shape: ", np.shape(x0))
+			x0=x0.transpose()
+			print("transpose np.shape: ", np.shape(x0))
+
+			if np.shape(x0) != (m, len_x0):
 				#  If x0 does not have shape of (m, len(x0)) - revert to latinhypercube
 				#  Where m is the #population * the number of decision variables
+				print('reverting to latinhypercube')
 				x0='latinhypercube'
 				#logger.warning(fmt('warning', 'initial population array does not have shape (m,len(x0))  defaulting to latinhypercube'))
 			kwargs.update({'init' : x0})

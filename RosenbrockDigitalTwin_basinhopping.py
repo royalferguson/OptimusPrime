@@ -69,6 +69,8 @@ if __name__ == '__main__':
 	app = (cfg.main(RosenbrockDigitalTwin(), args, kwargs))
 	intermitentData = intermitentData.append({'solver':'-------------------Default Parameters----------------',},ignore_index=True)
 	intermitentData = intermitentData.append({
+		'solver':'basinhopping',
+		'#DV':50,
 		'T':kwargs['T'],
 		'interval':kwargs['interval'],
 		'niter_success':kwargs['niter_success'],
