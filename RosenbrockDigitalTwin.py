@@ -34,7 +34,7 @@ if __name__ == '__main__':
 		stepsize = 0.4
 		interval = 50
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
@@ -55,8 +55,8 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0((50,20),-5, 10),
-		'bounds':np.full((50,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0((20,20),-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
 		'maxiter':10,
 		#'callback':callback_,
@@ -78,8 +78,8 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
-		'bounds':np.full((50,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
 		'maxiter':1000,
@@ -117,10 +117,10 @@ if __name__ == '__main__':
 			print("custom callback for powell")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'powell',
 		'tol': 1e-10,
-		'bounds': np.full((50,2), (-5.0, 10.0)),
+		'bounds': np.full((20,2), (-5.0, 10.0)),
 		'callback':callback_,
 		'maxiter':1000,
 		'options': {
@@ -137,7 +137,7 @@ if __name__ == '__main__':
 			print("custom callback for cobyla")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'cobyla',
 		'maxiter':1000000,
 		'callback':callback_,
@@ -155,10 +155,10 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'l-bfgs-b',
 		'jac':None,
-		'bounds': np.full((50,2), (-5.0, 10.0)),
+		'bounds': np.full((20,2), (-5.0, 10.0)),
 		'maxiter':10000,
 		'callback':callback_,
 		'options': {
@@ -175,18 +175,18 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((50,650), -5, 10),
-		'dimensions':50,
-		'bounds': np.full((50,2), (-5, 10)),
-		'maxiter':2300,
-		'n_particles':650,
+		'x0': utils.get_random_x0((20,220), -5, 10),
+		'dimensions':20,
+		'bounds': np.full((20,2), (-5, 10)),
+		'maxiter':3500,
+		'n_particles':220,
 
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1.0,
-						'ftol' : 1e-15
+						'ftol' : 1e-10
 						}
 		}
 
