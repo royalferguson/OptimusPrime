@@ -31,7 +31,7 @@ if __name__ == '__main__':
 		niter = 1000
 		tol = 1e-5
 		niter_success = None
-		stepsize = 0.5
+		stepsize = 0.4
 		interval = 50
 		kwargs = {
 		'x0': utils.get_random_x0(50,-5, 10),
@@ -55,14 +55,14 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0((20,10),-5, 10),
-		'bounds':np.full((20,2), (-5.0, 10.0)),
+		'x0': utils.get_random_x0((50,20),-5, 10),
+		'bounds':np.full((50,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
 		'maxiter':10,
 		#'callback':callback_,
-		'popsize':10,
+		'popsize':20,
 		'tol':1e-10,
-		'mutation':1.5,
+		'mutation':0.5,
 		'recombination': 0.5,
 		'polish': True,
 		'atol': 0.1,
@@ -81,11 +81,11 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0(50,-5, 10),
 		'bounds':np.full((50,2), (-5.0, 10.0)),
 		'tol': 1e-15,
-		'initial_temp': 0.5,
+		'initial_temp': 5230,
 		'maxiter':1000,
-		'restart_temp_ratio':0.5,
-		'visit':2,
-		'accept':-6.0,
+		'restart_temp_ratio':2e-5,
+		'visit':2.62,
+		'accept':-2.0,
 		'maxfun': 10000,
 		'no_local_search': False,
 		'seed': 20
@@ -96,7 +96,7 @@ if __name__ == '__main__':
 			print("custom callback for nelder-mead")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(50,-5, 10),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'nelder-mead',
 		'tol': 1e-15,
 		'callback':callback_,
@@ -107,7 +107,7 @@ if __name__ == '__main__':
 			'return_all':False,
 			'xatol':0.1, # Currently doesn't work
 			'fatol':0.1, # Currently doesn't work
-			'adaptive':True
+			'adaptive':False
 		}
 
 		}
@@ -119,7 +119,7 @@ if __name__ == '__main__':
 		kwargs = {
 		'x0': utils.get_random_x0(50,-5, 10),
 		'method': 'powell',
-		'tol': 1e-15,
+		'tol': 1e-10,
 		'bounds': np.full((50,2), (-5.0, 10.0)),
 		'callback':callback_,
 		'maxiter':1000,
@@ -127,8 +127,8 @@ if __name__ == '__main__':
 			'disp':0,
 			'maxfev':10000,
 			'return_all':False,
-			'xtol':1e-15, 
-			'ftol':1e-15
+			'xtol':1e-5, 
+			'ftol':1e-5
 		}
 		}
 
@@ -144,8 +144,8 @@ if __name__ == '__main__':
 		'options': {
 			'disp':0,
 			'rhoberg':1.0,
-			'catol':1e-15,
-			'tol':1e-15
+			'catol':1e-5,
+			'tol':1e-5
 		}
 
 		}
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 		'options': {
 			'disp':0,
 			'maxcor':100,
-			'ftol':1e-15,
+			'ftol':1e-11,
 			'gtol':1e-15,
 			'eps':0.1,
 			'maxfun':10000,
@@ -175,19 +175,18 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((20,100), -5, 10),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5, 10)),
-		'maxiter':3000,
-		'tol' : 0.1,
-		'n_particles':100,
+		'x0': utils.get_random_x0((50,650), -5, 10),
+		'dimensions':50,
+		'bounds': np.full((50,2), (-5, 10)),
+		'maxiter':2300,
+		'n_particles':650,
 
-		'options': {'c1':0.2,'c2': 0.6, 'w' : 0.95},
-		'pso_kwargs': {'bh_strategy' : 'random',	# random or periodic
+		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
+		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
-						'center' : 2,
-						'ftol' : -np.inf
+						'center' : 1.0,
+						'ftol' : 1e-15
 						}
 		}
 

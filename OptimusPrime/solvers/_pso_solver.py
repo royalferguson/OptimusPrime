@@ -90,7 +90,7 @@ class ParticleSwarmSolver(BaseSolver):
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0,  **pso_kwargs)
 
 		
-		objective_func = self.pso_objective_function(fun, log_cb= self.log_data, tol_cb=None)
+		objective_func = self.pso_objective_function(fun, log_cb= None, tol_cb=None)
 		best = optimizer.optimize(objective_func, maxiter, verbose = True, **fun_kwargs)
 
 		print("BEST:  ", best)
