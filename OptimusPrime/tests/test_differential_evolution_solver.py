@@ -25,11 +25,8 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 			self.callback_count = 0
 			self.obj_func_call_count = 0
 
-
-		def callback(self,xk, convergence = None):
+		def log_data(self,xk, convergence = None):
 			self.callback_count += 1
-			return False
-
 
 	def setUp(self):
 		self.UUT = self.DifferentialEvolutionSolverTestHelper()
