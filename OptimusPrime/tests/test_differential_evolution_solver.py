@@ -34,20 +34,21 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 		self.obj_func_call_count=0
 		self.x0 = [1.3, 0.7, 0.8, 1.9, 1.3, 8.3, 2.2, 0.3]
 		popsize = 20
-		x0 = np.array(popsize * x0).reshape(popsize, -1)
+		self.x0 = np.array([np.array(self.x0) for i in range(popsize*len(self.x0))])
 		self.kwargs = {
-			'x0' : x0,
+			'x0' : self.x0,
 			'bounds': np.full((8,2),(-10, 10)),
 			'popsize' : popsize,
+			'maxiter':10,
 			'tol' : 0
 		}
 
 
 	def test_default_call_count(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
-		self.assertEqual(res.nit, 1000)
+		self.assertEqual(res.nit, 10)
 		# Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 120120
-		self.assertTrue(self.obj_func_call_count <=120120)
+		self.assertTrue(self.obj_func_call_count <=1201)
 
 	def test_limited_call_count(self):
 		self.kwargs['maxiter'] = 1
