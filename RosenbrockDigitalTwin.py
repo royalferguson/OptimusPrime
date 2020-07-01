@@ -29,7 +29,7 @@ if __name__ == '__main__':
 			return
 		T = 1.0
 		niter = 1000
-		tol = 1e-5
+		tol = 1e-12
 		niter_success = None
 		stepsize = 0.4
 		interval = 50
@@ -176,11 +176,11 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((20,220), -5, 10),
+		'x0': utils.get_random_x0((20,400), -5, 10),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5, 10)),
 		'maxiter':3500,
-		'n_particles':220,
+		'n_particles':400,
 
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
