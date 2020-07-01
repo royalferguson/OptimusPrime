@@ -45,7 +45,7 @@ def main(algo_wrapper, args, kwargs):
 	#print("kwargs", kwargs)
 	logger.info('info ' + 'Optimize using Solver: ' + str(args.solver) )
 	res = algo_wrapper.optimize(args, kwargs)
-	print(res.nit)
+	print(res)
 	"""print("==================")
 	print(res)
 	print('Global Minimum:  x = ', *res['x'])

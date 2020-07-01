@@ -40,7 +40,7 @@ class BasinhoppingSolver(BaseSolver):
 
 	def check_tolerance(self):
 		if self.tol is not None:
-			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.lowest_so_far[1]) < self.tol:
+			if len(self.intermitentData) >= 2 and self.intermitentData.iloc[len(self.intermitentData)-1,1] != self.lowest_so_far[1] and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.lowest_so_far[1]) < self.tol:
 				print("The last two entries are: ====================")
 				print(self.lowest_so_far,self.intermitentData.tail(1))
 				print(self.intermitentData.tail(2))
