@@ -55,12 +55,13 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0((20,30),-5, 10),
+		'x0': utils.get_random_x0((25,20),-5, 10),
+		#'x0': utils.get_random_x0(20,-5, 10),
 		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
 		'maxiter':10,
 		#'callback':callback_,
-		'popsize':30,
+		'popsize':25,
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,

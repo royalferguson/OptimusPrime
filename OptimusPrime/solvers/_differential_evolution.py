@@ -23,6 +23,9 @@ class DifferentialEvolutionSolver(BaseSolver):
 		self.fun = fun
 		if 'x0' in kwargs:
 			x0  =  kwargs.pop('x0')
+
+			print("  x0  is ndim:  ", x0.ndim)
+
 			m = kwargs.get('popsize', 15)  # get from kwargs or use scipy default
 			popsize= kwargs['popsize']
 			len_x0 = len(x0)

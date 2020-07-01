@@ -1,6 +1,7 @@
 import unittest
 from OptimusPrime.solvers import DifferentialEvolutionSolver
 from OptimusPrime.utils.functions.single_obj import rosenbrock
+from scipy.optimize import OptimizeResult
 import numpy as np
 from numpy import cos, sin
 import pprint
@@ -21,60 +22,48 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 	class DifferentialEvolutionSolverTestHelper(DifferentialEvolutionSolver):
 		def __init__(self):
 			super().__init__()
-			self.callback_count=0
+			self.callback_count = 0
+			self.obj_func_call_count = 0
 
-		def callback(self,xk, convergence = 2):
+		def log_data(self,xk, convergence = None):
 			self.callback_count += 1
-			return False
-
 
 	def setUp(self):
 		self.UUT = self.DifferentialEvolutionSolverTestHelper()
-		self.kwargs = {
-			'bounds': np.full((8,2),(-10, 10))
-
-		}
 		self.obj_func = self.stub_obj_func
 		self.obj_func_call_count=0
-		self.seed = np.random.seed(1234)
+		self.x0 = [1.3, 0.7, 0.8, 1.9, 1.3, 8.3, 2.2, 0.3]
+		popsize = 20
+		x0 = np.array(popsize * x0).reshape(popsize, -1)
+		self.kwargs = {
+			'x0' : x0,
+			'bounds': np.full((8,2),(-10, 10)),
+			'popsize' : popsize,
+			'tol' : 0
+		}
+
 
 	def test_default_call_count(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
-		self.assertEqual(res.nit, 1000)   
-		self.assertTrue(self.obj_func_call_count >= 0)
+		self.assertEqual(res.nit, 1000)
+		# Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 120120
+		self.assertTrue(self.obj_func_call_count <=120120)
 
 	def test_limited_call_count(self):
-		kwargs = copy.deepcopy(self.kwargs)
-		kwargs['maxiter'] = 1
-		res = self.UUT.solve(self.obj_func,**kwargs)
+		self.kwargs['maxiter'] = 1
+		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		self.assertTrue(res.nit, 1)
-		# NO guaranteee to the number of evaluation calls
-		self.assertTrue(self.obj_func_call_count >= 0)
+		#  Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 240
+		self.assertEqual(self.obj_func_call_count, 240)
 
-	def test_callback(self):
-		kwargs = copy.deepcopy(self.kwargs)
-		kwargs['maxiter'] = 3
-		kwargs['callback'] = self.UUT.callback
-		self.UUT.solve(self.obj_func, **kwargs)
-		self.assertTrue(self.UUT.callback_count >= 1) # callback not mentioned when it should be called.
+	def test_solver_callback(self):
+		self.kwargs['maxiter'] = 15
+		self.UUT.solve(self.obj_func, **self.kwargs)
+		self.assertTrue(self.UUT.callback_count >= 2000)
 
-	def test_solution(self):
+	def test_solver_return(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
-		for i in range(8):
-			self.assertAlmostEqual(res.x[i],1,3)
-
-	
-	def test_x0_popsize(self):
-		try:
-			#This should fail and the except should be called.
-			kwargs = copy.deepcopy(self.kwargs)
-			kwargs['x0'] = np.full(8,0.12)
-			res = self.UUT.solve(self.obj_func, **kwargs)
-			assert False
-		except:
-			assert True
-
-	
+		self.assertIsInstance(res, OptimizeResult)
 
 if __name__ == '__main__':
 	unittest.main()
