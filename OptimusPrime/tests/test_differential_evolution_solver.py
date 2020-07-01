@@ -43,10 +43,9 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 			'tol' : 0
 		}
 
-
 	def test_default_call_count(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
-		self.assertEqual(res.nit, 10)
+		self.assertTrue(res.nit <= 10)
 		# Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 120120
 		self.assertTrue(self.obj_func_call_count <=1201)
 
