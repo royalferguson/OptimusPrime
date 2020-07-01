@@ -27,7 +27,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 				len_x0=x0.shape[1]
 			else: len_x0 = len(x0)
 
-			# A multiplier for setting the total population size. The population has popsize * len(x) individuals.
+			# popsize is a multiplier for setting the total population size. The population (m) has popsize * len(x) individuals.
 			popsize= (kwargs.get('popsize', 15)
 			m = (kwargs.get('popsize', 15) * len_x0   # get from kwargs or use scipy default
 
