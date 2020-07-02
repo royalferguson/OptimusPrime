@@ -39,27 +39,32 @@ class TestDifferentialEvolutionSolverMethods(unittest.TestCase):
 			'x0' : self.x0,
 			'bounds': np.full((8,2),(-10, 10)),
 			'popsize' : popsize,
-			'maxiter':10,
+			'maxiter':1000,
+			'polish' : False,
 			'tol' : 0
 		}
 
 	def test_default_call_count(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
-		self.assertTrue(res.nit <= 10)
-		# Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 120120
-		self.assertTrue(self.obj_func_call_count <=1201)
+		self.assertTrue(res.nit <= 1000)
+		# Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 160160
+		# 1001 * 20 * 8 = 160160
+		self.assertTrue(self.obj_func_call_count <=160160)
 
 	def test_limited_call_count(self):
 		self.kwargs['maxiter'] = 1
 		res = self.UUT.solve(self.obj_func,**self.kwargs)
 		self.assertTrue(res.nit, 1)
-		#  Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 240
-		self.assertEqual(self.obj_func_call_count, 240)
+		#  Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 320
+		# 2 * 20 * 8 = 320
+		self.assertEqual(self.obj_func_call_count, 320)
 
 	def test_solver_callback(self):
 		self.kwargs['maxiter'] = 15
 		self.UUT.solve(self.obj_func, **self.kwargs)
-		self.assertTrue(self.UUT.callback_count >= 2000)
+		#  Maximum Number of function evaluations (no polishing) is (maxiter + 1) * popsize * len(x) = 320
+		# 16 * 20 * 8 = 2560
+		self.assertTrue(self.UUT.callback_count <= 2560)
 
 	def test_solver_return(self):
 		res = self.UUT.solve(self.obj_func, **self.kwargs)
