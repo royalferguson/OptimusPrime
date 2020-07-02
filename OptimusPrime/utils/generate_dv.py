@@ -9,7 +9,7 @@ def get_random_x0(count, lower=0, upper=1):
 	variables=[]
 	if isinstance(count, tuple):
 		# where:
-		# GlobalBestPSO:  count[0] is the number of DVs and count[1] is the number of particles
+		# GlobalBestPSO:  count[0] is the number of particles and count[1] is the number of DVs
 		# Differential Evolution:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
 		variables = np.random.uniform(lower, upper, (count[0], count[1]))
 	else:
