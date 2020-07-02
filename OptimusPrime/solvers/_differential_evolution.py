@@ -24,6 +24,9 @@ class DifferentialEvolutionSolver(BaseSolver):
 		log_cb = None		
 		if 'x0' in kwargs:
 			x0  =  kwargs.pop('x0')
+
+			x0 = np.asarray(x0)   # ensure it's an array.
+			
 			if x0.ndim == 2:
 				len_x0=x0.shape[1]
 			else: 

@@ -56,6 +56,7 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
+		#  utils.get_random_x0(((popsize * #dv),#dv),min_value,max_value)
 		'x0': utils.get_random_x0((20,20),-5.0,5.0),
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'strategy': 'best2exp',
