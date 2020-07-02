@@ -176,7 +176,7 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((20,400), -5, 10),
+		'x0': utils.get_random_x0((400,20), -5, 10),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5, 10)),
 		'maxiter':3500,
@@ -195,8 +195,7 @@ if __name__ == '__main__':
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
-		import cProfile
-		print(cProfile.run('cfg.main(RosenbrockDigitalTwin(), args, kwargs)'))
+		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
 		
 
 
