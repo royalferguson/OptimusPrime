@@ -5,14 +5,14 @@ import pandas as pd
 import seaborn as sb 
 import matplotlib.pyplot as plt
 from OptimusPrime.logger import *
+import pickle
+from functools import partial
 
-def _objective_function(func, log_cb=None):
-	def func_wrapper(x, *args):
-		score = func(x, *args)
-		if log_cb:
-			log_cb(x, score)
-		return score
-	return func_wrapper
+def func_wrapper(fun, log_cb, x):
+	score = fun(x)
+	if log_cb:
+		log_cb(x, score)
+	return score
 
 class DifferentialEvolutionSolver(BaseSolver):
 	def __init__(self):
@@ -21,6 +21,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 
 	def solve(self, fun, **kwargs):
 		self.fun = fun
+		log_cb = None		
 		if 'x0' in kwargs:
 			x0  =  kwargs.pop('x0')
 
@@ -41,7 +42,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 				x0='latinhypercube'
 				#logger.warning(fmt('warning', 'initial population array does not have shape (m,len(x0))  defaulting to latinhypercube'))
 			kwargs.update({'init' : x0})
-		objective_func = _objective_function(fun, log_cb=self.log_data)
+		objective_func = partial(func_wrapper,fun, self.log_data)
 		return differential_evolution(objective_func, **kwargs)
 
 
