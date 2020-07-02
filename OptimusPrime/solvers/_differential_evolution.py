@@ -39,7 +39,7 @@ class DifferentialEvolutionSolver(BaseSolver):
 				x0='latinhypercube'
 				#logger.warning(fmt('warning', 'initial population array does not have shape (m,len(x0))  defaulting to latinhypercube'))
 			kwargs.update({'init' : x0})
-		objective_func = partial(func_wrapper,fun, self.log_data)
+		objective_func = partial(func_wrapper,fun, None)
 		return differential_evolution(objective_func, **kwargs)
 
 

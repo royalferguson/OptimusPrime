@@ -61,7 +61,7 @@ if __name__ == '__main__':
 		'strategy': 'best2exp',
 		'maxiter':900,
 		#'callback':callback_,
-		'popsize':20,
+		'popsize':1,
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,

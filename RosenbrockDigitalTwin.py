@@ -195,6 +195,8 @@ if __name__ == '__main__':
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
-		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+		import cProfile
+		print(cProfile.run('cfg.main(RosenbrockDigitalTwin(), args, kwargs)'))
+		
 
 
