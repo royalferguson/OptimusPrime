@@ -53,6 +53,28 @@ class ParticleSwarmSolver(BaseSolver):
 	# def pso_global_optimize(self, fun, dimension = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 	def pso_global_optimize(self, fun, dimensions = None, x0=None, bounds=None, maxiter=1000, n_particles=10, options={'c1':0.2,'c2': 0.6, 'w' : 0.95}, pso_kwargs={}, fun_kwargs={}):
 
+		bounds = np.transpose(bounds)
+		x0=np.asarray(x0)
+
+		if x0 is not None:
+			if x0.ndim==1:
+				dimensions = len(x0)
+			else: 
+				dimensions = x0.shape[1]
+		elif bounds is not None:
+			dimensions = len(bounds[0])
+
+		if(x0.ndim==1) or (x0.shape[0] !=n_particles):
+			diff = n_particles-x0.ndim
+			if bounds is not None:
+				r = np.random.uniform(bounds[0][0], bounds[1][0], (diff, dimensions))
+			else:
+				r = np.random.uniform(-10000,1000, (diff, dimensions))
+				bounds=np.transpose(np.full((dimensions, 2), (-10000,1000)))
+			x0 = np.vstack((x0,r))
+
+
+		_='''
 		# In PSO - you can specify x0, bounds, both, or neither.  If you specify x0
 		# and don't specify bounds - then defaults of -10000, 10000 are used
 		if bounds is not None:
@@ -82,8 +104,10 @@ class ParticleSwarmSolver(BaseSolver):
 				x0 = np.vstack( (x0,r))
 			else:
 				x0 = np.transpose(x0)
+						'''
 		res= {}
 		print(x0.shape)
+
 		if x0 is None and bounds is None:
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
 		else:
