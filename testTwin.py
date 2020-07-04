@@ -1,5 +1,6 @@
 from OptimusPrime import AlgoDigitalTwin, utils
 from OptimusPrime.utils.functions.single_obj import rastrigin
+from OptimusPrime.utils.functions.single_obj import rosenbrock
 import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
@@ -16,7 +17,8 @@ class RastriginDigitalTwin(AlgoDigitalTwin):
 		def __init__ (self):
 
 			# Use this when you wish to provide the initial position (x0)
-			super().__init__(rastrygin)
+			#super().__init__(rastrygin)
+			super().__init__(rosenbrock)
 
 			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
 			# super().__init__(rastrigin)
