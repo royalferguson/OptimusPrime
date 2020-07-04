@@ -55,13 +55,14 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0((500,20),-5, 10),
+		# get_random_x0((count), min, max)  where:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
+		'x0': utils.get_random_x0((10,5),-5, 10),
 		#'x0': utils.get_random_x0(20,-5, 10),
-		'bounds':np.full((20,2), (-5.0, 10.0)),
+		'bounds':np.full((5,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
 		'maxiter':10,
 		#'callback':callback_,
-		'popsize':25,
+		'popsize':2,
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,
@@ -174,14 +175,13 @@ if __name__ == '__main__':
 		}
 
 		}
-
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((400,20), -5, 10),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5, 10)),
+		'x0': utils.get_random_x0((2,5), -5, 10),
+		'dimensions':5,
+		'bounds': np.full((5,2), (-5, 10)),
 		'maxiter':3500,
-		'n_particles':400,
+		'n_particles':2,
 
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',

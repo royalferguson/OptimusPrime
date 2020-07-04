@@ -12,6 +12,8 @@ def get_random_x0(count, lower=0, upper=1):
 		# GlobalBestPSO:  count[0] is the number of particles and count[1] is the number of DVs
 		# Differential Evolution:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
 		variables = np.random.uniform(lower, upper, (count[0], count[1]))
+		print("Variables: " )
+		print(variables)
 	else:
 		for i in range (count):
 			variables.append(random.uniform(lower,upper))

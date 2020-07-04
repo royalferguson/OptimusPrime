@@ -6,8 +6,6 @@ class AlgoDigitalTwin():
 		self.optimizer = Optimus()
 		self.algo_objective_func = of
 		self.flip = flip
-		#self.x0 = x0
-		#self.bounds = bounds
 
 	def optimize(self, args, kwargs):
 		self.optimizer.set_objective_function(self.algo_objective_func, self.flip)

@@ -8,8 +8,8 @@ from OptimusPrime.logger import *
 import pickle
 from functools import partial
 
-def func_wrapper(fun, log_cb, x):
-	score = fun(x)
+def func_wrapper(fun, log_cb, x, *args):
+	score = fun(x, *args)
 	if log_cb:
 		log_cb(x, score)
 	return score
@@ -44,7 +44,6 @@ class DifferentialEvolutionSolver(BaseSolver):
 			kwargs.update({'init' : x0})
 		objective_func = partial(func_wrapper,fun, None)
 		return differential_evolution(objective_func, **kwargs)
-
 
 	def log_data(self, xk, f):
 		s = pd.Series([xk,self.fun(xk)], index=['dv','score'])
