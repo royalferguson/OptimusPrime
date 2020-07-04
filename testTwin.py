@@ -7,13 +7,16 @@ import pandas as pd
 import argparse, sys
 import os
 
-
+def rastrygin(x, t1, t2):
+	print('t1 = ', t1)
+	print('t2 = ', t2)
+	return 10*len(x) + np.sum(x*x - 10*np.cos(2*np.pi*x))
 class RastriginDigitalTwin(AlgoDigitalTwin):
 
 		def __init__ (self):
 
 			# Use this when you wish to provide the initial position (x0)
-			super().__init__(rastrigin)
+			super().__init__(rastrygin)
 
 			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
 			# super().__init__(rastrigin)
@@ -62,7 +65,8 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0((20,20),-5.0,5.0),
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'strategy': 'best2exp',
-		'maxiter':900,
+		'maxiter':1,
+		'args': (12,11),
 		#'callback':callback_,
 		'popsize':1,
 		'tol':1e-10,

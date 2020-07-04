@@ -50,4 +50,3 @@ class DifferentialEvolutionSolver(BaseSolver):
 		s.add_to_pickle('optimization_data.pkl')
 		self.intermitentData = self.intermitentData.append(s, ignore_index=True)
 		logger.data(s.to_json()) 
-
