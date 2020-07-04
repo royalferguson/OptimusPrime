@@ -8,8 +8,8 @@ from OptimusPrime.logger import *
 import pickle
 from functools import partial
 
-def func_wrapper(fun, log_cb, x):
-	score = fun(x)
+def func_wrapper(fun, log_cb, x, *args):
+	score = fun(x, *args)
 	if log_cb:
 		log_cb(x, score)
 	return score
@@ -51,4 +51,3 @@ class DifferentialEvolutionSolver(BaseSolver):
 		s.add_to_pickle('optimization_data.pkl')
 		self.intermitentData = self.intermitentData.append(s, ignore_index=True)
 		logger.data(s.to_json()) 
-
