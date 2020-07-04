@@ -1,5 +1,5 @@
 from OptimusPrime import AlgoDigitalTwin, utils
-from OptimusPrime.utils.functions.single_obj import rastrigin
+from OptimusPrime.utils.functions.single_obj import rastrigin, rosenbrock
 import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
@@ -12,17 +12,27 @@ def rastrygin(x, t1, t2):
 	print('t2 = ', t2)
 	return 10*len(x) + np.sum(x*x - 10*np.cos(2*np.pi*x))
 class RastriginDigitalTwin(AlgoDigitalTwin):
+    def __init__(self):
+        self.args = (1,2)
 
-		def __init__ (self):
+        # Use this when you wish to provide the initial position (x0)
+        
+        super().__init__(rastrygin)
+        
+        # Use this when you don't want to provide initial position (x0) - PSO ONLY-
+        # super().__init__(rastrigin)
 
-			# Use this when you wish to provide the initial position (x0)
-			super().__init__(rastrygin)
-
-			# Use this when you don't want to provide initial position (x0) - PSO ONLY-
-			# super().__init__(rastrigin)
-
-		def optimize(self, args, kwargs):
-			return super().optimize(args, kwargs)
+    def optimize(self, args, kwargs):
+        if args.solver == 'basinhopping':
+            kwargs['minimizer_kwargs']['args'] = self.args
+        elif args.solver == 'GlobalBestPSO':
+            kwargs['fun_kwargs'] = {
+                't1': self.args[0],
+                't2': self.args[1]
+            }
+        else:
+            kwargs['args'] = self.args
+        return super().optimize(args, kwargs)
 
 if __name__ == '__main__':
 	args = cfg.get_commandline_args()
@@ -47,7 +57,6 @@ if __name__ == '__main__':
 		'stepsize':stepsize,
 		'minimizer_kwargs': {
 			'method':'powell',
-            'args': (12,11),
 		},
 		'tol':tol,
 		'interval':interval,
@@ -67,7 +76,6 @@ if __name__ == '__main__':
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'strategy': 'best2exp',
 		'maxiter':1,
-		'args': (12,11),
 		#'callback':callback_,
 		'popsize':1,
 		'tol':1e-10,
@@ -92,7 +100,6 @@ if __name__ == '__main__':
 		'tol': 1e-15,
 		'initial_temp': 5230,
 		'maxiter':1,
-        'args': (12,11),
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
@@ -111,7 +118,6 @@ if __name__ == '__main__':
 		'tol': 1e-15,
 		'callback':callback_,
 		'maxiter':1,
-        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxfev':None,
@@ -134,7 +140,6 @@ if __name__ == '__main__':
 		'bounds': np.full((20,2), (-5.0, 5.0)),
 		'callback':callback_,
 		'maxiter':1,
-        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxfev':10000,
@@ -152,7 +157,6 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0(20,-5.0,5.0),
 		'method': 'cobyla',
 		'maxiter':1,
-        'args': (12,11),
 		'options': {
 			'disp':0,
 			'tol':1e-15,
@@ -172,7 +176,6 @@ if __name__ == '__main__':
 		'bounds': np.full((20,2), (-5.0, 5.0)),
 		'maxiter':10000,
 		'callback':callback_,
-        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxcor':100,
@@ -190,9 +193,8 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0((400,20), -5.0,5.0),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.0,5.0)),
-		'maxiter':2750,
+		'maxiter':1,
 		'n_particles':400,
-
 		'options': {'c1':0.3,'c2': 0.65, 'w' : 0.95},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
