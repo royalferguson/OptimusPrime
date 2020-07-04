@@ -42,7 +42,7 @@ class ParticleSwarmSolver(BaseSolver):
 			if stop != True:
 				for particle_x in x:
 					particle_num+=1
-					score = func(particle_x)
+					score = func(particle_x, **kwargs)
 					if log_cb:
 						log_cb(particle_num, particle_x, score)
 					j.append(score)
