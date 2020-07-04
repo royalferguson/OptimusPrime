@@ -13,13 +13,14 @@ class MinimizeSolver(BaseSolver):
 		self.intermitentData = pd.DataFrame()
 	
 	def solve(self, fun, maxiter=1000, **kwargs):
+		self.args = kwargs['args']
 		kwargs.update({'options' : {'maxiter': maxiter}})
 		kwargs['callback'] = self.callback_
 		self.fun = fun
 		return minimize(fun, **kwargs)
 
 	def callback_(self, xk):
-		f = self.fun(xk)
+		f = self.fun(xk, *self.args)
 		self.log_intermediate_data(xk, f)
 		s = pd.Series([xk,f], index=['dv','score'])
 		s.add_to_pickle('optimization_data.pkl')

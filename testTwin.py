@@ -35,8 +35,8 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
 			return
 		T = 1.0
-		niter = 200
-		tol = 1e-11
+		niter = 1
+		tol = 1e-1
 		niter_success = None
 		stepsize = 0.5
 		interval = 50
@@ -46,7 +46,8 @@ if __name__ == '__main__':
 		'T': T,
 		'stepsize':stepsize,
 		'minimizer_kwargs': {
-			'method':'powell'
+			'method':'powell',
+            'args': (12,11),
 		},
 		'tol':tol,
 		'interval':interval,
@@ -90,7 +91,8 @@ if __name__ == '__main__':
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
-		'maxiter':1000,
+		'maxiter':1,
+        'args': (12,11),
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
@@ -108,7 +110,8 @@ if __name__ == '__main__':
 		'method': 'nelder-mead',
 		'tol': 1e-15,
 		'callback':callback_,
-		'maxiter':100000,
+		'maxiter':1,
+        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxfev':None,
@@ -130,7 +133,8 @@ if __name__ == '__main__':
 		'tol': 1e-10,
 		'bounds': np.full((20,2), (-5.0, 5.0)),
 		'callback':callback_,
-		'maxiter':1000,
+		'maxiter':1,
+        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxfev':10000,
@@ -147,7 +151,8 @@ if __name__ == '__main__':
 		kwargs = {
 		'x0': utils.get_random_x0(20,-5.0,5.0),
 		'method': 'cobyla',
-		'maxiter':1000000,
+		'maxiter':1,
+        'args': (12,11),
 		'options': {
 			'disp':0,
 			'tol':1e-15,
@@ -167,13 +172,14 @@ if __name__ == '__main__':
 		'bounds': np.full((20,2), (-5.0, 5.0)),
 		'maxiter':10000,
 		'callback':callback_,
+        'args': (12,11),
 		'options': {
 			'disp':0,
 			'maxcor':100,
 			'ftol':1e-15,
 			'gtol':1e-15,
 			'eps':1,
-			'maxfun':10000,
+			'maxfun':10,
 			'maxls':10,
 			'finite_diff_rel_step':None
 		}
