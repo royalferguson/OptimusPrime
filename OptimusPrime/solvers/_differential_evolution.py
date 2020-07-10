@@ -8,7 +8,7 @@ from OptimusPrime.logger import *
 import pickle
 from functools import partial
 
-def func_wrapper(fun, x, log_cb=None, *args):
+def func_wrapper(fun, x, *args, log_cb=None):
 	score = fun(x, *args)
 	if log_cb:
 		log_cb(x, score)
