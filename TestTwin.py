@@ -1,6 +1,5 @@
 from OptimusPrime import AlgoDigitalTwin, utils
-
-#from OptimusPrime.utils.functions.single_obj import rastrigin, rosenbrock
+from OptimusPrime.utils.functions.single_obj import rosenbrock
 import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
@@ -8,31 +7,15 @@ import pandas as pd
 import argparse, sys
 import os
 
-# Local Function to demonstrate passing in arguments into the OF
-def rastrygin(x, t1, t2):
-	print('t1 = ', t1)
-	print('t2 = ', t2)
-	return 10*len(x) + np.sum(x*x - 10*np.cos(2*np.pi*x))
+class RosenbrockDigitalTwin(AlgoDigitalTwin):
 
-class RastriginDigitalTwin(AlgoDigitalTwin):
+		def __init__ (self):
 
-    def __init__(self):
-        self.args = (1,2)
-        super().__init__(rastrygin)
-        
+			super().__init__(rosenbrock)
 
-    def optimize(self, args, kwargs):
-        if args.solver == 'basinhopping':
-            kwargs['minimizer_kwargs']['args'] = self.args
-        elif args.solver == 'GlobalBestPSO':
-            kwargs['fun_kwargs'] = {
-                't1': self.args[0],
-                't2': self.args[1]
-            }
-        else:
-            kwargs['args'] = self.args
-        return super().optimize(args, kwargs)
 
+		def optimize(self, args, kwargs):
+			return super().optimize(args, kwargs)
 
 if __name__ == '__main__':
 	args = cfg.get_commandline_args()
@@ -45,25 +28,26 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
 			return
 		T = 1.0
-		niter = 1
-		tol = 1e-1
+		niter = 1000
+		tol = 1e-12
 		niter_success = None
-		stepsize = 0.5
+		stepsize = 0.4
 		interval = 50
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5.0,5.0),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
 		'minimizer_kwargs': {
-			'method':'powell',
+			'method':'BFGS'
 		},
-		'tol':tol,
 		'interval':interval,
 		'disp':0,
+		'tol': tol,
 		'niter_success':niter_success,
 		'accept_test': None,
-		'take_step': None
+		'take_step': None,
+		'seed': 20
 		}
 	elif args.solver == 'differential_evolution':
 		def callback_(x,convergence=2):
@@ -71,13 +55,14 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		#  utils.get_random_x0(((popsize * #dv),#dv),min_value,max_value)
-		'x0': utils.get_random_x0((20,20),-5.0,5.0),
-		'bounds':np.full((20,2), (-5.0, 5.0)),
+		# get_random_x0((count), min, max)  where:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
+		'x0': utils.get_random_x0((10,5),-5, 10),
+		#'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((5,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
-		'maxiter':1,
+		'maxiter':10,
 		#'callback':callback_,
-		'popsize':1,
+		'popsize':2,
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,
@@ -86,7 +71,7 @@ if __name__ == '__main__':
 		'seed': 20,
 		'updating':'immediate',
 		#'workers':5
-		'workers': 1
+		'workers': 4
 		}
 
 	elif args.solver == 'dual_annealing':
@@ -95,11 +80,11 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5.0,5.0),
-		'bounds':np.full((20,2), (-5.0, 5.0)),
+		'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
-		'maxiter':1,
+		'maxiter':1000,
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
@@ -113,11 +98,11 @@ if __name__ == '__main__':
 			print("custom callback for nelder-mead")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20, -5.0,5.0),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'nelder-mead',
 		'tol': 1e-15,
 		'callback':callback_,
-		'maxiter':1,
+		'maxiter':100000,
 		'options': {
 			'disp':0,
 			'maxfev':None,
@@ -134,12 +119,12 @@ if __name__ == '__main__':
 			print("custom callback for powell")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20, -5.0,5.0),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'powell',
 		'tol': 1e-10,
-		'bounds': np.full((20,2), (-5.0, 5.0)),
+		'bounds': np.full((20,2), (-5.0, 10.0)),
 		'callback':callback_,
-		'maxiter':1,
+		'maxiter':1000,
 		'options': {
 			'disp':0,
 			'maxfev':10000,
@@ -154,13 +139,15 @@ if __name__ == '__main__':
 			print("custom callback for cobyla")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5.0,5.0),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'cobyla',
-		'maxiter':1,
+		'maxiter':1000000,
+		'callback':callback_,
 		'options': {
 			'disp':0,
-			'tol':1e-15,
-			'catol':1e-15
+			'rhoberg':1.0,
+			'catol':1e-5,
+			'tol':1e-5
 		}
 
 		}
@@ -170,19 +157,19 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20, -5.0,5.0),
+		'x0': utils.get_random_x0(20,-5, 10),
 		'method': 'l-bfgs-b',
 		'jac':None,
-		'bounds': np.full((20,2), (-5.0, 5.0)),
+		'bounds': np.full((20,2), (-5.0, 10.0)),
 		'maxiter':10000,
 		'callback':callback_,
 		'options': {
 			'disp':0,
 			'maxcor':100,
-			'ftol':1e-15,
+			'ftol':1e-11,
 			'gtol':1e-15,
-			'eps':1,
-			'maxfun':10,
+			'eps':0.1,
+			'maxfun':10000,
 			'maxls':10,
 			'finite_diff_rel_step':None
 		}
@@ -190,23 +177,25 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((400,20), -5.0,5.0),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5.0,5.0)),
-		'maxiter':1,
-		'n_particles':400,
-		'options': {'c1':0.3,'c2': 0.65, 'w' : 0.95},
+		'x0': utils.get_random_x0((2,5), -5, 10),
+		'dimensions':5,
+		'bounds': np.full((5,2), (-5, 10)),
+		'maxiter':3500,
+		'n_particles':2,
+
+		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1.0,
-						'ftol' : 1e-15
+						'ftol' : 1e-10
 						}
 		}
 
 	if args.trace:
-		utils.run_with_callgraph(cfg.main, RastriginDigitalTwin(), args, kwargs)
+		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
-		cfg.main(RastriginDigitalTwin(), args, kwargs)
+		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+		
 
 

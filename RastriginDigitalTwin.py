@@ -7,6 +7,15 @@ import pandas as pd
 import argparse, sys
 import os
 
+'''
+	This twin solves for the rastrigin objective function.
+
+    Rastrigin Function
+    non-linear, multi-modal, many local minima
+    global minimum: f(x=0,x2=0,....xn=0) = 0
+    bounds: -5.12 <= Xi <= 5.12
+'''
+
 
 class RastriginDigitalTwin(AlgoDigitalTwin):
 
@@ -38,7 +47,7 @@ if __name__ == '__main__':
 		stepsize = 0.5
 		interval = 50
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5.0,5.0),
+		'x0': utils.get_random_x0(20,-5.12,5.12),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
@@ -59,8 +68,8 @@ if __name__ == '__main__':
 			return
 		kwargs = {
 		#  utils.get_random_x0(((popsize * #dv),#dv),min_value,max_value)
-		'x0': utils.get_random_x0((20,20),-5.0,5.0),
-		'bounds':np.full((20,2), (-5.0, 5.0)),
+		'x0': utils.get_random_x0((20,20),-5.12,5.12),
+		'bounds':np.full((20,2), (-5.12, 5.12)),
 		'strategy': 'best2exp',
 		'maxiter':800,
 		#'callback':callback_,
@@ -82,16 +91,26 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
+<<<<<<< HEAD
 		'x0': utils.get_random_x0(20,-5.0,5.0),
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'tol': 1e-10,
+=======
+		'x0': utils.get_random_x0(20,-5.12, 5.12),
+		'bounds':np.full((20,2), (-5.12, 5.12)),
+		'tol': 1e-15,
+>>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'initial_temp': 5230,
-		'maxiter':1000,
+		'maxiter':2000,
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
 		'maxfun': 15000,
+<<<<<<< HEAD
 		'no_local_search': True,
+=======
+		'no_local_search': False,
+>>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'seed': 20
 		}
 
@@ -177,10 +196,17 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
+<<<<<<< HEAD
 		'x0': utils.get_random_x0((300,20), -5.0,5.0),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.0,5.0)),
 		'maxiter':3000,
+=======
+		'x0': utils.get_random_x0((300,20), -5.12, 5.12),
+		'dimensions':20,
+		'bounds': np.full((20,2), (-5.12,5.12)),
+		'maxiter': 3000,   #2750
+>>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'n_particles':300,
 
 		'options': {'c1':0.3,'c2': 0.65, 'w' : 0.95},

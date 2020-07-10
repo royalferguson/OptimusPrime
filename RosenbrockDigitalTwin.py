@@ -78,13 +78,21 @@ if __name__ == '__main__':
 			x = vals
 		print(x, bounds)
 		kwargs = {
+<<<<<<< HEAD
 		'x0': x,
+=======
+		'x0': utils.get_random_x0((500,20),-5, 10),
+>>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		#'x0': utils.get_random_x0(20,-5, 10),
 		'bounds': bounds,
 		'strategy': 'best2exp',
 		'maxiter':1,
 		#'callback':callback_,
+<<<<<<< HEAD
 		'popsize': popsize,
+=======
+		'popsize':25,
+>>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,
@@ -204,6 +212,7 @@ if __name__ == '__main__':
 		}
 
 		}
+
 	elif args.solver == 'GlobalBestPSO':
 		bounds = bounds.to_numpy()
 		n_particles = 400
@@ -231,7 +240,6 @@ if __name__ == '__main__':
 						'ftol' : 1e-10
 						}
 		}
-
 
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)

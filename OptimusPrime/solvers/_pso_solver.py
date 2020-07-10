@@ -107,7 +107,8 @@ class ParticleSwarmSolver(BaseSolver):
 				x0 = np.transpose(x0)
 						'''
 		res= {}
-		print(x0.shape)
+		print("In PSO Solver:  x0 shape is:  ", x0.shape)
+		print(x0)
 
 		if x0 is None and bounds is None:
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
