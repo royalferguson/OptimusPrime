@@ -1,5 +1,6 @@
 from OptimusPrime.solvers import BaseSolver
 from scipy.optimize import basinhopping
+from OptimusPrime.utils.functions.fileio import loggedToCsv
 import numpy as np 
 import seaborn as sb 
 import matplotlib.pyplot as plt 
@@ -28,7 +29,9 @@ class BasinhoppingSolver(BaseSolver):
 		kwargs.update({'niter' : niter})
 		kwargs.update({'callback' : self.callback})
 		objective_func = _objective_function(fun, log_cb=self.pickle_data)
-		return basinhopping(objective_func, **kwargs)
+		a = basinhopping(objective_func, **kwargs)
+		loggedToCsv('basinhopping', self.intermitentData)
+		return a
 
 	def callback(self, xk, f, accept):
 		self.log_data(xk, f, accept)
@@ -57,3 +60,4 @@ class BasinhoppingSolver(BaseSolver):
 		#  Added so that display data is driven from the obj function wrapper instead of the callback
 		s = pd.Series([x,f], index=['dv','score'])
 		s.add_to_pickle('optimization_data.pkl')
+		self.intermitentData=self.intermitentData.append(s, ignore_index=True)

@@ -3,12 +3,13 @@ from scipy.optimize import differential_evolution
 import numpy as np 
 import pandas as pd
 import seaborn as sb 
+from OptimusPrime.utils.functions.fileio import loggedToCsv
 import matplotlib.pyplot as plt
 from OptimusPrime.logger import *
 import pickle
 from functools import partial
 
-def func_wrapper(fun, log_cb, x, *args):
+def func_wrapper(fun, x, *args, log_cb = None):
 	score = fun(x, *args)
 	if log_cb:
 		log_cb(x, score)
@@ -42,9 +43,10 @@ class DifferentialEvolutionSolver(BaseSolver):
 				x0='latinhypercube'
 				#logger.warning(fmt('warning', 'initial population array does not have shape (m,len(x0))  defaulting to latinhypercube'))
 			kwargs.update({'init' : x0})
-		objective_func = partial(func_wrapper,fun, None)
-		return differential_evolution(objective_func, **kwargs)
-
+		objective_func = partial(func_wrapper,fun, log_cb = self.log_data)
+		a = differential_evolution(objective_func, **kwargs)
+		loggedToCsv('differential_evolution', self.intermitentData)
+		return a
 
 	def log_data(self, xk, f):
 		s = pd.Series([xk,self.fun(xk)], index=['dv','score'])

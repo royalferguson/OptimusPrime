@@ -18,6 +18,22 @@ def get_random_x0(count, lower=0, upper=1):
 	variables = np.array(variables)
 	return variables
 
+def get_random_multiple_boundaries(bounds, count):
+	variables=[]
+	if isinstance(count, tuple):
+		# where:
+		# GlobalBestPSO:  count[0] is the number of particles and count[1] is the number of DVs
+		# Differential Evolution:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
+		variables = np.ones((count[0],count[1]))
+		for i in range(count[0]):
+			for a in range(count[1]):
+				variables[i][a] = random.uniform(bounds[a][0], bounds[a][1])
+	else:
+		for i in range(count):
+			variables.append(random.uniform(bounds[i][0],bounds[i][1]))
+	variables = np.array(variables)
+	return variables
+
 if __name__=='__main__':
 	parser = argparse.ArgumentParser(
 		prog='ProgramName',

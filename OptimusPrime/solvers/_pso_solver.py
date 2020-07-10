@@ -4,6 +4,7 @@ import pyswarms as ps
 from scipy.optimize import OptimizeResult
 import numpy as np 
 import pandas as pd
+from OptimusPrime.utils.functions.fileio import loggedToCsv
 import seaborn as sb 
 import matplotlib.pyplot as plt 
 from OptimusPrime.utils.io import add_to_pickle
@@ -114,7 +115,7 @@ class ParticleSwarmSolver(BaseSolver):
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, bounds=bounds, init_pos=x0,  **pso_kwargs)
 
 		
-		objective_func = self.pso_objective_function(fun, log_cb= None, tol_cb=None)
+		objective_func = self.pso_objective_function(fun, log_cb= self.log_data, tol_cb=None)
 		best = optimizer.optimize(objective_func, maxiter, verbose = True, **fun_kwargs)
 
 		print("BEST:  ", best)
@@ -123,7 +124,7 @@ class ParticleSwarmSolver(BaseSolver):
 							nit = len(self.intermitentData)/self.n_particles, nfev = len(self.intermitentData))
 
 		print("Number of iterations:  ", res.nit)
-
+		loggedToCsv('GlobalBestPSO', self.intermitentData)
 		return res
 
 	def solve(self, fun, **kwargs):

@@ -1,6 +1,7 @@
 import OptimusPrime.configuration as cfg
 from OptimusPrime.solvers import BasinhoppingSolver, ParticleSwarmSolver, DifferentialEvolutionSolver, DualAnnealingSolver, MinimizeSolver
 import numpy as np 
+from OptimusPrime.utils.functions.fileio import loggedToCsv
 import copy
 
 class Optimus():

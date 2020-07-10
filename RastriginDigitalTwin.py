@@ -33,7 +33,7 @@ if __name__ == '__main__':
 			return
 		T = 1.0
 		niter = 200
-		tol = 1e-11
+		tol = 1e-12
 		niter_success = None
 		stepsize = 0.5
 		interval = 50
@@ -62,7 +62,7 @@ if __name__ == '__main__':
 		'x0': utils.get_random_x0((20,20),-5.0,5.0),
 		'bounds':np.full((20,2), (-5.0, 5.0)),
 		'strategy': 'best2exp',
-		'maxiter':900,
+		'maxiter':800,
 		#'callback':callback_,
 		'popsize':1,
 		'tol':1e-10,
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 		'seed': 20,
 		'updating':'immediate',
 		#'workers':5
-		'workers': 1
+		'workers': -1
 		}
 
 	elif args.solver == 'dual_annealing':
@@ -84,14 +84,14 @@ if __name__ == '__main__':
 		kwargs = {
 		'x0': utils.get_random_x0(20,-5.0,5.0),
 		'bounds':np.full((20,2), (-5.0, 5.0)),
-		'tol': 1e-15,
+		'tol': 1e-10,
 		'initial_temp': 5230,
 		'maxiter':1000,
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
-		'maxfun': 10000,
-		'no_local_search': False,
+		'maxfun': 15000,
+		'no_local_search': True,
 		'seed': 20
 		}
 
@@ -177,11 +177,11 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((400,20), -5.0,5.0),
+		'x0': utils.get_random_x0((300,20), -5.0,5.0),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.0,5.0)),
-		'maxiter':2750,
-		'n_particles':400,
+		'maxiter':3000,
+		'n_particles':300,
 
 		'options': {'c1':0.3,'c2': 0.65, 'w' : 0.95},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
