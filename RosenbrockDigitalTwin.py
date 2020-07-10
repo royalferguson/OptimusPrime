@@ -78,21 +78,13 @@ if __name__ == '__main__':
 			x = vals
 		print(x, bounds)
 		kwargs = {
-<<<<<<< HEAD
 		'x0': x,
-=======
-		'x0': utils.get_random_x0((500,20),-5, 10),
->>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		#'x0': utils.get_random_x0(20,-5, 10),
 		'bounds': bounds,
 		'strategy': 'best2exp',
 		'maxiter':1,
 		#'callback':callback_,
-<<<<<<< HEAD
 		'popsize': popsize,
-=======
-		'popsize':25,
->>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,
@@ -222,9 +214,12 @@ if __name__ == '__main__':
 		else:
 			minAt = startingValues['score'].idxmin()
 			x = np.fromstring(startingValues.iloc[minAt]['dv'][1:-1], dtype=np.float64, sep=' ')
+			vals = np.ones((n_particles,len(bounds)))
+			for i in range(n_particles):
+				vals[i] = x
+			x = vals
 		for i in range(len(bounds)):
 			bounds[i] = (bounds[i][0],bounds[i][1])
-		print(x)
 		kwargs = {
 		'x0': x,
 		'dimensions':20,
