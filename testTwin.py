@@ -1,10 +1,6 @@
 from OptimusPrime import AlgoDigitalTwin, utils
-<<<<<<< HEAD
-from OptimusPrime.utils.functions.single_obj import rastrigin
-from OptimusPrime.utils.functions.single_obj import rosenbrock
-=======
-from OptimusPrime.utils.functions.single_obj import rastrigin, rosenbrock
->>>>>>> 7f219c64ec687f5f1839adc5c5f7a5eee8087974
+
+#from OptimusPrime.utils.functions.single_obj import rastrigin, rosenbrock
 import OptimusPrime.configuration as cfg
 from OptimusPrime.logger import *
 import numpy as np 
@@ -12,21 +8,18 @@ import pandas as pd
 import argparse, sys
 import os
 
+# Local Function to demonstrate passing in arguments into the OF
 def rastrygin(x, t1, t2):
 	print('t1 = ', t1)
 	print('t2 = ', t2)
 	return 10*len(x) + np.sum(x*x - 10*np.cos(2*np.pi*x))
+
 class RastriginDigitalTwin(AlgoDigitalTwin):
 
     def __init__(self):
         self.args = (1,2)
-
-        # Use this when you wish to provide the initial position (x0)
-        
         super().__init__(rastrygin)
         
-        # Use this when you don't want to provide initial position (x0) - PSO ONLY-
-        # super().__init__(rastrigin)
 
     def optimize(self, args, kwargs):
         if args.solver == 'basinhopping':

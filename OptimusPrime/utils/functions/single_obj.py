@@ -244,5 +244,114 @@ def schwefel(x):
 
 
 
+def dd6func(X,for_minimize=True,intermixed=False):
+    '''
+    Define a composite function of a multi-D X vector
+    This is for dimension n=6.
+    The optimum value is at Xopt = [1,-1,1,-1,1,-1]
+    With for_minimize=True the optimum is a minimum of 1e-6;
+    for_minimize=False gives a maximum of 1.0 at Xopt.
+    '''
+    # Keep track of the evaluations count
+    global EVALUATION_COUNT
+    EVALUATION_COUNT += 1
+    X = np.array(X)
+    # Inter-mix the parameters? (True), or keep separate? (False)
+    # Seems 'easier' to solve when kept separate.
+    # In either case, adjust the values so that the maximum happens for
+    # the input:  X = [1,-1,1,-1,1,-1]
+    if intermixed:
+        # Combine parameters in +/- pairs to inter-mix the underlying model parameters.
+        xa = 1+(X[0]+X[3])/2
+        xb = 2+(X[1]+X[5])/2
+        xc = -1+(X[2]+X[4])/2
+        xd = -1+(X[0]-X[3])/2
+        xe = (X[1]-X[5])/2
+        xf = (X[2]-X[4])/2
+    else:
+        # Keep parameters separate, just adding an offset.
+        xa = X[0]+0
+        xb = X[1]+2
+        xc = X[2]-1
+        xd = X[3]+1
+        xe = X[4]-1
+        xf = X[5]+1
+    ##print(xa,xb,xc,xd,xe,xf)
+    # This combined function has its maximum of 1.0 at:
+    #     [xa,xb,xc,xd,xe,xf] = [1,1,0,0,0,0]
+    value = ( rosen_ab([xa,xb],1.0,5.0) +
+                       0.1*rastrigin([xc,xd]) )
+    # The 0.22 was tuned so that the 2nd-place 
+    # the mis-optimized [1,-1,0,-1,0,-1] gives just at/below 0.95
+    value = (0.75*np.exp(-0.22*np.sqrt(value)) +
+                 0.25*np.exp(-0.07*sphere([xe,xf])))
+    # Remove the three sub-function evaluations from the evaluation count:
+    EVALUATION_COUNT -= 3
+    # Select the range of the function:
+    # for_minimize=True is like usual OF, goes from min at 0 to inf
+    # for_minimize=False is like an efficiency, 0 to a max at 1.
+    if for_minimize:
+        return -np.log(value-1.e-6)   # -1.e-6 ensures the log is positive.
+    else:
+        return value
+
+def dd8func(X,for_minimize=True,intermixed=False):
+    '''
+    This d=8 composite function is the dd6func with two more Xs:
+    one each added to the Rosenbrock and Rastrigin components.
+    The optimum is similarly at [1,-1,1,-1,1,-1,1,-1]
+    Here, X[0,1,4,5,6,7] map to the previous dd6 values:
+          X[0,1,2,3,4,5]
+    and X[2] and X[3] are added inputs to the Rosenbrock and Rastrigin
+    functions.
+    ---
+    Define a composite function of a multi-D X vector
+    This is for dimension n=6.
+    The optimum value is at Xopt = [1,-1,1,-1,1,-1]
+    With for_minimize=True the optimum is a minimum of 1e-6;
+    for_minimize=False gives a maximum of 1.0 at Xopt.
+    '''
+    # Keep track of the evaluations count
+    global EVALUATION_COUNT
+    EVALUATION_COUNT += 1
+    X = np.array(X)
+    # Inter-mix the parameters? (True), or keep separate? (False)
+    # Seems 'easier' to solve when kept separate.
+    # In either case, adjust the values so that the maximum happens for
+    # the input:  X = [1,-1,1,-1,1,-1,1,-1]
+    if intermixed:
+        # Combine parameters in +/- pairs to inter-mix the underlying model parameters.
+        xa = 1+(X[0]+X[5])/2
+        xb = 2+(X[1]+X[7])/2
+        xc = -1+(X[4]+X[6])/2
+        xd = -1+(X[0]-X[5])/2
+        xe = (X[1]-X[7])/2
+        xf = (X[4]-X[6])/2
+    else:
+        # Keep parameters separate, just adding an offset.
+        xa = X[0]+0
+        xb = X[1]+2
+        xc = X[4]-1
+        xd = X[5]+1
+        xe = X[6]-1
+        xf = X[7]+1
+    ##print(xa,xb,xc,xd,xe,xf)
+    # This combined function has its maximum of 1.0 at:
+    #     [xa,xb,X2,X3,xc,xd,xe,xf] = [1,1,1,0,0,0,0,0]
+    value = ( rosen_ab([xa,xb,X[2]],1.0,16.0) +     # <-- b=16
+                       0.1*rastrigin([X[3]+1,xc,xd]) )
+    # (In dd6func) The 0.22 was tuned so that the 2nd-place 
+    # the mis-optimized [1,-1,0,-1,0,-1] gives just at/below 0.95
+    value = (0.75*np.exp(-0.22*np.sqrt(value)) +
+                 0.25*np.exp(-0.07*sphere([xe,xf])))
+    # Remove the three sub-function evaluations from the evaluation count:
+    EVALUATION_COUNT -= 3
+    # Select the range of the returned function:
+    #   for_minimize=True is like usual OF, goes from min near 0 to inf,
+    #   for_minimize=False is like an efficiency, 0 to a max at 1.
+    if for_minimize:
+        return -np.log(value-1.e-6)   # -1.e-6 ensures the log is positive.
+    else:
+        return value
 
 

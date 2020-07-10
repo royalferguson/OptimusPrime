@@ -1,8 +1,13 @@
 import numpy as np
 
+#  utils.get_random_x0(((popsize * #dv),#dv),min_value,max_value)
+#dv=5
+#popsize=2
+# utils.get_random_x0(10,5),min_value,max_value)
+
 
 # with 5 Decision Variables and a popsize of 2
-count=(10,2)
+count=(10,5)
 x0 = np.random.uniform(-5, 10, (count[0], count[1]))
 print(x0)
 print(x0.shape)
@@ -10,7 +15,7 @@ print(x0.shape)
 len_x0=x0.shape[1]
 print(len_x0)
 
-_='''
+
 print("==================================")
 
 x0 = [1.3, 0.7, 0.8, 1.9, 1.1]
@@ -36,4 +41,3 @@ print(x2)
 #x3=x2.reshape(10,-1)
 x3=x2.reshape(-1,5)
 print(x3)
-'''
