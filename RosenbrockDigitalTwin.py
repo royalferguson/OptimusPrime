@@ -5,7 +5,6 @@ from OptimusPrime.logger import *
 import numpy as np 
 import pandas as pd
 import argparse, sys
-from OptimusPrime.utils.functions.fileio import *
 import os
 
 class RosenbrockDigitalTwin(AlgoDigitalTwin):
@@ -23,28 +22,19 @@ if __name__ == '__main__':
 	if os.path.exists('optimization_data.pkl'):
 		os.remove('optimization_data.pkl')
 	# for basinhopping
-	bounds = readBounds()
-
 	if args.solver == 'basinhopping':
 		def callback_(x,f,accept):
 			print("custom callback for basinhopping")
 			logger.info(fmt('info', "Basinhopping Custom Callback Invoked"))
 			return
-		startingValues = readFromCsv("basinhopping")
-		bounds = bounds.to_numpy()
-		if isinstance(startingValues,bool) and startingValues == False:
-			x = utils.get_random_multiple_boundaries(bounds, len(bounds))
-		else:
-			minAt = startingValues['score'].idxmin()
-			x = np.fromstring(startingValues.iloc[minAt]['dv'][1:-1], dtype=np.float64, sep=' ') 
 		T = 1.0
-		niter = 1
+		niter = 1000
 		tol = 1e-12
 		niter_success = None
 		stepsize = 0.4
 		interval = 50
 		kwargs = {
-		'x0': x,
+		'x0': utils.get_random_x0(20,-5, 10),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
@@ -64,27 +54,14 @@ if __name__ == '__main__':
 			print("custom callback for differential_evolution")
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
-		startingValues = readFromCsv("differential_evolution")
-		bounds = bounds.to_numpy()
-		popsize = 2
-		if isinstance(startingValues,bool) and startingValues == False:
-			x = utils.get_random_multiple_boundaries(bounds, (popsize*len(bounds), len(bounds)))
-		else:
-			minAt = startingValues['score'].idxmin()
-			x = np.fromstring(startingValues.iloc[minAt]['dv'][1:-1], dtype=np.float64, sep=' ') 
-			vals = np.ones((popsize*len(bounds),len(bounds)))
-			for i in range(popsize*len(bounds)):
-				vals[i] = x
-			x = vals
-		print(x, bounds)
 		kwargs = {
-		'x0': x,
+		'x0': utils.get_random_x0((500,20),-5, 10),
 		#'x0': utils.get_random_x0(20,-5, 10),
-		'bounds': bounds,
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
-		'maxiter':1,
+		'maxiter':10,
 		#'callback':callback_,
-		'popsize': popsize,
+		'popsize':25,
 		'tol':1e-10,
 		'mutation':0.5,
 		'recombination': 0.5,
@@ -93,7 +70,7 @@ if __name__ == '__main__':
 		'seed': 20,
 		'updating':'immediate',
 		#'workers':5
-		'workers': 1
+		'workers': 4
 		}
 
 	elif args.solver == 'dual_annealing':
@@ -101,16 +78,9 @@ if __name__ == '__main__':
 			print("custom callback for dual_annealing")
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
-		bounds = bounds.to_numpy()
-		startingValues = readFromCsv("dual_annealing")
-		if isinstance(startingValues,bool) and startingValues == False:
-			x = utils.get_random_multiple_boundaries(bounds, len(bounds))
-		else:
-			minAt = startingValues['score'].idxmin()
-			x = np.fromstring(startingValues.iloc[minAt]['dv'][1:-1], dtype=np.float64, sep=' ') 
 		kwargs = {
-		'x0': x,
-		'bounds': bounds,
+		'x0': utils.get_random_x0(20,-5, 10),
+		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
 		'maxiter':1000,
@@ -206,26 +176,12 @@ if __name__ == '__main__':
 		}
 
 	elif args.solver == 'GlobalBestPSO':
-		bounds = bounds.to_numpy()
-		n_particles = 400
-		startingValues = readFromCsv("GlobalBestPSO")
-		if isinstance(startingValues,bool) and startingValues == False:
-			x = utils.get_random_multiple_boundaries(bounds, (n_particles,len(bounds)) )
-		else:
-			minAt = startingValues['score'].idxmin()
-			x = np.fromstring(startingValues.iloc[minAt]['dv'][1:-1], dtype=np.float64, sep=' ')
-			vals = np.ones((n_particles,len(bounds)))
-			for i in range(n_particles):
-				vals[i] = x
-			x = vals
-		for i in range(len(bounds)):
-			bounds[i] = (bounds[i][0],bounds[i][1])
 		kwargs = {
-		'x0': x,
+		'x0': utils.get_random_x0((400,20), -5, 10),
 		'dimensions':20,
-		'bounds': bounds,
-		'maxiter':2,
-		'n_particles':n_particles,
+		'bounds': np.full((20,2), (-5, 10)),
+		'maxiter':3500,
+		'n_particles':400,
 
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
@@ -240,6 +196,3 @@ if __name__ == '__main__':
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
 		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
-		
-
-

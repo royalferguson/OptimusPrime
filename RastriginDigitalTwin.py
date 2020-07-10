@@ -91,26 +91,16 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-<<<<<<< HEAD
-		'x0': utils.get_random_x0(20,-5.0,5.0),
-		'bounds':np.full((20,2), (-5.0, 5.0)),
-		'tol': 1e-10,
-=======
 		'x0': utils.get_random_x0(20,-5.12, 5.12),
 		'bounds':np.full((20,2), (-5.12, 5.12)),
 		'tol': 1e-15,
->>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'initial_temp': 5230,
 		'maxiter':2000,
 		'restart_temp_ratio':2e-5,
 		'visit':2.62,
 		'accept':-2.0,
 		'maxfun': 15000,
-<<<<<<< HEAD
-		'no_local_search': True,
-=======
 		'no_local_search': False,
->>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'seed': 20
 		}
 
@@ -196,17 +186,10 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-<<<<<<< HEAD
-		'x0': utils.get_random_x0((300,20), -5.0,5.0),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5.0,5.0)),
-		'maxiter':3000,
-=======
 		'x0': utils.get_random_x0((300,20), -5.12, 5.12),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.12,5.12)),
 		'maxiter': 3000,   #2750
->>>>>>> 60d38d05271ceba39a699e65b331b9523897bab2
 		'n_particles':300,
 
 		'options': {'c1':0.3,'c2': 0.65, 'w' : 0.95},
