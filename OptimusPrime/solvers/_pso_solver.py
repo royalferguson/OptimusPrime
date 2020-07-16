@@ -107,8 +107,6 @@ class ParticleSwarmSolver(BaseSolver):
 				x0 = np.transpose(x0)
 						'''
 		res= {}
-		print("In PSO Solver:  x0 shape is:  ", x0.shape)
-		print(x0)
 
 		if x0 is None and bounds is None:
 			optimizer = _GlobalBestPSO(n_particles, dimensions, options, **pso_kwargs)
@@ -118,8 +116,6 @@ class ParticleSwarmSolver(BaseSolver):
 		
 		objective_func = self.pso_objective_function(fun, log_cb= self.log_data, tol_cb=None)
 		best = optimizer.optimize(objective_func, maxiter, verbose = True, **fun_kwargs)
-
-		print("BEST:  ", best)
 
 		res = OptimizeResult(fun=best[0], x=best[1], sucess = True,
 							nit = len(self.intermitentData)/self.n_particles, nfev = len(self.intermitentData))

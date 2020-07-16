@@ -40,11 +40,8 @@ def get_commandline_args():
 	return args
 
 def main(algo_wrapper, args, kwargs):
-	print('Optimize using: ' + args.solver)
-
 	logger.info('info ' + 'Optimize using Solver: ' + str(args.solver) )
 	res = algo_wrapper.optimize(args, kwargs)
-	print(res)
 	logger.info( 'info ' + 'Global Minimum occurs at: ' + str(res['x']))
 	logger.info( 'info ' +' f(x0) = ' + str(res['fun']) )
 	return res

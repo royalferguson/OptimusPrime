@@ -12,8 +12,6 @@ def get_random_x0(count, lower=0, upper=1):
 		# GlobalBestPSO:  count[0] is the number of particles and count[1] is the number of DVs
 		# Differential Evolution:  count[0] is the population (popsize*#DV) and count[1] is the # dimensions
 		variables = np.random.uniform(lower, upper, (count[0], count[1]))
-		print("Variables: " )
-		print(variables)
 	else:
 		for i in range (count):
 			variables.append(random.uniform(lower,upper))
@@ -51,4 +49,3 @@ if __name__=='__main__':
 	parser.add_argument("-f", "--file", dest="outPutFile", default="DecisionVariables.csv", help="Output File Name")
 
 	arrayDV.tofile(args.outPutFile, sep=",", format='%0.3f')
-	print("Done")
