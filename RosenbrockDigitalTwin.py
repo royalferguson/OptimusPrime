@@ -79,7 +79,7 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_static_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10, 4),
 		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
@@ -182,13 +182,13 @@ if __name__ == '__main__':
 		'bounds': np.full((21,2), (-5, 10)),
 		'maxiter':3500,
 		'n_particles':400,
-
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
+						'ftol_iter':2,
 						'vh_strategy' : 'unmodified',
 						'center' : 1.0,
-						'ftol' : 1e-10
+						'ftol' : 1e-1
 						}
 		}
 

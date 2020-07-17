@@ -9,10 +9,10 @@ from collections import deque
 
 class _GlobalBestPSO(GlobalBestPSO):
 
-	def __init__(self, *args, ftol_iter=1, **kwargs):
+	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		#rf
-		self.ftol_iter=ftol_iter
+		self.ftol_iter= kwargs['ftol_iter']
 		fix_default_file_handler()
 
 	def optimize(self, objective_func, iters, n_processes=None, verbose=False, silent=False, **kwargs):
@@ -67,6 +67,7 @@ class _GlobalBestPSO(GlobalBestPSO):
 				ftol_history.append(delta)
 			else:
 				ftol_history.append(delta)
+				print(ftol_history)
 				if all(ftol_history):
 					break
 
