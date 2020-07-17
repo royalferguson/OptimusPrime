@@ -34,7 +34,7 @@ if __name__ == '__main__':
 		stepsize = 0.4
 		interval = 50
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'niter':niter,
 		'T': T,
 		'stepsize':stepsize,
@@ -55,7 +55,7 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Differential Evolution Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0((500,20),-5, 10),
+		'x0': utils.get_static_x0((500,20),-5, 10),
 		#'x0': utils.get_random_x0(20,-5, 10),
 		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'strategy': 'best2exp',
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 			logger.info(fmt('info', "Dual Annealing Custom Callback Invoked"))
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'bounds':np.full((20,2), (-5.0, 10.0)),
 		'tol': 1e-15,
 		'initial_temp': 5230,
@@ -97,7 +97,7 @@ if __name__ == '__main__':
 			print("custom callback for nelder-mead")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'method': 'nelder-mead',
 		'tol': 1e-15,
 		'callback':callback_,
@@ -118,7 +118,7 @@ if __name__ == '__main__':
 			print("custom callback for powell")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'method': 'powell',
 		'tol': 1e-10,
 		'bounds': np.full((20,2), (-5.0, 10.0)),
@@ -138,7 +138,7 @@ if __name__ == '__main__':
 			print("custom callback for cobyla")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'method': 'cobyla',
 		'maxiter':1000000,
 		'callback':callback_,
@@ -156,7 +156,7 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_random_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10),
 		'method': 'l-bfgs-b',
 		'jac':None,
 		'bounds': np.full((20,2), (-5.0, 10.0)),
@@ -177,9 +177,9 @@ if __name__ == '__main__':
 
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((400,20), -5, 10),
-		'dimensions':20,
-		'bounds': np.full((20,2), (-5, 10)),
+		'x0': utils.get_static_x0((400,21), -5, 10),
+		'dimensions':21,
+		'bounds': np.full((21,2), (-5, 10)),
 		'maxiter':3500,
 		'n_particles':400,
 
@@ -195,4 +195,4 @@ if __name__ == '__main__':
 	if args.trace:
 		utils.run_with_callgraph(cfg.main, RosenbrockDigitalTwin(), args, kwargs)
 	else:
-		cfg.main(RosenbrockDigitalTwin(), args, kwargs)
+		print(cfg.main(RosenbrockDigitalTwin(), args, kwargs))

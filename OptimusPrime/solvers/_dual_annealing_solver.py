@@ -38,7 +38,7 @@ class DualAnnealingSolver(BaseSolver):
 
 	def check_tolerance(self):
 		if self.tol is not None:
-			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol:
+			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol and self.intermitentData.iloc[len(self.intermitentData)-1,1] != self.intermitentData.iloc[len(self.intermitentData)-2,1] :
 				return True
 		return False
 

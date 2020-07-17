@@ -34,6 +34,20 @@ def get_random_multiple_boundaries(bounds, count):
 	variables = np.array(variables)
 	return variables
 
+def get_static_x0(shape,lower = 0, upper = 1, seed = None):
+	if seed:
+		return np.full(shape, seed)
+	else:
+		try:
+			r = np.load('xvalues.npy')
+			if ( len(r.shape) == 1 and r.shape[0] != shape ) or (len(r.shape) > 1 and r.shape != shape):
+				print("exception")
+				raise Exception()
+		except:
+			r = get_random_x0(shape,lower,upper)
+			np.save('xvalues',r)
+		return r
+
 if __name__=='__main__':
 	parser = argparse.ArgumentParser(
 		prog='ProgramName',
