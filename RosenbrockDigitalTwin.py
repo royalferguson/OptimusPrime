@@ -185,7 +185,7 @@ if __name__ == '__main__':
 		'options': {'c1':0.5,'c2': 0.7, 'w' : 0.9},
 		'pso_kwargs': {'bh_strategy' : 'periodic',
 						'velocity_clamp' : None,
-						'ftol_iter':2,
+						'ftol_iter':3,
 						'vh_strategy' : 'unmodified',
 						'center' : 1.0,
 						'ftol' : 1e-1

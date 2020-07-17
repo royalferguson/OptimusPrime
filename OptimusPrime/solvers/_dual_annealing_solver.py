@@ -17,7 +17,7 @@ def _objective_function(func, log_cb=None):
 class DualAnnealingSolver(BaseSolver):
 	def __init__(self):
 		super().__init__()
-		self.tol = None
+		self.tol = 0.0
 		self.intermitentData = pd.DataFrame()
 
 	def solve(self, fun, maxiter=1000, **kwargs):
@@ -37,10 +37,12 @@ class DualAnnealingSolver(BaseSolver):
 		return False
 
 	def check_tolerance(self):
-		if self.tol is not None:
-			if len(self.intermitentData) >= 2 and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.intermitentData.iloc[len(self.intermitentData)-2,1]) < self.tol and self.intermitentData.iloc[len(self.intermitentData)-1,1] != self.intermitentData.iloc[len(self.intermitentData)-2,1] :
-				return True
-		return False
+		delta = np.inf
+		if len(self.intermitentData) >= 2:
+			curr = len(self.intermitentData) - 1
+			prev = len(self.intermitentData) - 2
+			delta = abs(self.intermitentData.at[curr,'score'] - self.intermitentData.at[prev,'score'])
+		return delta < self.tol
 
 	def log_data(self, x, f, accept):
 		# log data is used by check_tolerance
