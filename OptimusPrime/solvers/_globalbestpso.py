@@ -4,12 +4,15 @@ from OptimusPrime.logger import fix_default_file_handler,remove_stream_handlers
 import multiprocessing as multiprocessing
 import logging
 import numpy as np
+from collections import deque
 
 
 class _GlobalBestPSO(GlobalBestPSO):
 
-	def __init__(self, *args, **kwargs):
+	def __init__(self, *args, ftol_iter=1, **kwargs):
 		super().__init__(*args, **kwargs)
+		#rf
+		self.ftol_iter=ftol_iter
 		fix_default_file_handler()
 
 	def optimize(self, objective_func, iters, n_processes=None, verbose=False, silent=False, **kwargs):
@@ -28,6 +31,9 @@ class _GlobalBestPSO(GlobalBestPSO):
 		pool = None if n_processes is None else mp.Pool(n_processes)
 
 		self.swarm.pbest_cost = np.full(self.swarm_size[0], np.inf)
+		#rf
+		ftol_history=deque(maxlen=self.ftol_iter)
+
 		for i in range(iters) if not verbose or silent else self.rep.pbar(iters, self.name):
 			# Compute cost for current position and personal best
 			# fmt: off
@@ -49,9 +55,29 @@ class _GlobalBestPSO(GlobalBestPSO):
 				)
 			self._populate_history(hist)
 			# verify stop criteria based on the relative acceptable cost ftol
-			relative_measure = self.ftol 
+			relative_measure = self.ftol
+			#rf
+			'''
 			if self.swarm.best_cost != best_cost_yet_found and (np.abs(self.swarm.best_cost - best_cost_yet_found) < relative_measure):
 				break
+			'''
+			delta = self.swarm.best_cost != best_cost_yet_found and (np.abs(self.swarm.best_cost - best_cost_yet_found) < relative_measure)
+
+			if i < self.ftol_iter:
+				ftol_history.append(delta)
+			else:
+				ftol_history.append(delta)
+				if all(ftol_history):
+					break
+
+			'''
+			Roy Question here.
+			ftol_history.append(delta)
+			if i >= ftol_iter and all(ftol_history):
+				break
+			'''
+
+
 			# perform velocity and position updates
 			self.swarm.velocity = self.top.compute_velocity(self.swarm, self.velocity_clamp, self.vh, self.bounds)
 			self.swarm.position = self.top.compute_position(self.swarm, self.bounds, self.bh)
