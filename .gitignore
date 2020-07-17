@@ -1,3 +1,4 @@
 log-reports/*
 *.log
 *.pkl
+*.csv

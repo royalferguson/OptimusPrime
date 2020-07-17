@@ -19,7 +19,7 @@ def _objective_function(func, log_cb=None):
 class BasinhoppingSolver(BaseSolver):
 	def __init__(self):
 		super().__init__()
-		self.tol = 0
+		self.tol = 0.0
 		self.lowest_so_far = [np.inf,np.inf]
 		self.intermitentData = pd.DataFrame()
 
@@ -33,6 +33,8 @@ class BasinhoppingSolver(BaseSolver):
 		loggedToCsv('basinhopping', self.intermitentData)
 		return a
 
+	#rf
+	''' This was changed
 	def callback(self, xk, f, accept):
 		self.log_data(xk, f, accept)
 		if self.check_tolerance():
@@ -40,12 +42,26 @@ class BasinhoppingSolver(BaseSolver):
 		if f < self.lowest_so_far[1]:
 			self.lowest_so_far = [xk,f]
 		return False
+	'''
+	def callback(self, x, f, accept):
+		self.log_data(x, f, accept)
+		return self.check_tolerance()
 
 	def check_tolerance(self):
+		#rf
+		'''Previously
 		if self.tol is not None:
 			if len(self.intermitentData) >= 2 and self.intermitentData.iloc[len(self.intermitentData)-1,1] != self.lowest_so_far[1] and abs(self.intermitentData.iloc[len(self.intermitentData)-1,1] - self.lowest_so_far[1]) < self.tol:
 				return True
 		return False
+		'''
+		delta = np.inf
+		if len(self.intermitentData) >= 2:
+			curr = len(self.intermitentData) - 1
+			prev = len(self.intermitentData) - 2
+			delta = abs(self.intermitentData.at[curr,'score'] - self.intermitentData.at[prev,'score'])
+		return delta < self.tol
+
 
 	def log_data(self, x, f, accept):
 		# log data is used by check_tolerance
