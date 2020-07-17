@@ -42,7 +42,7 @@ class DualAnnealingSolver(BaseSolver):
 			curr = len(self.intermitentData) - 1
 			prev = len(self.intermitentData) - 2
 			delta = abs(self.intermitentData.at[curr,'score'] - self.intermitentData.at[prev,'score'])
-		return delta < self.tol
+		return delta < self.tol and self.intermitentData.at[curr,'score'] != self.intermitentData.at[prev,'score']
 
 	def log_data(self, x, f, accept):
 		# log data is used by check_tolerance

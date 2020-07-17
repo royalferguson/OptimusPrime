@@ -63,20 +63,10 @@ class _GlobalBestPSO(GlobalBestPSO):
 			'''
 			delta = self.swarm.best_cost != best_cost_yet_found and (np.abs(self.swarm.best_cost - best_cost_yet_found) < relative_measure)
 
-			if i < self.ftol_iter:
-				ftol_history.append(delta)
-			else:
-				ftol_history.append(delta)
-				print(ftol_history)
-				if all(ftol_history):
-					break
-
-			'''
-			Roy Question here.
 			ftol_history.append(delta)
-			if i >= ftol_iter and all(ftol_history):
+			if i >= self.ftol_iter and all(ftol_history):
+				print(ftol_history)
 				break
-			'''
 
 
 			# perform velocity and position updates
