@@ -187,6 +187,7 @@ if __name__ == '__main__':
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
 		'x0': utils.get_random_x0((300,20), -5.12, 5.12),
+		#'x0': utils.get_static_x0((300,20), -5.12, 5.12, seed=3),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.12,5.12)),
 		'maxiter': 3000,   #2750
@@ -197,7 +198,8 @@ if __name__ == '__main__':
 						'velocity_clamp' : None,
 						'vh_strategy' : 'unmodified',
 						'center' : 1.0,
-						'ftol' : 1e-15
+						'ftol' : 1e-15,
+						'ftol_iter' : 3
 						}
 		}
 

@@ -30,14 +30,23 @@ len_x1=x1.shape[1]
 print("x1: ", len_x1)
 print(x1)
 
-
 print("==================================")
 
 #np.array(n * a).reshape(n, -1)
 x2=np.array(10 * x0)
-#len_x2=x2.shape[1]
-#print("x2: ", len_x2)
+print(x2.shape)
 print(x2)
-#x3=x2.reshape(10,-1)
+
+x3=x2.reshape(10,-1)
+print(x3)
 x3=x2.reshape(-1,5)
 print(x3)
+
+print("==================================")
+shape=20
+seed=3
+x4=np.full(shape, seed)
+print("length of shape: ", len(x4.shape))
+print(x4.shape)
+print(x4)
+
