@@ -34,18 +34,17 @@ def get_random_multiple_boundaries(bounds, count):
 	variables = np.array(variables)
 	return variables
 
-def get_static_x0(shape,lower = 0, upper = 1, seed = None):
+def get_static_x0(shape,lower = 0, upper = 1, seed = None, newValues = False):
 	if seed:
 		return np.full(shape, seed)
 	else:
 		try:
 			r = np.load('xvalues.npy')
-			if ( len(r.shape) == 1 and r.shape[0] != shape ) or (len(r.shape) > 1 and r.shape != shape):
-				print("exception")
+			if newValues == True or ( len(r.shape) == 1 and r.shape[0] != shape ) or (len(r.shape) > 1 and r.shape != shape):
 				raise Exception()
 		except:
 			r = get_random_x0(shape,lower,upper)
-			np.save('xvalues',r)
+			np.save('xvalues.npy',r)
 		return r
 
 if __name__=='__main__':

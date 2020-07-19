@@ -186,8 +186,8 @@ if __name__ == '__main__':
 		}
 	elif args.solver == 'GlobalBestPSO':
 		kwargs = {
-		'x0': utils.get_random_x0((300,20), -5.12, 5.12),
-		#'x0': utils.get_static_x0((300,20), -5.12, 5.12, seed=3),
+		# 'x0': utils.get_random_x0((300,20), -5.12, 5.12),
+		'x0': utils.get_static_x0((300,20), -5.12, 5.12, seed=3.0),
 		'dimensions':20,
 		'bounds': np.full((20,2), (-5.12,5.12)),
 		'maxiter': 3000,   #2750

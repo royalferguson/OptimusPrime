@@ -156,7 +156,7 @@ if __name__ == '__main__':
 			print("custom callback for l-bfgs-b")
 			return
 		kwargs = {
-		'x0': utils.get_static_x0(20,-5, 10),
+		'x0': utils.get_static_x0(20,-5, 10, newValues = True),
 		'method': 'l-bfgs-b',
 		'jac':None,
 		'bounds': np.full((20,2), (-5.0, 10.0)),
