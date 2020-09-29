@@ -66,7 +66,6 @@ class BasinhoppingSolver(BaseSolver):
 	def log_data(self, x, f, accept):
 		# log data is used by check_tolerance
 		s = pd.Series([x,f], index=['dv','score'])
-		
 		self.intermitentData=self.intermitentData.append(s, ignore_index=True)
 		
 	def pickle_data(self, x, f):

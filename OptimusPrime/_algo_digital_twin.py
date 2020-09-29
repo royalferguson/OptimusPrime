@@ -1,4 +1,5 @@
 from OptimusPrime import Optimus
+from OptimusPrime.solvers import default_solver_params_dict
 
 class AlgoDigitalTwin():
 	#def __init__(self, of, flip=False, x0=None, bounds=None):
@@ -13,13 +14,24 @@ class AlgoDigitalTwin():
 		#self.optimizer.set_bounds(self.bounds)
 		self.optimizer.set_solver(args.solver)
 		self.optimizer.update_solver_params(args.solver, kwargs)
-
-		'''
-		print("In AlgoDigitalTwin: ")
-		for key, value in kwargs.items():
-			print("%s == %s" % (key,value) )
-		print("kwargs: ", kwargs)
-		'''
 		
 		return self.optimizer.solve()
 
+	def optimizeAll(self):
+		self.optimizer.set_objective_function(self.algo_objective_func, self.flip)
+		results = {}
+		for key, value in default_solver_params_dict.items():
+			print(key)
+			self.optimizer.set_solver(key)
+			self.optimizer.update_solver_params(key, value)
+			results[key] = self.optimizer.solve()
+		
+		minSolver = ''
+		minFun = 99999999999
+
+		for key, value in results.items():
+			if value.fun < minFun:
+				minSolver = key
+				minFun = value.fun
+
+		return minSolver, results[minSolver]

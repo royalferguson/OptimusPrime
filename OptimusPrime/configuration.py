@@ -46,3 +46,11 @@ def main(algo_wrapper, args, kwargs):
 	logger.info( 'info ' +' f(x0) = ' + str(res['fun']) )
 	return res
 
+def optimizeAll(algo_wrapper):
+	logger.info('info ' + 'Optimizing using all solvers: ')
+	res = algo_wrapper.optimizeAll()
+	logger.info( 'info ' + 'Global Minimum found with solver: ' + str(res[0]))
+	logger.info( 'info ' + 'Global Minimum occurs at: ' + str(res[1]['x']))
+	logger.info( 'info ' +' f(x0) = ' + str(res[1]['fun']) )
+	return res
+
